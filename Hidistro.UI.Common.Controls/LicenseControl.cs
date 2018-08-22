@@ -7,7 +7,7 @@ namespace Hidistro.UI.Common.Controls
 {
 	public class LicenseControl : WebControl
 	{
-		private readonly string renderFormat = "<a href=\"http://www.hishop.com\">HiShop技术支持</a>";
+		private readonly string renderFormat = "<a href=\"http://www.pufang.net\">Pufufang技术支持</a>";
 
 		protected override void Render(HtmlTextWriter writer)
 		{

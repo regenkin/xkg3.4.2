@@ -44,6 +44,8 @@ function InitUploader(uploaderId, uploadType, snailtype, uploadSize) {
         postForm.setAttribute("enctype", "multipart/form-data");
         postForm.encoding = "multipart/form-data";
         postForm.action = applicationPath + "/API/UpImg.ashx?action=upload&uploadType=" + uploadType + "&uploaderId=" + uploaderId + "&snailtype=" + snailtype + "&uploadSize=" + uploadSize;
+        alert(postForm.action);
+        alert(postForm.outerHTML);
         postForm.submit();
 
         // 还原form信息
