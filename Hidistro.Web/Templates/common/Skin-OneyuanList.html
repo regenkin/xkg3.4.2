@@ -1,0 +1,323 @@
+﻿<hi:common_header runat="server" />
+<style>
+    .yiyuanPanel {; margin: 0px auto; padding: 8px; }
+    .y3-mobilebtn{text-align:right;padding-right:5px;border-top:1px solid #ccc;line-height:34px}
+    .mobile-prize-textinfo p{line-height:20px;}
+    .mobile-prize-textinfo{margin-top:10px}
+    .mobile-prize-textinfo h3{font-size:18px;font-weight:bold;line-height:20px;margin-bottom:6px}
+    .container { max-width: 640px; min-height: 100%; padding: 0; background-color: #F5F5F5; overflow: hidden; }
+        .container header { margin-bottom: 10px; }
+            .container header ul li { float: left; width: 25%; height: 38px; line-height: 36px; background-color: #fff; text-align: center; }
+                .container header ul li a { display: block; color: #000; }
+                .container header ul li.active a { border-bottom: 2px solid #da4453; color: #da4453; }
+    .mobile-prize-red{color:#ff0000;font-size:16px;font-weight:bold}
+    .PrizeName{overflow-y:hidden;height:18px}
+    .mobile-prize-textinfo p { height:20px;display:block;overflow:hidden} 
+    di { color: red; }
+    .progress { height: 6px; background-color: #CCCCCC; margin-bottom: 5px; margin-top: 5px; }
+    .loading { text-align: center; height: 20px; line-height: 20px; margin-bottom: 5px; }
+        .loading span { display: inline-block; text-indent: 25px; height: 20px; line-height: 20px; background: url(../images/iconfont-jiazaizhong.gif) no-repeat; background-size: 20px; }
+    .noneActivity{text-align:center;line-height:100px;border:1px solid #ccc;margin:10px;color:#999;border-radius:6px}
+    #mcover { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); display: none; z-index: 20000; }
+        #mcover img { position: fixed; right: 18px; top: 5px; width: 260px !important; height: 180px !important; z-index: 20001; }
+        .btn-sm{line-height:1}
+</style>
+<div id="mcover" onclick="document.getElementById('mcover').style.display='';" style="display:none;">
+    <img src="/images/guide.png" />
+</div>
+    <div class="container">
+        <header>
+            <ul class="clearfix orderul">
+                <li><a href="OneyuanList.aspx?Otype=1">人气</a></li>
+                <li><a href="OneyuanList.aspx?Otype=2">最新</a></li>
+                <li><a href="OneyuanList.aspx?Otype=3">进度</a></li>
+                <li><a href="OneyuanList.aspx?Otype=4">已结束</a></li>
+            </ul>
+        </header>
+</div>
+<div id="maincontainer">
+    <hi:vshoptemplatedrepeater id="repList" templatefile="/Tags/Skin-Common-OneTaoList.ascx"
+                               runat="server" />
+</div>
+<div class="loading">
+    <span>正在加载中····</span>
+</div>
+<script>
+    var Otype = getParam("Otype");
+    if (Otype == 0)
+        Otype = 1;
+
+    
+
+    var setIntervalInt;
+
+    var ajaxflag = false;
+    var PostData={action:"nextPage",pageIndex:1};
+
+    $(function () {
+
+        var $orderul = $(".orderul li");
+        $orderul.eq(Otype - 1).addClass("active"); //当前选中页
+
+        
+        ajaxData(); //读取第1页
+
+        $(document).on('scroll', function (evt) {
+                var elementT = $('.loading').offset().top;
+                if ($(document).scrollTop() + $(window).height() >= elementT) {
+                    if (!ajaxflag) {
+                        ajaxflag = true;
+                        //这里写ajax发送  发送成功记得把flag变量设置成false
+                        ajaxData()
+                    }
+                }
+            });
+
+
+       
+    });
+
+    function ajaxData() {
+
+        $.ajax({
+            url: window.location.href,
+            type: "post",
+            data: PostData,
+            datatype: "json",
+            cache: false,
+            success: function (jsonData) {
+                //
+
+                PostData.pageIndex++; //翻页成功！
+                if (jsonData.state == true) {
+
+                    addMore(jsonData.Data);//读取JSON数据
+
+                    if (jsonData.Data.length == 10) {
+                        ajaxflag = false;
+                    }
+                    else {
+                        $('.loading').remove(); //移除
+                        if (jsonData.Data.length==0 && PostData.pageIndex == 2) {
+                            $("#maincontainer").html("<div class='noneActivity'>暂未有夺宝活动在进行,请稍后关注！<div>");
+                        }
+                    }
+
+                }
+                else {
+
+                    if (jsonData.msg) {
+                        alert_h(jsonData.msg);
+                    }
+                    else {
+
+                        window.location.reload();
+                    }
+                   
+                    ajaxflag = false;
+                }
+            },
+            error: function () {
+                //
+            }
+        });
+
+    }
+
+
+    function initData() {
+
+        if ($(".Opentype").length > 0) {
+
+            $(".Opentype").each(function () {
+
+                var ReachType = $(this).attr("ReachType");
+                var ReachNum = $(this).attr("ReachNum");
+
+                if (ReachType == "1") {
+                    $(this).html("活动结束前，购买满<di>" + ReachNum + "</di>份后自动开奖");
+                }
+                else if (ReachType == "2") {
+                    $("#LeftPtype").text("活动结束时自动开奖");
+
+                }
+                else if (ReachType == "3") {
+
+                    $("#LeftPtype").html("到结束时间，购买数份数大于<di>" + ReachNum + "</di>份自动开奖");
+                }
+
+            });
+
+            setIntervalInt = setInterval(ShowTimeEnd, 1000); // 定时刷新时间
+        }
+        
+        
+    }
+
+
+
+
+    function ShowTimeEnd() {
+        $(".mobile-prize-red").each(function () {
+            var edtime = $(this).attr("EndTime");
+            var IsEnd = $(this).attr("IsEnd");
+            var HasCalculate = $(this).attr("HasCalculate");
+            if (HasCalculate=="true") {
+                 $(this).text("活动已结束，开奖已完成");
+            }
+            else if (IsEnd=="true") {
+                $(this).text("活动已结束，正在计算开奖中...");
+            }
+            else
+            {
+                $(this).text(CountEndtime(edtime));
+            }
+         
+        });
+
+    }
+
+
+   
+
+    function addMore(jsondata) {
+
+        if (jsondata.length == 0)
+            return;
+        var addhtml = "";
+        var ShareBtn = '';
+
+       
+
+        for (var i = 0; i < jsondata.length; i++) {
+            var item = jsondata[i];
+          
+            if (Otype != "4") {
+                ShareBtn = '         <button onclick="shareTimeline(this)" class="btn btn-primary btn-sm WxShare" Stitle="' + item.Title + '" Desc="' + item.ActivityDec + '" ImgUrl="' + item.ProductImg + '" vaid="' + item.ActivityId + '">分享</button>';
+            }
+
+            addhtml += '   <div class="yiyuanPanel"><a href="ViewOneTao.aspx?vaid=' + item.ActivityId + '" >' +
+          '   <div class="prize-picture">'+
+        '       <img src="'+item.HeadImgage +'" style="width:100%">' +
+        '   </div>' +
+        '    <div class="mobile-prize-textinfo">' +
+        '         <h3>' + item.Title + '</h3>' +
+        '         <p class="PrizeName">奖品名称：<span>' + item.ProductTitle + '</span></p>' +
+        '         <p>奖品说明：<span>数量'+ item.PrizeNumber +'，每份价格<di>￥'+ item.EachPrice +'</di>，限购'+ item.EachCanBuyNum+'份</span></p>' +
+        '         <p>开奖方式：<span class="Opentype" ReachType="' + item.ReachType + '" ReachNum="' + item.ReachNum + '">' + kaiJiangtype(item.ReachType, item.PrizeNumber) + '</span></p>' +
+        '<div class="progress">'+
+        '    <div id="Prizeprogress" class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:' + parseInt(100*item.FinishedNum/item.ReachNum) + '%">' +
+            '        <span class="sr-only">60% Complete (warning)</span>'+
+            '    </div>'+
+            '</div>'+
+        '          <p>距离结束：<span class="mobile-prize-red" IsEnd="' + item.IsEnd + '" HasCalculate="' + item.HasCalculate + '"   EndTime="' + item.EndTime + '">计算中...</span></p>' +
+        '     </div></a>' +
+        '     <div class="y3-mobilebtn">' +
+                                 ShareBtn +
+        '         <a class="btn btn-danger btn-sm" href="ViewOneTao.aspx?vaid=' + item.ActivityId + '">去看看</a>' +
+        '     </div>' +
+        '  </div>';
+        }
+    
+
+        $("#maincontainer").append(addhtml);
+        clearInterval(setInterval); //清除定时器
+
+        initData();
+
+    }
+
+    function kaiJiangtype(ReachType,PrizeNumber){
+        var rs="";
+        if (ReachType == 1)
+        {
+            rs = "活动结束前满足总需份数，自动开出"+ PrizeNumber+"个奖品";
+        }
+        else if (ReachType == 2)
+        {
+            rs = "活动到期自动开出" + PrizeNumber + "个奖品";
+        }
+        else if (ReachType == 3)
+        {
+            rs = "到开奖时间并满足总需份数，自动开出" + PrizeNumber + "个奖品";
+        }
+        return rs;
+    }
+
+    var title = "";
+    var link = "";
+    var imgUrl ="";
+    var Dec = "";
+
+
+    function shareTimeline(Obj) {
+      
+        var hostUrl = "http://" + window.location.host;
+        
+        title = $(Obj).attr("Stitle");
+        link = hostUrl + "/vshop/ViewOneTao.aspx?vaid=" + $(Obj).attr("vaid") + "&ReferralId=" + getParam("ReferralId");;
+        imgUrl = hostUrl + $(Obj).attr("ImgUrl");;
+        Dec = $(Obj).attr("Desc");
+
+
+        if (/MicroMessenger/i.test(navigator.userAgent)) {
+            $("#mcover").show();
+            initWx();
+        }
+        else {
+            alert_h("当前客户端不是微信，不能分享到微信！");
+        }
+    }
+
+    function initWx() {
+
+        wx.onMenuShareTimeline({
+            title: title + "\r\n" + Dec, // 分享标题
+            link: link, // 分享链接,将当前登录用户转为puid,以便于发展下线
+            desc: Dec,
+            imgUrl: imgUrl, // 分享图标
+            success: function () {
+                // 用户确认分享后执行的回调函数
+                $("#mcover").hide();
+                alert_h('分享成功');
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+
+
+        wx.onMenuShareAppMessage({
+            title: title,
+            desc: Dec,
+            link: link,
+            imgUrl: imgUrl,
+            type: "",
+            dataUrl: "",
+            success: function () {
+                $("#mcover").hide();
+                alert_h('分享成功');
+            },
+            cancel: function () { }
+        });
+
+        wx.onMenuShareQQ({
+            title: title, // 分享标题
+            desc: Dec, // 分享描述
+            link: link, // 分享链接
+            imgUrl: imgUrl, // 分享图标
+            success: function () {
+                $("#mcover").hide();
+                alert_h('分享成功');
+                // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+
+
+    }
+
+</script>
+    <hi:common_footer runat="server" />

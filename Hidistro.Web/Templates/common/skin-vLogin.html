@@ -1,0 +1,39 @@
+﻿<hi:common_header runat="server" />
+    <div class="pbox">
+        <input id="txtUserName" type="text" class="form-control" placeholder="请填写您的昵称">
+        <input id="txtPhone" type="tel" class="form-control" placeholder="请填写您的手机号">
+        <input id="txtRealName" type="text" class="form-control" placeholder="请填写您的姓名">
+        <input id="txtQQ" type="tel" class="form-control" placeholder="请填写您的QQ号码">
+        <button type="button" id="btnSetUserName" class="btn btn-warning btn-block">保存用户信息</button>
+        <p class="text-center"><a href="Default.aspx" class="text-muted">不填写，直接去首页。（后续可在个人中心修改）</a></p>
+    </div>
+<script>
+    //禁用右上角菜单
+    //document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+    //    WeixinJSBridge.call('hideOptionMenu');
+    //});
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnSetUserName").bind("click", function () { SetUserName(); }); //设置新昵称
+    });
+    function SetUserName() {
+        $.ajax({
+            url: "/API/VshopProcess.ashx",
+            type: 'post', dataType: 'json', timeout: 10000,
+            data: { action: "SetUserName", userName: $("#txtUserName").val(), RealName: $("#txtRealName").val(), CellPhone: $("#txtPhone").val(), QQ: $("#txtQQ").val() },
+            success: function (resultData) {
+                if (resultData.Status == "OK") {
+                    alert_h("设置用户信息成功", function () {
+                        location.href = "Default.aspx";
+                    });
+                }
+                else {
+                    alert_h("设置用户信息失败, 请重试");
+                }
+            }
+        });
+    }
+</script>
+<Hi:Common_Footer runat="server" />
+

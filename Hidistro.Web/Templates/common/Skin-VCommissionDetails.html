@@ -1,0 +1,37 @@
+﻿<hi:common_header runat="server"/>
+ <ul class="clearfix con-title">
+        <li class="activenum"><a>佣金明细</a></li>
+        <li><a href="BalanceDrawRequesList.aspx">提现结算列表</a></li>
+      </ul>
+    <div class="pbox commission-title" >
+      <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>流水号</th>
+          <th>店铺信息</th>
+          <th>佣金金额</th>
+        </tr>
+      </thead>
+      <tbody id="shopcommssion">
+      
+      <hi:vshoptemplatedrepeater id="vshopcommssion" templatefile="/Tags/skin-Common_CommissionDetails.ascx"
+        runat="server" /> 
+      </tbody>
+    </table>
+    </div>
+       <div id="empty" style="text-align: center;">
+        <img src="/Utility/pics/nonestore.gif" />
+    </div>
+    <script>
+        $(function () {
+           
+            if (!$.trim($('#shopcommssion').html())) {
+                $('#empty').css('display', '');
+            }
+            else {
+                $('#empty').css('display', 'none');
+            }
+        });
+    </script>
+<Hi:Common_Footer runat="server" />
+

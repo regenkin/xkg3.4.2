@@ -1,0 +1,196 @@
+﻿<hi:common_header runat="server" />
+
+<div id="BgDiv1"></div>
+<div class="DialogDiv" style="display:none; ">
+    <div class="U-guodu-box">
+        <div>
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr><td align="center" class="bakimage"><span></span></td></tr>
+                <tr><td valign="middle" align="center">提交中，请稍后！</td></tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="pbox well distributor" style="background-color:#fff;">
+
+    <div>
+        <p>店铺Logo</p>
+        <form id="ImageForm" method="post" enctype="multipart/form-data">
+            <div class="upFile clearfix">
+                <div class="bgImg"><img id="idImg" src="/Utility/pics/headLogo.jpg" width="100" ClientIDMode="Static" height="100" runat="server" /></div>
+                <div class="adds"><input id="idFile" name="idFile" type="file" /></div>
+                <p class="font-s text-muted" style="padding-top: 50px;">点击左边的图片修改logo</p>
+                <p class="font-s text-muted">
+                    建议尺寸：200 x 200像素
+                    小于120KB，支持.jpg、.gif、.png格式
+                </p>
+            </div>
+        </form>
+    </div>
+
+
+    <div class="form-group">
+        <label for="txtstorename">店铺名称</label>
+        <input type="text" class="form-control" name="stroename" id="txtstorename" placeholder="店铺名称限制在20字以内" maxlength="30" />
+    </div>
+    <div class="form-group">
+        <label for="txtstorename">联系方式</label>
+        <input type="tel" class="form-control" name="stroename" id="txtStoreTel" placeholder="支持手机号或者座机号" />
+    </div>
+    <div class="form-group">
+        <label for="txtdescription">店铺简介</label>
+        <textarea class="form-control" rows="3" name="descriptions" id="txtdescription" placeholder="填写数字限制在30字以内"></textarea>
+    </div>
+    <!--<div class="form-group">
+        <input type="checkbox" id="hasReadinfos" />
+        <label for="hasReadinfos" id="hasReadinfoslabel">
+            我已经阅读并了解
+        </label>　　<a href="DistributorDescription.aspx">分销商说明</a></div>-->
+    <div class="bgstore clearfix">
+    </div>
+
+    
+
+</div>
+<div class="pbox"><button type="button" class="btn btn-danger btn-block" id="savemes" onclick="javascript: return ValidRequestDistributor();">申请分销</button></div>
+<input type="hidden" id="litIsEnable" runat="server">
+
+<script>
+    function upLoadFile() {
+        var options = {
+            type: "POST",
+            url: '/API/Files.ashx?action=LogoUpload&dlogo=true',
+            success: showResponse
+        };
+        // 将options传给ajaxForm
+        $('#ImageForm').ajaxSubmit(options);
+    }
+   
+    function showResponse(data) {
+
+    
+        if (data == "0") {
+            alert_h("店铺Logo上传图片失败!");
+            btnstate(1);
+            return;
+        } else if (data == "1") {
+            alert_h("你店铺Logo上传的文件不能大于120KB!请重新上传！!");
+            btnstate(1);
+            return;
+
+        } else if (data == "2") {
+            alert_h("你店铺Logo上传的文件格式不正确！上传格式有(.gif、.jpg、.png、.bmp)!");
+            btnstate(1);
+            return;
+
+        } else if (data == "3"){
+            data = ""; //为空值
+            data = $("#idImg").attr("src"); //如果没有图片上传，以默认图片
+        }
+
+
+
+        $.ajax({
+            url: "/API/VshopProcess.ashx",
+            type: 'post', dataType: 'json', timeout: 10000,
+            data: { action: "AddDistributor", stroename: $("#txtstorename").val(), acctount: '', descriptions: $("#txtdescription").val(), logo: data, CellPhone: $("#txtStoreTel").val() },
+            cache: false,
+            success: function (resultData) {
+                if (resultData.success) {
+                    maskayer(1);
+                    alert_h("开店成功！", function () {
+                        location.href = "DistributorCenter.aspx";
+                    });
+                    
+                   // location.href = "ChooseProducts.aspx";
+                } else {
+                    maskayer(1);
+                    $("#savemes").text("申请分销");
+                    $("#savemes").removeAttr("disabled");
+                    alert_h(resultData.msg);
+                }
+            },
+            error: function (data, status, e) {
+                maskayer(1);
+                $("#savemes").text("申请分销");
+                $("#savemes").removeAttr("disabled");
+                alert_h(data.readyState);
+            }
+        });
+
+
+    }
+    $(function () {
+        $("#savemes").attr({ "disabled": "disabled" });
+        var isEnable = $("#DistributorRequest_litIsEnable").val();
+        if (isEnable == "3") {
+            alert_h("你的分销商资格被管理员冻结，请咨询客服原因！", function () {
+                window.location.href = "/Vshop/MemberCenter.aspx";
+            });
+        }
+
+        if (isEnable == "9") {
+            alert_h("商家已经取消了您的分销资质，不能再申请哦！", function () {
+                window.location.href = "/Vshop/MemberCenter.aspx";
+            });
+        }
+
+        $("#savemes").removeAttr("disabled");
+        $("#idFile").uploadPreview({ Img: "idImg", Width: 100, Height: 100 });
+
+
+      
+       
+    });
+    function ValidRequestDistributor() {
+
+        //if (!$("#hasReadinfos").prop("checked")) {
+        //    alert_h("分销商说明未阅读，请确认！");
+        //    return false;
+        //}
+
+        if ($("#txtstorename").val().replace(/\s/g, "").length <= 0) {
+            alert_h("请输入店铺名称");
+            return false;
+        }
+        if ($("#txtstorename").val().replace(/\s/g, "").length > 30) {
+            alert_h("店铺名称限制在30字以内");
+            return false;
+        }
+       
+        if ($("#txtStoreTel").val().length > 0 && ! /(^[0-9]{3,4}\-[0-9]{7,8}(\-[0-9]{2,4})?$)|(^[0-9]{7,8}$)|(^[0-9]3,4[0-9]{3,8}$)|(^0{0,1}13[0-9]{9}$)|(13\d{9}$)|(15[02135-9]\d{8}$)|(1[4978][0-9]\d{8}$)|(^400(\-)?[0-9]{3,4}(\-)?[0-9]{3,4}$)/.test($("#txtStoreTel").val())) {
+            alert_h("请填正确的手机号或者座机号！");
+            return false;
+        }
+
+        btnstate(0);
+        upLoadFile(); //上传图片
+
+    }
+    function btnstate(obj) {
+        if (obj == 0) {
+            $("#savemes").text("正在保存...");
+            $("#savemes").attr({ "disabled": "disabled" });
+            maskayer(0);
+
+        }
+        else {
+            $("#savemes").text("开店成功，进入店铺");
+            $("#savemes").removeAttr("disabled");
+            maskayer(1);
+        }
+
+    }
+
+    $(function () {
+        //阅读选中
+        var nurl = window.location.href;
+        if (nurl.indexOf("read=true") > 3 && !$("#hasReadinfoslabel").prop("checked")) {
+            $("#hasReadinfoslabel").trigger("click"); //触犯选中
+        }
+    });
+</script>
+<hi:common_footer runat="server" />   

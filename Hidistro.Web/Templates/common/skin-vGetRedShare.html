@@ -1,0 +1,33 @@
+﻿<hi:common_header runat="server" />
+    <div class="pbox well redpagershow">
+    <img src="/images/sharp.png" style="width: 100%;height: 100%;" id="imgGetRedPager" >
+</div>
+    
+<span id="ItemParams" style="display:none">
+    <asp:literal id="litItemParams"
+                 runat="server"></asp:literal>
+</span>
+<script>
+    var Items = $("#ItemParams").text();
+    var title;
+    var link;
+    var imgUrl;
+    var content;
+    if ($.trim(Items.split('|')[0]) != "") {
+        imgUrl = $.trim(Items.split('|')[0]);
+    }
+    if ($.trim(Items.split('|')[1]) != "") {
+        title = Items.split('|')[1];
+    }
+    if ($.trim(Items.split('|')[2]) != "") {
+        link = Items.split('|')[2];
+    }
+    if ($.trim(Items.split('|')[3]) != "") {
+        content = Items.split('|')[3];
+    }
+    wxinshare_title = title;
+    wxinshare_desc = content;
+    wxinshare_link = link;
+    wxinshare_imgurl = imgUrl;
+</script>
+<hi:common_footer runat="server" />

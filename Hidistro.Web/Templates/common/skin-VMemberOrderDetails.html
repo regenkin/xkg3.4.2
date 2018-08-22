@@ -1,0 +1,142 @@
+﻿<hi:common_header runat="server" />
+ <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                订单信息</h3>
+        </div>
+        <div class="panel-body ship-info font-m">
+            <div>
+                <span class="span-r-80">订单编号：</span><asp:literal runat="server" id="litOrderId" /></div>
+            <div>
+                <span class="span-r-80">成交时间：</span><asp:literal runat="server" id="litOrderDate" /></div>
+            <div id="payTimeContainer">
+                <span class="span-r-80">付款时间：</span><span id="payTime"><asp:literal runat="server" id="litPayTime" /></span></div>
+            <div class="text-danger">
+                <span class="span-r-80" style="color: #434a54;">订单状态：</span><hi:orderstatuslabel id="litOrderStatus" runat="server" /></div>
+            <div id="remarkContainer">
+                <span class="span-r-80">订单备注：</span><span id="remark"><asp:literal runat="server" id="litRemark" /></span></div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                配送信息</h3>
+        </div>
+        <div class="panel-body ship-info font-m">
+            <div>
+                <span class="span-r-80">收货人信息：</span><asp:literal runat="server" id="litShipTo" />&nbsp;<span class="phone"><asp:literal runat="server" id="litPhone" /></span></div>
+            <div>
+                <span class="span-r-80">收货地址：</span><asp:literal runat="server" id="litAddress" /></div>
+            <div>
+                <span class="span-r-80">配送时间：</span><asp:literal runat="server" id="litShipToDate" /></div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading order-shopcart">
+            <h3 class="panel-title">
+                商品清单<span class="font-s">（点击商品可评价）</span></h3>
+            <span class="badge-h badge-danger order-amount">¥<asp:literal runat="server" id="litTotalPrice" />
+            </span>
+        </div>
+        <div class="panel-body goods-list-p font-m">
+            <hi:vshoptemplatedrepeater id="rptOrderProducts" templatefile="/Tags/skin-Common_MemberOrderProducts.ascx"
+                runat="server" />
+        </div>
+    </div>
+<div class="panel panel-default btns-fixed-margin">
+            <div class="panel-heading">
+                <h3 class="panel-title">费用明细</h3>
+            </div>
+            <div class="panel-body ship-info font-m">
+                <div><span class="span-r-80">商品合计：</span>&nbsp;&nbsp;¥<asp:Literal runat="server" id="litBuildPrice" /></div>
+                <div style="display:none"><span class="span-r-80">优惠券抵扣：</span><asp:Literal runat="server" id="litCounponPrice" /></div>
+                <asp:Literal runat="server" id="litRedPagerAmount" />
+                <asp:Literal runat="server" id="litPointToCash" />
+                <asp:Literal runat="server" id="litExemption" />
+                <asp:Literal runat="server" id="litDisCountPrice" />
+                <div><span class="span-r-80">运费：</span>&nbsp;&nbsp;¥<asp:literal runat="server" id="litShippingCost" /></div>
+                <div><span class="span-r-80">实付：</span>&nbsp;&nbsp;¥<asp:literal runat="server" id="litActualPrice" /></div>
+            </div>
+        </div>
+   
+
+
+<div class="btns-fixed">
+    <input type="hidden" id="orderStatus" runat="server" clientidmode="Static" />
+    <input type="hidden" id="txtOrderId" runat="server" clientidmode="Static" />
+    <input type="hidden" id="txtProductId" runat="server" clientidmode="Static" />
+    <a id="lookupTrans" class="btn btn-info">查看物流</a> <a id="ensureRecieved" href='javascript:void(0)'
+        onclick='' class="btn btn-danger">确认收货</a> <asp:HyperLink ID="hlinkGetRedPager" runat="server" Visible="false" Text="发钱咯" CssClass="btn btn-danger"></asp:HyperLink>
+</div>
+<script>
+    //禁用右上角菜单
+    //document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+    //    WeixinJSBridge.call('hideOptionMenu');
+    //});
+</script>
+<script type="text/javascript">
+    function FinishOrder(orderId) {
+        var data = {};
+        data.orderId = orderId;
+
+        $.post("/api/VshopProcess.ashx?action=FinishOrder", data, function (json) {
+            if (json.success === true) {
+                if (json.isapply == 0) {
+                    //alert_h('确认收货成功！', function () {
+                        location.reload();
+                    //});
+                }
+                else {
+                    alert_h('确认收货成功,您的消费达到成为分销商要求,是否申请？', function () {
+                        location.href = "/Vshop/DistributorRegCheck.aspx";
+                    });
+                }
+
+            }
+            else {
+                alert_h(json.msg);
+            }
+        });
+    }
+
+
+    $(function () {
+        $.each($(".specification"), function () {
+            var htmString = "";
+            var skuContent = $(this).attr("skuContent");
+            if (skuContent != null) {
+                var skuList = skuContent.split(';');
+                for (i = 0; i < skuList.length - 1; i++) {
+                    htmString += "<span>" + skuList[i].split('：')[1] + "</span>";
+                }
+                $(this).html(htmString);
+                $(this).removeAttr("skuContent");
+            }
+        });
+
+
+        var orderStatus = $('#orderStatus').val();
+        if (orderStatus != 3 && orderStatus != 5)
+            $('#lookupTrans').hide();
+
+        if (orderStatus != 3)
+            $('#ensureRecieved').hide();
+
+
+        var orderId = $('#txtOrderId').val();
+        $('#lookupTrans').attr('href', '/vshop/MyLogistics.aspx?orderId=' + orderId);
+        $('#ensureRecieved').click(function () {
+            myConfirm('询问', '您确定已经收到货物了吗？', '确定收货', function () {
+                FinishOrder(orderId);
+            })
+        });
+
+        if (!$.trim($('#payTime').html()))
+            $('#payTimeContainer').hide();
+
+        if (!$.trim($('#remark').html()))
+            $('#remarkContainer').hide();
+
+    });
+</script>
+<hi:common_footer runat="server" />

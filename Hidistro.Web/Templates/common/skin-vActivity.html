@@ -1,0 +1,43 @@
+﻿<Hi:Common_Header runat="server" />
+<script type="text/javascript">
+    function Submit() {
+        var data = {};
+        data.id = $("#id").val();
+        data.item1 = $("#item1").val();
+        data.item2 = $("#item2").val();
+        data.item3 = $("#item3").val();
+        data.item4 = $("#item4").val();
+        data.item5 = $("#item5").val();
+
+        var len = $("#item1,#item2,#item3,#item4,#item5").length;
+
+        if (!data.item1) {
+            alert_h("请填写完整信息");
+            return;
+        }
+
+        $.post("/api/VshopProcess.ashx?action=SubmitActivity", data, function (json) {
+            if (json.success === true) {
+                alert_h("报名成功", function () { location.href = '/vshop/' });
+            }
+            else {
+                alert_h(json.msg);
+            }
+        });
+    }
+</script>
+<section id="content">
+     <div class="act_con">
+        <span><Hi:HiImage runat="server" ID="img" /></span>
+        <p><asp:Literal runat="server" ID="litDescription" /></p>
+     </div>
+     <div class="act_info">
+        <h2>报名信息登记：</h2>
+        <Hi:Common_ActivityCondition runat="server" />
+     </div>
+     <div class="qb_mb10 qb_mb10">
+           <a href="javascript:void(0)" onclick="Submit()" class="mod_btn btn_strong  btn_block">我要报名</a>  
+      </div>
+</section>
+
+<Hi:Common_Footer runat="server" />

@@ -1,0 +1,20 @@
+﻿body,html{padding-bottom: 0;}
+.container{padding: 40% 2.6% 5%;max-width: 640px; margin: 0 auto;background: url(../images/guatitle.png) no-repeat left top;background-color: #FF3B3C; background-size: 100%;color: #000;box-shadow: 0 0 5px #000;font-size:12px;}
+.scratch{display: inline-block;padding: 3%;background: url(../images/scratchBox.png) no-repeat;background-size: cover;}
+.margin{margin:0 auto;}
+.box{text-align:center; width:100%; margin-bottom: 10%;}
+.box img{width:300px; height:120px;}
+.box .canvasbg{background:url("../images/s_stamp.png") no-repeat ; height:160px; width:300px; background-size:100% 100%;}
+.infoList{padding: 8% 3% 10%;background-color: #D43C3B;color: #fff;margin-bottom: 5%;border-radius: 10px;}
+.infoList.nobg{background: none;margin-bottom: 0;}
+.infoTitle{width: 29.2%;margin: 0 auto;background: url(../images/info.png) no-repeat;background-size: 100%;text-align: center;margin-bottom: 5%;}
+.infoList table tr td{text-align: left;line-height: 20px;}
+.infoList p{line-height: 20px;}
+.nameListTop ul li{height: 40px;width: 25%;float: left;line-height: 40px;text-align: center;font-size: 1.1em;background-color: #D43C3B;}
+.nameList{max-height: 240px;overflow: auto;}
+.nameListTop ul:after,.nameList ul:after{content:"";clear:both;display:block;height:0;}
+.nameList ul li{float: left;width: 25%;height: 40px;text-align: center;line-height: 40px;font-size: 0.8em;}
+.nameList ul:nth-of-type(2n){background-color: #E93D3D;}
+.myWinning{width: 54%;margin: 0 auto;display: table;}
+.myWinning a{display:table-cell;vertical-align: middle; background-color: #05DDB4;box-shadow: 0 5px 5px #07A889; color: #fff;text-align: center;font-size: 1.2em;border-radius: 5px;}
+.comeAgain{position: fixed;top: 10%;padding:5px 10px; width: 44px; font-size: 1em; border-radius: 5px; background-color: rgba(255,255,255,0.8); cursor:pointer; }

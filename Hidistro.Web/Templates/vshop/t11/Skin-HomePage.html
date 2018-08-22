@@ -1,0 +1,137 @@
+﻿<%@ Control Language="C#" %>
+<%@ Register TagPrefix="Hi" Namespace="HiTemplate" Assembly="HiTemplate" %>
+<div class="membersbox">
+	<section class="mobile9_headertop">
+		<img src="/Templates/vshop/t11/images/home_banner@2x.png">
+        <section class="mobile9_headerbot_le">
+            <img src="/Templates/vshop/t11/images/head@2x.png" id="imglogo" width="68" height="68">
+        </section>
+        <section class="mobile9_headerbot_lenox" id ="StoreName">
+            店铺主页       </section>
+    </section>
+
+	<section class="mobile9_headerbot">
+		<ul>
+			<li>
+				<span id="goodsCount">300</span>
+				<a href="/ProductList.aspx">全部商品</a>
+			</li>
+			<li>
+				<span><img src="/admin/shop/PublicMob/images/huoodng@2x.png" width="18" height="18"></span>
+					<a href="/activities.aspx">店铺活动</a>
+			</li>
+			<li>
+				<span><img src="/admin/shop/PublicMob/images/5@2x.png" width="18" height="18"></span>
+				<a href="/Vshop/MemberOrders.aspx">我的订单</a>
+			</li>
+			<li>
+				<span><img src="/admin/shop/PublicMob/images/6@2x.png" width="18" height="16"></span>
+				<a href="/Vshop/MemberCenter.aspx">会员签到</a>
+			</li>
+		</ul>
+	</section>
+</div>
+
+        <div class="members_con" style="margin:0 auto">
+            
+            <section class="members_flash j-swipe" id="mySwipe">
+                <ul class="clearfix">
+                    
+                        
+                            <li>
+                                <a href="/default.aspx" title="VERO">
+                                    
+                                    
+                                    <img src="/Templates/vshop/t11/images/home_lunbotu@2x.png" width="100%" />
+                                    
+                                    
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="/default.aspx" title="VERO">
+                                    
+                                    
+                                    <img src="/Templates/vshop/t11/images/home_lunbotu@2x.png" width="100%" />
+                                    
+                                    
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="/default.aspx" title="VERO">
+                                    
+                                    
+                                    <img src="/Templates/vshop/t11/images/home_lunbotu@2x.png" width="100%" />
+                                    
+                                    
+                                </a>
+                            </li>
+                        
+                    
+                </ul>
+                <section class="members_flash_time">
+                    
+                    
+                    <span class="cur" ></span>
+                    
+                    <span  ></span>
+                    
+                    <span  ></span>
+                    
+                    
+                </section>
+            </section>
+            
+        </div>
+    
+        <div class="members_con">
+            <section class="members_nav1">
+                <ul>
+                    
+                    
+                    <li class="lisw1">
+                        <span><a href="/default.aspx"><img src="/Templates/vshop/t11/images/home_xinpingshangjia@2x.png" width="70"></a></span>
+                        <a class="members_nav1_name" href="/default.aspx"></a>
+                    </li>
+                    
+                    
+                </ul>
+            </section>
+        </div>
+    
+        <div class="members_con">
+            
+            <section class="members_goodspic">
+                <ul>
+                    
+                    <li class="mingoods">
+                        <div class="b_mingoods_wrapper">
+                            <a href=""><img src="/Admin/shop/Public/images/diy/goodsView1.jpg" width="100%"></a>
+                            <span class="replace"><i></i> &yen;88.00<span class="original_price"><s>&yen;99.00</s></span></span>
+                        </div>
+                    </li>
+                    <li class="mingoods">
+                        <div class="b_mingoods_wrapper">
+                            <a href=""><img src="/Admin/shop/Public/images/diy/goodsView2.jpg" width="100%"></a>
+                            <span class="replace"><i></i> &yen;88.00<span class="original_price"><s>&yen;99.00</s></span></span>
+                        </div>
+                    </li>
+                    <li class="mingoods">
+                        <div class="b_mingoods_wrapper">
+                            <a href=""><img src="/Admin/shop/Public/images/diy/goodsView3.jpg" width="100%"></a>
+                            <span class="replace"><i></i> &yen;88.00<span class="original_price"><s>&yen;99.00</s></span></span>
+                        </div>
+                    </li>
+                    <li class="mingoods">
+                        <div class="b_mingoods_wrapper">
+                            <a href=""><img src="/Admin/shop/Public/images/diy/goodsView4.jpg" width="100%"></a>
+                            <span class="replace"><i></i> &yen;88.00<span class="original_price"><s>&yen;99.00</s></span></span>
+                        </div>
+                    </li>
+                    
+                </ul>
+            </section>
+            
+        </div>
+    <Hi:GoodsListModule runat="server"  Type="goodGroup" Layout="1" ShowName="True" ShowIco="True" ShowPrice="True" DataUrl="/api/Hi_Ajax_GoodsListGroup.ashx" ID="group_6e92622d203741a5b8df229ef459160a" TemplateFile="/Admin/shop/Modules/GoodGroup1.cshtml"  GoodListSize="6" FirstPriority="2"  SecondPriority="3"    />

@@ -1,0 +1,101 @@
+﻿<hi:common_header runat="server" />
+ <link href="../templates/common/css/myIntegralDetail.css" rel="stylesheet" type="text/css">
+<div class="container">
+    <header>
+        <ul class="clearfix" id="headerul">
+            <li  title="0" <asp:literal runat="server" id="litStatus0" /> ><a href="javascript:void(0)">积分明细</a></li>
+            <li title="1"<asp:literal runat="server" id="litStatus1" />><a href="javascript:void(0)">积分收入</a></li>
+            <li title="2"<asp:literal runat="server" id="litStatus2" />><a href="javascript:void(0)">积分支出</a></li>
+        </ul>
+    </header>
+    <div class="tableList" <asp:literal runat="server" id="littableList0" />>
+        <div class="integralNum">
+            <ul class="clearfix">
+                <li>
+                    <p>剩余积分<br /><em><asp:literal runat="server" id="litSurplusIntegral" /></em></p>
+                </li>
+                <li>
+                    <p>获得的总积分<br /><em><asp:literal runat="server" id="litSumIntegral" /></em></p>
+                </li>
+            </ul>
+        </div>
+        <div class="tableTitle">
+            <ul class="clearfix">
+                <li><span>来源/用途</span></li>
+                <li><span>积分变化</span></li>
+                <li><span>备注</span></li>
+            </ul>
+        </div>
+        <div class="tableBody">
+            <table width="100%;">
+                <tbody>
+                    <Hi:VshopTemplatedRepeater ID="rptIntegarlDetail0" TemplateFile="/Tags/skin-Common_MyIntegarlDetail.ascx" runat="server" />
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="tableList" <asp:literal runat="server" id="littableList1" />>
+        <div class="tableTitle">
+            <ul class="clearfix">
+                <li><span>来源/用途</span></li>
+                <li><span>积分变化</span></li>
+                <li><span>备注</span></li>
+            </ul>
+        </div>
+        <div class="tableBody">
+            <table width="100%;">
+                <tbody>
+                    <Hi:VshopTemplatedRepeater ID="rptIntegarlDetail1" TemplateFile="/Tags/skin-Common_MyIntegarlDetail.ascx" runat="server" />
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="tableList" <asp:literal runat="server" id="littableList2" />>
+        <div class="tableTitle">
+            <ul class="clearfix">
+                <li><span>来源/用途</span></li>
+                <li><span>积分变化</span></li>
+                <li><span>备注</span></li>
+            </ul>
+        </div>
+        <div class="tableBody">
+            <table width="100%;">
+                <tbody>
+                    <Hi:VshopTemplatedRepeater ID="rptIntegarlDetail2" TemplateFile="/Tags/skin-Common_MyIntegarlDetail.ascx" runat="server" />
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div id="pager"></div>
+<!--翻页相关-->
+<input type="hidden" clientidmode="Static" value="" runat="server" id="txtTotal" />
+<input type="hidden" runat="server" clientidmode="Static" value="0" id="txtShowTabNum">
+<script src="/Utility/common.js?2016" type="text/javascript"></script>
+<script src="/Utility/pager.js" type="text/javascript"></script>
+<script>
+    vshopPager('pager', $('#txtTotal').val(), 1, 10);
+
+    //禁用右上角菜单
+    //document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+    //    WeixinJSBridge.call('hideOptionMenu');
+    //});
+</script>
+<script type="text/javascript">
+    $(function () {
+        $('#headerul li').click(function () {
+            //$('ul li').removeClass('active');
+            //$(this).addClass('active');
+            //$('.tableList').hide().eq($(this).index()).show();
+            var lurl = window.location.href;
+            if (lurl.indexOf("?") > 0) {
+                lurl = lurl.split("?")[0];
+            }
+            window.location.href = lurl + "?IntegralSourceType=" + $(this).attr('title');
+        })
+    })
+    
+</script>
+<hi:common_footer runat="server" />

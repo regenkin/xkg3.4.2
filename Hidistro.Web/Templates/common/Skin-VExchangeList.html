@@ -1,0 +1,177 @@
+﻿<hi:common_header runat="server" />
+<style type="text/css">
+    html,body{min-height: 100%;}
+    .container{max-width: 640px;min-height: 100%; padding: 0;background-color: #F5F5F5;}
+    header{margin-bottom: 5px;}
+    header img{max-width: 100%;}
+    h1{height: 40px;line-height: 40px;background-color: #fff;position: relative;margin-bottom: 5px;}
+    h1 strong{float: left;margin-left: 8%;font-weight: normal;font-size: 14px;}
+    h1 span.integral{float: right;margin-right: 2%;font-size: 14px;color: red;}
+    h1 span.sort{padding: 0 2%;display: block;position: absolute;left: 40%;top: 10px;background-color: #F5F5F5;font-size: 12px;line-height: 30px;cursor: pointer;}
+    h1 span.img{display: block;width: 1.8%;position: absolute;left: 3%;top: -8%;background: url(../images/u24.png) no-repeat;background-size: cover;}
+    .container .content{padding: 0 3%;}
+    .content ul li{height: 80px;background: #fff;margin-bottom: 10px;position: relative;border-bottom: 1px solid #fff; border-right:1px solid #fff; box-shadow:2px 2px 3px #ccc;}
+    .content ul li .img{width: 80px;height: 80px;overflow: hidden;position: absolute;}
+    .content ul li .img img{max-width: 100%;}
+    .content ul li .info{padding-left:90px;display: table;min-height: 80px;}
+    .content ul li .infoInner{display: table-cell;vertical-align: middle;}
+    .content ul li .info .surplus{margin-bottom: 5px;color: #999999;}
+    .content ul li .info h3{font-size: 14px;height: 16px;overflow: hidden;margin-bottom: 5px;}
+    .content ul li .info a{display: block;width: 60px;height: 30px;position: absolute;right: 5%;bottom: 15%; line-height: 30px;border-radius: 5px; text-align: center;background-color: #FF294B;color: #fff;}
+    .content ul li .info p .color{color: #FF0000;}
+    .loaddiv { text-align:center;}
+    .loaddiv img { width:50px;height:50px;}
+    #vExchangeList_imgCover {width:640px;height:220px;}
+</style>
+<input type="hidden" id="hiddisInRange" runat="server" clientidmode="static" />
+<input type="hidden" id="hiddUserId" runat="server" clientidmode="static" />
+<div class="container">
+    <header>
+        <asp:Image ID="imgCover" runat="server" />
+    </header>
+    <h1>
+        <strong>积分兑换商品</strong>
+        <span class="sort">所需积分↑</span>
+        <span class="integral">我的积分：<asp:literal runat="server" id="litPoints" /></span>
+        <span class="img"></span>
+    </h1>
+    <div class="content" id="productListContainer">
+        <ul id="goodslist">        
+        </ul>
+    </div>
+</div>
+<p class="text-center list-empty hide" id="empty">
+    没有找到相关商品
+</p>
+<div class="loaddiv">
+    <img src="../images/loadinge.gif" />
+</div>
+<input type="hidden" runat="server" id="hideImgUrl">
+<input type="hidden" runat="server" id="hideDesc">
+<input type="hidden" runat="server" id="hideTitle">
+<script src="/Utility/common.js?2016" type="text/javascript"></script>
+<script type="text/javascript">
+    var gPageSize = 10;
+    var k = 1; //设置当前页数，全局变量
+    var sort = "ProductId";
+    var order = "asc";
+    var type = 0;
+    $(function () {
+        function setElemenetHeight() {
+            $('h1 .img').height($('h1 .img').width() * 4);
+        }
+        setElemenetHeight();
+        $(window).resize(function () {
+            setElemenetHeight();
+        });
+
+        $('.sort').click(function () {
+            if ($(this).text() == "所需积分↑") {
+                $(this).text("所需积分↓");
+                sort = "PointNumber";
+                order = "desc";
+            }
+            else {
+                $(this).text("所需积分↑");
+                sort = "PointNumber";
+                order = "asc";
+            }
+            type = 1;
+            k = 1;
+            getData(1);
+        });
+
+        //根据页数读取数据
+        function getData(pagenumber) {
+            k++; //页码自动增加，保证下次调用时为新的一页。
+            $.ajax({
+                type: "post",
+                url: "/API/Hi_Ajax_ExchangeProducts.ashx",
+                data: { size: gPageSize, page: pagenumber, id: getParam('id'), sort: sort, order: order },
+                dataType: "json",
+                success: function (data) {
+                    $(".loaddiv").hide();
+                    if (data.length > 0) {
+                        if (type == 1) {
+                            $("#goodslist").empty();
+                        }
+                        insertDiv(data);
+                    }
+                    if (pagenumber == 1 && data.length == 0) {
+                        $('#productListContainer').addClass('hide');
+                        $('#empty').removeClass('hide');
+                    }
+                },
+                beforeSend: function () {
+                    $(".loaddiv").show();
+                },
+                error: function () {
+                    $(".loaddiv").hide();
+                }
+            });
+        }
+        //初始化加载第一页数据
+        getData(1);
+
+        //生成数据html,append到div中
+        function insertDiv(json) {
+            var $mainDiv = $("#goodslist");
+            var isInRange = $("#hiddisInRange").val();//当前会员是否在活动范围
+            var userid = $("#hiddUserId").val();
+            var html = [];
+            for (var i = 0; i < json.length; i++) {
+                html.push('<li>');
+                var url = json[i].ThumbnailUrl100 == '' ? '/utility/pics/none.gif' : json[i].ThumbnailUrl100;
+                html.push('<div class="img"><img src="' + url + '" /></div>')
+                html.push('<div class="info">');
+                html.push('<div class="infoInner">');
+                html.push('<h3>' + json[i].ProductName + '</h3>');
+                html.push('<p class="surplus">剩余：' + json[i].ProductNumber + '</p>');
+                html.push('<p>所需积分：<span class="color">' + json[i].PointNumber + '</span></p>');
+                if (parseInt(json[i].ProductNumber) > 0) {
+                    if (isInRange == "true" || userid == "") {
+                        html.push('<a href="/ExchangeDetails.aspx?exchangeId=' + json[i].exChangeId + '&productId=' + json[i].ProductId + '">兑换</a>');
+                    }
+                    else {
+                        html.push('<a href="javascript:void(0);" title="你当前不满足兑换要求" style="pointer-events:none;background-color:#afafaf;cursor:default;">不能兑换</a>');
+                    }
+                }
+                else {
+                    html.push('<a href="javascript:void(0);" style="pointer-events:none;background-color:#afafaf;cursor:default;">已兑完</a>');
+                }
+                html.push('</div>');
+                html.push('</div>');
+                html.push('</li>');
+            }
+            $mainDiv.append(html.join(''));
+        }
+
+        var winH = $(window).height(); //页面可视区域高度
+
+        var scrollHandler = function () {
+            var pageH = $(document.body).height();
+            var scrollT = $(window).scrollTop(); //滚动条top
+            var aa = (pageH - winH - scrollT) / winH;
+            if (aa < 0.02) {//0.02是个参数
+                type = 0;
+                if (k % 10 === 0) {//每10页做一次停顿！
+                    getData(k);
+                    $(window).unbind('scroll');
+                } else {
+                    getData(k);
+                }
+            }
+        }
+        //定义鼠标滚动事件
+        $(window).scroll(scrollHandler);
+
+    });
+
+    //分享标题设置
+    wxinshare_title = $("#vExchangeList_hideTitle").val();
+    wxinshare_link = location.href;
+    wxinshare_desc = $("#vExchangeList_hideDesc").val();
+    wxinshare_imgurl = $("#vExchangeList_hideImgUrl").val();
+</script>
+
+<hi:common_footer runat="server" isshownav="1" />

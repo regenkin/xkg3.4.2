@@ -1,0 +1,24 @@
+﻿body {
+    background: #f1f1f1;
+}
+
+.homeCnavbox {
+    height: 44px;
+    margin-bottom: 10px;
+}
+
+.members_con .membersbox {
+    margin-top: 0 !important;
+}
+
+.members_imgad {
+    margin: 5px 0;
+}
+
+.members_goodspic {
+    padding-left: .3%;
+}
+
+.membersbox-box {
+    margin-top: -10px;
+}

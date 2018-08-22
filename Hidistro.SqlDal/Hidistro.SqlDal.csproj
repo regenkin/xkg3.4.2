@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2AD29335-D4DD-4123-AED5-DC353A89E802}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Hidistro.SqlDal</RootNamespace>
+    <AssemblyName>Hidistro.SqlDal</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data">
+      <HintPath>..\DLL\Microsoft.Practices.EnterpriseLibrary.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BackupRestoreDao.cs" />
+    <Compile Include="Bargain\BargainDao.cs" />
+    <Compile Include="Comments\ProductConsultationDao.cs" />
+    <Compile Include="Comments\ProductReviewDao.cs" />
+    <Compile Include="Commodities\AttributeDao.cs" />
+    <Compile Include="Commodities\AttributeValueDao.cs" />
+    <Compile Include="Commodities\BrandCategoryDao.cs" />
+    <Compile Include="Commodities\CategoryDao.cs" />
+    <Compile Include="Commodities\HomeProductDao.cs" />
+    <Compile Include="Commodities\ProductBatchDao.cs" />
+    <Compile Include="Commodities\ProductBrowseDao.cs" />
+    <Compile Include="Commodities\ProductDao.cs" />
+    <Compile Include="Commodities\ProductTypeDao.cs" />
+    <Compile Include="Commodities\SkuDao.cs" />
+    <Compile Include="Commodities\TagDao.cs" />
+    <Compile Include="Commodities\TaobaoProductDao.cs" />
+    <Compile Include="ExpressDataDao.cs" />
+    <Compile Include="FengXiao\DistributorGradeCommissionDao.cs" />
+    <Compile Include="Members\CustomGroupingDao.cs" />
+    <Compile Include="Members\CustomGroupingUserDao.cs" />
+    <Compile Include="Members\DistributorGradeCommissionDao.cs" />
+    <Compile Include="Members\DistributorGradeDao.cs" />
+    <Compile Include="Members\DistributorsDao.cs" />
+    <Compile Include="Members\FavoriteDao.cs" />
+    <Compile Include="Members\IntegralDetailDao.cs" />
+    <Compile Include="Members\MemberDao.cs" />
+    <Compile Include="Members\MemberGradeDao.cs" />
+    <Compile Include="Members\PointDetailDao.cs" />
+    <Compile Include="Orders\DebitNoteDao.cs" />
+    <Compile Include="Orders\LineItemDao.cs" />
+    <Compile Include="Orders\OrderDao.cs" />
+    <Compile Include="Orders\OrderSplitDao.cs" />
+    <Compile Include="Orders\SendNoteDao.cs" />
+    <Compile Include="Promotions\ActivityDao.cs" />
+    <Compile Include="Promotions\CouponDao.cs" />
+    <Compile Include="Promotions\GameActDao.cs" />
+    <Compile Include="Promotions\GameDao.cs" />
+    <Compile Include="Promotions\GamePrizeDao.cs" />
+    <Compile Include="Promotions\LimitedTimeDiscountDao.cs" />
+    <Compile Include="Promotions\PointExChangeDao.cs" />
+    <Compile Include="Promotions\PrizeResultDao.cs" />
+    <Compile Include="Promotions\ShareActDao.cs" />
+    <Compile Include="Promotions\VoteDao.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RefundDao.cs" />
+    <Compile Include="Sales\DateStatisticDao.cs" />
+    <Compile Include="Sales\ExpressTemplateDao.cs" />
+    <Compile Include="Sales\PaymentModeDao.cs" />
+    <Compile Include="Sales\SaleStatisticDao.cs" />
+    <Compile Include="Sales\ShipperDao.cs" />
+    <Compile Include="Sales\ShippingAddressDao.cs" />
+    <Compile Include="Sales\ShoppingCartDao.cs" />
+    <Compile Include="Settings\CustomerServiceDao.cs" />
+    <Compile Include="Settings\MenuDao.cs" />
+    <Compile Include="Settings\OutPayDao.cs" />
+    <Compile Include="Settings\ShippingModeDao.cs" />
+    <Compile Include="Store\EmailQueueDao.cs" />
+    <Compile Include="Store\LogDao.cs" />
+    <Compile Include="Store\MessageDao.cs" />
+    <Compile Include="Store\MessageTemplateDao.cs" />
+    <Compile Include="Store\NoticeDao.cs" />
+    <Compile Include="Store\NoticeUserDao.cs" />
+    <Compile Include="Store\PhotoGalleryDao.cs" />
+    <Compile Include="Store\RoleDao.cs" />
+    <Compile Include="Store\RolePermissionDao.cs" />
+    <Compile Include="VShop\ActivitiesDao.cs" />
+    <Compile Include="VShop\ActivityDao.cs" />
+    <Compile Include="VShop\ActivitySignUpDao.cs" />
+    <Compile Include="VShop\AlarmDao.cs" />
+    <Compile Include="VShop\AliFuwuReplyDao.cs" />
+    <Compile Include="VShop\BannerDao.cs" />
+    <Compile Include="VShop\FeedBackDao.cs" />
+    <Compile Include="VShop\MenuDao.cs" />
+    <Compile Include="VShop\MessageTemplateHelperDao.cs" />
+    <Compile Include="VShop\OneyuanTaoDao.cs" />
+    <Compile Include="VShop\OrderRedPagerDao.cs" />
+    <Compile Include="VShop\ReplyDao.cs" />
+    <Compile Include="VShop\ScanScenceDao.cs" />
+    <Compile Include="VShop\SendRedpackRecordDao.cs" />
+    <Compile Include="VShop\ShareMaterialDao.cs" />
+    <Compile Include="VShop\ShopStatisticDao.cs" />
+    <Compile Include="VShop\UserSignDao.cs" />
+    <Compile Include="Weibo\ArticleDao.cs" />
+    <Compile Include="Weibo\MenuDao.cs" />
+    <Compile Include="Weibo\MessageDao.cs" />
+    <Compile Include="Weibo\ReplyDao.cs" />
+    <Compile Include="Weibo\SendAllDao.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Hidistro.Core\Hidistro.Core.csproj">
+      <Project>{ba978d9c-daad-4c14-a46a-2fe5c9ee44d5}</Project>
+      <Name>Hidistro.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hidistro.Entities\Hidistro.Entities.csproj">
+      <Project>{064e5464-4c86-4372-92cf-560005bc22c6}</Project>
+      <Name>Hidistro.Entities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

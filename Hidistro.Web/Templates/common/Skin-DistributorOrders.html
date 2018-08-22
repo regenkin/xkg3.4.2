@@ -1,0 +1,88 @@
+﻿ <hi:common_header runat="server"/>
+  <ul class="clearfix orders-title title_bg">
+        <li class="activenum"><a href="DistributorOrders.aspx">全部订单(<asp:Literal ID="litallnum" runat="server"></asp:Literal>)</a></li>
+        <li><a href="?status=5">已完成(<asp:Literal ID="litfinishnum" runat="server"></asp:Literal>)</a></li>
+      </ul>
+
+     <div id="empty" style=" text-align:center;">
+        <img src="/Utility/pics/nonestore.gif" />
+     </div>
+
+      <div class="all-orders" id="products" style="padding-bottom: 0;">
+    <hi:vshoptemplatedrepeater id="vshoporders" templatefile="/Tags/Skin-Common_DistributorOrders.ascx"
+                               runat="server" />
+</div>
+
+    <div id="divprice" style="display:none" class="divprice">
+            <div class="input-group">佣金让利:
+              <input type="text" name="txtadjustprice" id="txtadjustprice" />
+              <span class="input-group-addon" id="sizing-addon1">元</span>
+            </div> 
+              <b class="text-danger">(最多让利:<em>50</em>)</b>
+    </div>
+<script type="text/javascript">
+    vshopPager('pager', $('#txtTotal').val(), 1, 10);
+</script>
+
+    <script>
+        var temporderId=null;
+        var strparam = getParam('status');
+        if (strparam== "5") {
+            $(".orders-title li:eq(1)").addClass("activenum").siblings().removeClass("activenum");
+        }
+
+        $(function () {
+            if (!$.trim($('#products').html())) {
+                $('#empty').css('display', '');
+            }
+            else {
+                $('#empty').css('display', 'none');
+            }
+        });
+        function UpdatePrice(commissionmoney, orderId, productcode) {
+            $("#divprice em").text(commissionmoney);
+            temporderId = orderId + '|' + productcode;
+            ShowDialog('让利调整', '修改', 'divprice', vailidForm);
+            
+        }
+        function vailidForm(){
+            if($("#txtadjustprice").val().replace(/\s/g,"")==""){
+                alert('请输入调整金额');
+                return false;
+            }
+            if (isNaN($("#txtadjustprice").val())) {
+                alert('输入金额格式不正确！');
+                return false;
+            }
+            var emmoney = $("#divprice em").text();
+            if (parseFloat($("#txtadjustprice").val()) < 0 || parseFloat($("#txtadjustprice").val()) > parseFloat(emmoney)) {
+                alert('请输入0~' + emmoney + '元');
+                return false;
+            }
+            $.ajax({
+                url: "/API/VshopProcess.ashx",
+                type: 'post',
+                dataType: 'json',
+                timeout: 10000,
+                data: {
+                    action: "AdjustCommissions",
+                    orderId: temporderId.split('|')[0],
+                    skuId: temporderId.split('|')[1],
+                    adjustprice: $("#txtadjustprice").val(),
+                    commssionprice: $("#divprice em").text()
+                },
+                success: function (resultData) {
+                    if (resultData.success) {
+                        alert('改价成功！');
+                        location.href = location.href;
+                    }
+                    else {
+                        alert(resultData.msg);
+                    }
+                }
+            });
+            return true;
+        }
+
+    </script>
+<Hi:Common_Footer runat="server" />

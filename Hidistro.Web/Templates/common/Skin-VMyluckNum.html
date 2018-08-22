@@ -1,0 +1,26 @@
+﻿<hi:common_header runat="server" />
+<style>
+   .titleDiv{line-height:30px;font-weight:bold;font-size:14px;}
+    .timeline{border-top:1px solid #ddd;line-height:30px;color:#999}
+    .fontb{font-weight:bold}
+    .luckul { }
+    .luckul  li{display:inline-block;width:120px;line-height:26px}
+    .Win{color:red;font-weight:bold}
+</style>
+<div style="border-bottom: 1px solid #ccc; margin-bottom: 10px; padding: 10px;">
+    <p class="titleDiv"><asp:literal runat="server" id="litTitle" /></p>
+    <p style="color:#444">总购份数:<span style="color:#ff0000"><asp:literal runat="server" id="litBuysum" /></span>份</p>
+</div>
+
+<div style="border-top:1px solid #ccc;padding:10px">
+  <p class="fontb">我的号码</p>
+    <asp:literal runat="server" id="litList" />
+</div>
+
+
+
+<script>
+
+
+</script>
+<hi:common_footer runat="server" />

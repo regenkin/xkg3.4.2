@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+ <Jobs>
+    <job name = "Oneyuan" desc="一元夺宝，半小时开奖一次" enabled = "true"  type = "Hidistro.Jobs.OneyuanNotify,Hidistro.Jobs" CronExpression="0 0/30 * * * ?" />
+    <job name = "Tongji"  desc="数据统计任务，0时执行" enabled = "true"   type = "Hidistro.Jobs.ShiftNotify,Hidistro.Jobs" CronExpression="0 0 0,1,2,3 * * ?" />
+    <job name = "Order"  desc="关闭无效订单，20分钟一次" enabled = "true"   type = "Hidistro.Jobs.OrderJob,Hidistro.Jobs" CronExpression="5 0/20 * * * ?" />
+    <job name = "ShoppingCart"  desc="购物车过期商品清理，10分钟一次" enabled = "true"   type = "Hidistro.Jobs.CartJob,Hidistro.Jobs" CronExpression="2 0/10 * * * ?" />
+    <job name = "Coupon"  desc="优惠圈相关任务，半小时一次"  enabled = "true"  type = "Hidistro.Jobs.CouponJob,Hidistro.Jobs" CronExpression="15 0/30 * * * ?" />
+</Jobs>
+
+ 

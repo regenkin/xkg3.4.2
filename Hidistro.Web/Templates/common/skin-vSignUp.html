@@ -1,0 +1,65 @@
+﻿<Hi:Common_Header runat="server" />
+<style>body{ background:#eb3817}</style>
+<script type="text/javascript">
+    function SubmitSignUp() {
+        var id = document.getElementById("vSignUp_hdID").value;
+        
+        var data = {};
+        data.id = id;
+        //data.=$("#txtName").val();
+        data.code = $("#code").val();
+        $.post("/api/VshopProcess.ashx?action=AddSignUp&time="+(new Date().getTime()), data, function (json) {
+            if (json.success === true) {
+                alert_h(json.msg, function () { 
+                location.href = "/Vshop/ticket.aspx?id=" +id;
+                });
+            }
+            else {
+                alert_h(json.msg);
+            }
+        });
+    }
+    function hideSignUpBtn() {
+        $('.w_btn').hide();
+    }
+</script>
+<form runat="server">  
+    <asp:HiddenField id="hdID" runat="server" value="0" />
+<section>
+  <div class="signup"><img src="/images/process/sign.jpg"></div>
+      
+  <div id="content">    
+    <div class="s_exp2">
+       <h2 class="lo2">活动说明：</h2>
+       <p class="lo_p">
+        <asp:Literal runat="server" ID="litActivityDesc" />
+       </p>
+    </div>
+    <div class="s_exp2">
+       <h2 class="lo2">活动时间：</h2>
+       <p><asp:Literal runat="server" ID="litStartDate" /></p>
+       <p><asp:Literal runat="server" ID="litEndDate" /></p>
+    </div>
+    <div class="s_exp2">
+       <h2 class="lo2">奖项设置：</h2>
+       <p class="lo_p">
+       <Hi:Common_PrizeNames runat="server" ID="litPrizeNames" />
+       </p>
+    </div>
+    <div class="w_info">
+      <style>.w_info{ padding:15px 0px;}</style>
+           <asp:Panel runat="server" Visible="true" id="pnlInfo" >
+           <div class="w_info2">
+              <h2>报名邀请码：</h2>
+              <div class="qb_mb10 qb_flex">
+                  <input type="text" id="code" class="mod_input flex_box" style="height:35px;" placeholder="请输入您的邀请码">
+              </div>
+           </div>
+           </asp:Panel>
+           <div class="w_btn"><a href="javascript:SubmitSignUp()">我要报名</a></div>
+    </div>      
+  </div>    
+</section>
+</form>
+<Hi:Common_Footer runat="server" />
+

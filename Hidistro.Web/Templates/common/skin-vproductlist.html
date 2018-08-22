@@ -1,0 +1,177 @@
+﻿<hi:common_header runat="server" />
+<style type="text/css">
+    .shopClass ul li p{height: 40px;line-height: 40px;position: relative;text-indent: 3%;
+	    background:-webkit-gradient(linear, 0 0, 0 100%, from(#fff), to(#F3F3F3));
+	    background:-moz-gradient(linear, 0 0, 0 100%, from(#fff), to(#F3F3F3));
+	    background:-ms-gradient(linear, 0 0, 0 100%, from(#fff), to(#F3F3F3));
+	    background:-o-gradient(linear, 0 0, 0 100%, from(#fff), to(#F3F3F3));
+    }
+    .shopClass ul li p i,.shopClass ul li .downDis ul li i{position: absolute;right: 5%; line-height: 40px; font-size: 12px;font-weight: normal; cursor:pointer;}
+    .shopClass ul li .downDis{display: none;overflow: hidden;}
+    .shopClass ul li .downDis ul li{position: relative;height: 34px;padding-left: 5%; line-height: 34px;background: none; background-color: #F2F2F2;border-top:1px solid #E4E4E4;}
+    .shopClass ul li .downDis ul li i{line-height: 30px;}
+    .shopClass ul li .downDis ul li a{display: block;width: 100%;height: 100%;border:none;border-radius:inherit;padding:0;margin:0;}
+
+    
+  .y-shoplist-box{padding-left: 10px;padding-top: 10px;font-family: "Arial", "Microsoft YaHei", "Tahoma";}
+	.y-shoplist-box ul li{width: 50%;float: left;padding-right: 10px;cursor:pointer}
+	.y-shoplist-box ul li .y-shopimg{overflow: hidden;}
+	.y-shoplist-box ul li .y-shopimg img{width: 100%;}
+	.y-shoplist-box ul li .y-shopinfo{padding: 5px;}
+	.y-shoplist-box ul li .y-shopinfo .name{margin-bottom: 5px;line-height: 14px;height: 28px;overflow: hidden;font-size: 12px;color: #434a54;}
+	.y-shoplist-box ul li .y-shopinfo .price{margin-bottom: 5px;color: #ed5565;line-height: 12px;}
+	.y-shoplist-box ul li .y-shopinfo .sales{line-height: 12px;color: #777;}
+	#box{height: 200px;background-color: red;}
+</style>
+<div class="list-rank clearfix sort">
+    <a name="default" href="#" style="display:none">
+        <div>
+            默认<span class="glyphicon glyphicon-arrow-up"></span><span class="glyphicon glyphicon-arrow-down"></span></div>
+    </a><a name="saleprice" href="#">
+        <div>
+            价格<span class="glyphicon glyphicon-arrow-up"></span><span class="glyphicon glyphicon-arrow-down"></span></div>
+    </a><a name="addedDate" href="#">
+        <div>
+            上架<span class="glyphicon glyphicon-arrow-up"></span><span class="glyphicon glyphicon-arrow-down"></span></div>
+    </a><a name="VistiCounts" href="#">
+        <div>
+            浏览量<span class="glyphicon glyphicon-arrow-up"></span><span class="glyphicon glyphicon-arrow-down"></span></div>
+    </a><a name="showsaleCounts" href="#">
+        <div>
+            销量<span class="glyphicon glyphicon-arrow-up"></span><span class="glyphicon glyphicon-arrow-down"></span></div>
+    </a><a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+        <div class="sort-action show">
+            <span class="glyphicon glyphicon-search"></span>
+        </div>
+    </a>
+</div>
+<div class="panel panel-default list-sort-panel" style="margin-bottom: 0; border-radius: 0;
+    position: relative;">
+    <div id="collapseOne" class="panel-collapse collapse">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><span class="jt">
+            ◆</span></a>
+        <div class="panel-body">
+            <hi:vshoptemplatedrepeater id="rptCategories" templatefile="/Tags/skin-Common_VProductListCategory.ascx" runat="server" />
+            <div class="clearfix" style="border-bottom: 1px dashed #CCD1D9;">
+            </div>
+            <div class="goods-list-bar">
+                <div class="input-group form-search"><input type="hidden" id="hdfKeyword" runat="server" />
+                    <input type="text" class="form-control search-query" id="txtKeywords" style="height: 30px;
+                        border-color: #F6BB42;">
+                    <span class="input-group-btn">
+                        <button type="submit" onclick="searchs()" class="btn btn-warning btn-sm" data-type="last">
+                            搜索</button>
+                    </span>
+                </div>
+                <div class="shopClass">
+                    <ul>
+                        <hi:vshoptemplatedrepeater id="rptCategoryList" templatefile="/Tags/skin-Common_CategoryList.ascx" runat="server" />
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<p class="text-center list-empty hide" id="empty">
+    没有找到相关商品
+</p>
+<div class="pbox" id="productListContainer">
+    <div class="y-shoplist-box" id="goodslist"><ul class="clearfix">
+    <hi:vshoptemplatedrepeater id="rptProducts" templatefile="/Tags/skin-Common_Prodcts.ascx" runat="server" />
+</ul>
+    </div>
+    <div id="pager">
+    </div>
+</div>
+<input type="hidden" value="" runat="server" clientidmode="static" id="txtTotal" />
+<hi:common_footer runat="server" />
+<script src="/Utility/common.js?2016" type="text/javascript"></script>
+<script src="/Utility/pager.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(function () {
+
+        function setH() {
+            $('.y-shoplist-box .y-shopimg').height($('.y-shoplist-box .y-shopimg').width());
+        }
+        setH();
+        $(window).resize(function () {
+            setH();
+        })
+
+
+        if (!$.trim($('#goodslist').html())) {
+
+            $('#productListContainer').addClass('hide');
+            $('#empty').removeClass('hide');
+        }
+
+        var sort = getParam('sort');
+        var order = getParam('order');
+        if (sort && order) {
+            debugger;
+            var selectedLink = $('.sort a[name="' + sort + '"]');
+            if (order == 'desc')
+                selectedLink.find('div').addClass('down');
+            else
+                selectedLink.find('div').addClass('up');
+        }
+
+        var sortLink = $('.sort a[href="#"]');
+        var categoryId = getParam('categoryId');
+
+        var keyWords = $("#vProductList_hdfKeyword").val(); //getParam('keyWord');
+        if (keyWords)
+            $("#txtKeywords").val(keyWords);
+
+        $.each(sortLink, function (i, link) {
+            link = $(link);
+            url = 'ProductList.aspx?categoryId=' + categoryId + '&keyWord=' + escape(keyWords);
+            var pIds = getParam("pIds");
+            if (pIds != "")
+                url += "&pIds=" + pIds;
+
+            if (i > 0) {//第一个为默认面，不设置排序
+                url += '&sort=' + link.attr('name');
+                if (link.find('div.up').length > 0)
+                    url += '&order=desc';
+                else
+                    url += '&order=asc';
+            }
+            link.attr('href', url);
+        });
+        
+        vshopPager('pager', $('#txtTotal').val(), 1, 20);
+    });
+    function searchs() {
+        var key = $("#txtKeywords").val();
+        var categoryId = getParam('categoryId');
+        var url = "ProductList.aspx?categoryId=" + categoryId + "&keyWord=" + escape(key);
+        var pIds = getParam("pIds");
+        if (pIds != "")
+            url += "&pIds=" + pIds;
+
+        window.location.href = url;
+    }
+</script>
+<script type="text/javascript">
+    $(function () {
+        $('.shopClass ul > li p').click(function () {
+            if ($(this).find('i').length == 0) {
+                var categoryId = $(this).children("#hdid").val();
+                window.location.href = "/productlist.aspx?categoryId=" + categoryId;
+            }
+            if ($(this).parent().find('.downDis').css('display') == "none") {
+                $('.shopClass ul > li').find('p i').removeClass('glyphicon-minus').addClass('glyphicon-plus');
+                $(this).parent().find('p i').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+                $('.shopClass ul > li').find('.downDis').hide();
+                var navH = $(this).parent().find('.downDis').height();
+                $(this).parent().find('.downDis').show().height(0).animate({
+                    'height': navH
+                }, 200);
+            } else {
+                $(this).parent().find('p i').removeClass('glyphicon-minus').addClass('glyphicon-plus');
+                $(this).parent().find('.downDis').hide();
+            }
+        });
+    })
+</script>

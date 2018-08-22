@@ -1,0 +1,112 @@
+﻿<hi:common_header runat="server" /><input type="hidden" id="hdIsShow" runat="server" value="0" />
+<link rel="stylesheet" href="../style/scart.css" />
+
+<div class="shoppingStepBar clearfix">
+    <div class="step active text-left"><em style="margin-left: -8px;">购物车</em><div class="glyphicon glyphicon-ok"></div><i></i></div>
+    <div class="step text-center"><em>确认订单</em><div class="glyphicon glyphicon-ok"></div></div>
+    <div class="step text-right"><em style="margin-right: -14px;">下单成功</em><div class="glyphicon glyphicon-ok"></div><i></i></div>
+</div>
+<hr />
+<asp:Panel ID="divEmpty" runat="server" Visible="false" CssClass="shopnull">
+    <div class="bgimg"></div>
+    <p class="emptytexttitle">暂未选购商品</p>
+    <a href="/Default.aspx">去逛逛</a>
+</asp:Panel>
+    <asp:Panel ID="products" runat="server" style="display: inline-block; width: 100%;">
+        <hi:vshoptemplatedrepeater id="rptCartProducts" templatefile="/Tags/skin-Common_CartProducts.ascx" runat="server" />
+</asp:Panel>
+
+    <asp:Panel ID="pointproducts" runat="server" style="display: inline-block; width: 100%;">
+        <hr />
+        <h3>积分兑换商品</h3>
+        <hr />
+        <hi:vshoptemplatedrepeater id="rptCartPointProducts" templatefile="/Tags/skin-Common_CartPointProducts.ascx" runat="server" />
+    </asp:Panel>
+<asp:Panel ID="pannelGo" runat="server" style="display: inline-block; width: 100%;">
+    <div class="pbox" style="display: inline-block;">
+        <ul class="pbox-bottom-left">
+            <li>购物车合计（不含运费）：<span id="totalPrice"><asp:literal runat="server" id="litTotal" /></span></li>
+        </ul>
+
+    </div>
+    <div class="pbox">
+        <a runat="server" id="aLink" style="color: #fff; margin-top: 5px; float: left;" class="btn btn-danger btn-block">
+            去结算
+        </a>
+    </div>
+</asp:Panel>
+    <script type="text/javascript">
+        $(function () {
+            if ($.trim($('#totalPrice').text()) == "￥0.00") {
+
+                $('#cart').addClass('hide');
+                $('#empty').removeClass('hide');
+            }
+
+            $('div[name="spAdd"]').bind("click", function () {
+                var number = $(this).parent().find('[name="buyNum"]');
+                number.val(parseInt(number.val()) + 1);
+                chageCartProductQuantity(number);
+            });
+            $('div[name="spSub"]').bind("click", function () {
+                var number = $(this).parent().find('[name="buyNum"]');
+                var num = parseInt(number.val()) - 1;
+                if (num > 0) number.val(parseInt(number.val()) - 1);
+                chageCartProductQuantity(number);
+
+            });
+            $('[name="buyNum"]').unbind('blur').blur(function () {
+                chageCartProductQuantity(this);
+            });
+
+            var skuInputs = $('.specification input');
+            $.each(skuInputs, function (j, input) {
+                var text = '';
+                $.each($(input).val().split(';'), function (i, sku) {
+                    if ($.trim(sku))
+                        text += '<span class="property">' + sku.split('：')[1] + '</span>';
+                });
+                $(input).parent().html(text);
+
+            });
+
+            var list_h = (document.documentElement.clientHeight - 49 - $('.list-empty').height()) * .5 + 'px';
+            $('.list-empty').css('margin-top', list_h);
+        });
+
+
+        function chageCartProductQuantity(obj) {
+            var type = $(obj).attr("stype");
+            if (type == null || type == undefined) {
+                type = 0;
+            }
+            var exchangeId = $(obj).attr("exchangeId");
+            if (exchangeId == null || exchangeId == undefined) {
+                exchangeId = 0;
+            }
+
+            $.ajax({
+                url: "/API/VshopProcess.ashx",
+                type: 'post', dataType: 'json', timeout: 10000,
+                data: { action: "ChageQuantity", skuId: $(obj).attr("skuId"),limitedTimeDiscountId:$(obj).attr("limitedTimeDiscountId"), quantity: parseInt($(obj).val()), type: type, exchangeId: exchangeId },
+                success: function (resultData) {
+                    if (resultData.Status != "OK" && resultData.Status!="0") {
+                        alert("最多可购买" + resultData.Status + "件");
+                        $(obj).val(resultData.Status);
+                    }
+                    else {
+                        //$('#totalPrice').html('¥' + parseFloat(resultData.TotalPrice).toFixed(2));
+                        location.reload();
+                    }
+                }
+            });
+        }
+    </script>
+    <script src="/utility/vshoping.helper.js?2016" type="text/javascript"></script>
+    <script>
+        //禁用右上角菜单
+        //document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+        //    WeixinJSBridge.call('hideOptionMenu');
+        //});
+    </script>
+    <hi:common_footer runat="server" />

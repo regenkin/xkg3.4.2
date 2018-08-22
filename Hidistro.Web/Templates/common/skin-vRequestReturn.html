@@ -1,0 +1,96 @@
+﻿<hi:common_header runat="server" />
+<input name="address" id="orderitemid" runat="server" clientidmode="Static" type="hidden" />
+<input name="address" id="orderid" runat="server" clientidmode="Static" type="hidden" />
+<input name="address" id="productid" runat="server" clientidmode="Static" type="hidden" />
+<input name="address" id="skuid" runat="server" clientidmode="Static" type="hidden" />
+<input name="address" id="OrderStatus" runat="server" clientidmode="Static" type="hidden" />
+<div class="well apply-refund">
+    <div class="choose_goods_content">
+        <asp:literal runat="server" id="litimage" />
+        <div class="info">
+            <p>
+                <asp:literal runat="server" id="litname" />
+            </p>
+            <div>
+                ￥<e id="itemadjusteprice"><asp:literal runat="server" id="litItemAdjustedPrice" /></e><span>
+                    数量：<e id="quantity">
+                        <asp:literal runat="server"
+                                     id="litQuantity" />
+                    </e>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="pbox">
+        <div class="clearfix">
+            <label for="收款账号">
+                收款账号：
+            </label>
+            <input id="txtAccount" type="text" runat="server" maxlength="50" clientidmode="Static" class="form-control"
+                   placeholder="请填写您的支付宝帐号">
+        </div>
+        <div class="clearfix">
+            <label for="申请理由">
+                申请理由：
+            </label>
+            <textarea class="form-control" rows="3" runat="server" name="Reason" id="txtReason"
+                      placeholder="填写数字限制在30字以内"></textarea>
+        </div>
+        <div class="clearfix">
+            <label for="">
+            </label>
+            <button class="btn btn-danger" id="btnSubRequest">
+                提交申请
+            </button>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnSubRequest").bind("click", function () { SubRequest(); });
+
+    });
+    function SubRequest() {
+        if ($("#txtAccount").val() == "") {
+            alert_h("收款帐号不能为空");
+            return;
+        }
+        $("#btnSubRequest").attr('disabled', 'disabled');
+        var money = parseFloat($("#itemadjusteprice").text()) * parseFloat($("#quantity").text());
+        $.ajax({
+            url: "/API/VshopProcess.ashx",
+            type: 'post', dataType: 'json', timeout: 10000,
+            data: { action: "RequestReturn",orderitemid:$("#orderitemid").val(), Money: money, Reason: $("#vRequestReturn_txtReason").val(), Account: $("#txtAccount").val(), orderid: $("#orderid").val(), productid: $("#productid").val(), skuid: $("#skuid").val(), OrderStatus: $("#OrderStatus").val() },
+            success: function (resultData) {
+
+                if (resultData.Status == "OK") {
+
+                    alert_h("申请成功,等待处理.", function () {
+                        location.href = "/ProgressCheck.aspx";
+                    });
+
+                }
+                else {
+                    $("#btnSubRequest").removeAttr('disabled');
+                    if (resultData.Status == "Mesg") {
+                        alert_h("收款帐号不能为空");
+                    }
+                    else
+                        if (resultData.Status == "Repeat") {
+                            alert_h("您的退款申请已处理完毕，不能再次提交！");
+                        }
+                        else
+                            alert_h("申请失败, 请重试");
+                }
+
+            }
+        });
+    }
+</script>
+<script>
+    //禁用右上角菜单
+    //document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+    //    WeixinJSBridge.call('hideOptionMenu');
+    //});
+</script>
+<hi:common_footer runat="server" />

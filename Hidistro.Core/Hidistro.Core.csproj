@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BA978D9C-DAAD-4C14-A46A-2FE5C9EE44D5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Hidistro.Core</RootNamespace>
+    <AssemblyName>Hidistro.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data">
+      <HintPath>..\DLL\Microsoft.Practices.EnterpriseLibrary.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Configuration\AppLocation.cs" />
+    <Compile Include="Configuration\HiApplication.cs" />
+    <Compile Include="Configuration\HiConfiguration.cs" />
+    <Compile Include="Configuration\Provider.cs" />
+    <Compile Include="Configuration\RolesConfiguration.cs" />
+    <Compile Include="CopyrightLicenser.cs" />
+    <Compile Include="CustomerServiceManager.cs" />
+    <Compile Include="DataHelper.cs" />
+    <Compile Include="DataProviders.cs" />
+    <Compile Include="DesSecurity.cs" />
+    <Compile Include="Entities\CustomerServiceSettings.cs" />
+    <Compile Include="Entities\DbQueryResult.cs" />
+    <Compile Include="Entities\Pagination.cs" />
+    <Compile Include="Entities\SiteSettings.cs" />
+    <Compile Include="Enums\ApplicationType.cs" />
+    <Compile Include="Enums\DataProviderAction.cs" />
+    <Compile Include="Enums\DiscountStatus.cs" />
+    <Compile Include="Enums\DistributorGrade.cs" />
+    <Compile Include="Enums\DistributorStatus.cs" />
+    <Compile Include="Enums\FileClass.cs" />
+    <Compile Include="Enums\FreeShippingConditionType.cs" />
+    <Compile Include="Enums\MeasureUnit.cs" />
+    <Compile Include="Enums\MessageAdminUserType.cs" />
+    <Compile Include="Enums\ShippingType.cs" />
+    <Compile Include="Enums\SortAction.cs" />
+    <Compile Include="Enums\SSLSettings.cs" />
+    <Compile Include="Exceptions\HiException.cs" />
+    <Compile Include="Express.cs" />
+    <Compile Include="Globals.cs" />
+    <Compile Include="HiCache.cs" />
+    <Compile Include="HiCryptographer.cs" />
+    <Compile Include="HtmlCodingAttribute.cs" />
+    <Compile Include="LicenseChecker.cs" />
+    <Compile Include="LicenseHelper.cs" />
+    <Compile Include="ProductShowOrderPriority.cs" />
+    <Compile Include="ProductTempSQLADD.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResourcesHelper.cs" />
+    <Compile Include="Serializer.cs" />
+    <Compile Include="SettingsManager.cs" />
+    <Compile Include="TemplatePageControl.cs" />
+    <Compile Include="Urls\ApplicationKeyMapping.cs" />
+    <Compile Include="Urls\HiUrlReWriter.cs" />
+    <Compile Include="Urls\Location.cs" />
+    <Compile Include="Urls\LocationSet.cs" />
+    <Compile Include="Urls\ReWrittenUrl.cs" />
+    <Compile Include="Urls\SiteUrls.cs" />
+    <Compile Include="Urls\SiteUrlsData.cs" />
+    <Compile Include="Urls\UrlReWriteProvider.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

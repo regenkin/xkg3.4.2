@@ -1,0 +1,89 @@
+﻿<hi:common_header runat="server" />
+    <div class="pbox pbox-select">
+        <div class="pbox-select-border">
+            <input type="text" id="txtKeywords" placeholder="" />
+            <span class="input-group-btn">
+                <button type="submit" class="btn btn-warning"  data-type="last" onclick="searchs()">搜索</button>
+            </span>
+        </div>
+   
+    </div>
+    <ul class="pbox-select-tags">
+         
+        <hi:vshoptemplatedrepeater id="rptCategories" templatefile="/Tags/skin-Common_Categories.ascx"
+                                   runat="server" />
+    </ul>
+ 
+<hi:common_footer runat="server" />
+
+<script type="text/javascript">
+    function searchs() {
+        var key = $("#txtKeywords").val();
+        var str = window.location.search;
+
+        var categoryId;
+        if (-1 == str.indexOf("&keyWord=")) {
+            categoryId = str.substring(str.indexOf("categoryId=") + 11);
+        } else {
+            categoryId = str.substring(str.indexOf("categoryId=") + 11, str.indexOf("&keyWord="));
+        }
+
+        var url = "ProductList.aspx?categoryId=" + categoryId + "&keyWord=" + escape(key);
+
+        window.location.href = url;
+    }
+
+    $(document).ready(function () {
+        var str = window.location.search;
+        if (str.indexOf("keyWord=") != -1) {
+            var keyWord = str.substring(str.indexOf("keyWord=") + 8);
+            if (keyWord.length > 0) {
+                $("#txtKeywords").val(keyWord);
+            }
+        }
+    });
+
+
+    $(".hfooter .glyphicon-refresh").click(function () {
+        location.reload();
+    })
+
+    $(".hfooter .glyphicon-arrow-left").click(function () {
+        history.go(-1);
+    })
+
+    //隐藏右上角菜单
+    //document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+    //    WeixinJSBridge.call('hideOptionMenu');
+    //});
+
+    //隐藏底部菜单
+    document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+        WeixinJSBridge.call('hideToolbar');
+    });
+
+
+    function goUrl(url) {
+//        alert(url);
+        location.replace(url);
+
+    }
+
+    $(function () {
+        var categoryItems = $('a.categoryItem');
+        var cateogryId, url;
+        $.each(categoryItems, function (i, item) {
+            cateogryId = $(item).attr('value');
+            if ($(item).attr('name') == "True")
+                url = '?categoryId=' + cateogryId;
+            else
+                url = 'ProductList.aspx?categoryId=' + cateogryId;
+            $(item).attr('onclick', 'goUrl("'+url+'")').attr('href', 'javascript:;');
+
+        });
+
+        $(".pbox-select-tags li .select-tags-img").height($(".pbox-select-tags li .select-tags-img").width());
+
+    });
+
+</script>

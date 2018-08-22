@@ -1,0 +1,439 @@
+﻿<!--<a id="aLinkToShipping" runat="server" />-->
+<!--
+    </div>
+    <div class="ui_gap">
+        <a id="a1" class="mod_btn btn_strong btn_block">提交订单</a>
+    </div>
+-->
+<div id="BgDiv1"></div>
+<div class="DialogDiv" style="display:none; ">
+    <div class="U-guodu-box">
+        <div>
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr><td align="center" class="bakimage"><span></span></td></tr>
+                <tr><td valign="middle" align="center" style="  color: #fff;">提交中，请稍后！</td></tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<hi:common_header runat="server" />
+<div class="shoppingStepBar clearfix">
+    <div class="step active text-left"><em style="margin-left: -8px;">购物车</em><div class="glyphicon glyphicon-ok"></div><i style="border-bottom:2px solid #8cc152;"></i></div>
+    <div class="step active text-center"><em>确认订单</em><div class="glyphicon glyphicon-ok"></div></div>
+    <div class="step text-right"><em style="margin-right: -14px;">下单成功</em><div class="glyphicon glyphicon-ok"></div><i></i></div>
+</div>
+<hr />
+<div class="well clearfix">
+    <div class="btn-group rptAddress">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="overflow:hidden">
+            <asp:literal runat="server" id="litShipTo" />
+            <asp:literal runat="server" id="litCellPhone" />
+            <asp:literal runat="server" id="litAddress" />
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu " id="addressageul" role="menu">
+            <hi:vshoptemplatedrepeater id="rptAddress" templatefile="/Tags/skin-Common_Addresses.ascx" runat="server" />
+            <li class="divider"></li>
+            <li><a<asp:literal runat="server" id="litAddAddress" />>新增收货地址</a></li>
+        </ul>
+        <input type="hidden" runat="server" clientidmode="Static" id="selectShipTo" />
+        <input type="hidden" runat="server" clientidmode="Static" id="Shippingcity" />
+    </div>
+    <div class="btn-group selectShipToDate">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            时间不限<span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="#" name="时间不限">时间不限</a></li>
+            <li><a href="#" name="周一至周五">周一至周五</a></li>
+            <li><a href="#" name="周六、周日及公众假期">周六、周日及公众假期</a></li>
+        </ul>
+        <input type="hidden" runat="server" clientidmode="Static" id="selectShipToDate" value="时间不限" />
+    </div>
+ 
+    <div class="btn-group selectPaymentType">
+        <hi:common_paymenttypeselect runat="server" />
+        <input type="hidden" runat="server" clientidmode="Static" id="selectPaymentType" />
+    </div>
+
+    <asp:literal runat="server" id="litShowMes" />
+
+     
+ 
+
+    <hi:vshoptemplatedrepeater id="rptCartProducts" templatefile="/Tags/skin-Common_SubmmitCartProducts.ascx" runat="server" />
+
+    
+        <div class="last" style="float: right;">
+            <p class="">
+                实付总额：<span><strong class="text-danger">¥<label id="total" style="margin-bottom: 0;"><asp:literal runat="server" id="litOrderTotal" /></label></strong></span>
+            </p>
+            <p class="" <asp:literal runat="server" id="litDisplayPointNumber" />>
+                <span> 实付总积分：</span><strong class="text-danger"><span id="GetPointNumber"><asp:literal runat="server" id="litPointNumber" /></span></strong>
+            </p>
+        </div>
+     
+</div>
+<div class="pbox">
+    <button type="button" class="btn btn-danger btn-block" id="aSubmmitorder">提交订单</button>
+</div>
+<input type="hidden" id="Temlateids" />
+<input type="hidden" id="regionId" runat="server" clientidmode="Static" />
+<input type="hidden" id="groupbuyHiddenBox" runat="server" clientidmode="Static" />
+<input type="hidden" runat="server" clientidmode="Static" id="selectCoupon" />
+<script>
+   
+
+    $(function () {
+        var bargainDetialId = parseInt(getUrlParam("bargainDetialId"));
+        if (bargainDetialId > 0) {
+            $(".selectBox").addClass("hide");
+        }
+
+        var skuInputs = $('.specification input');
+        $.each(skuInputs, function (j, input) {
+            var text = '';
+            $.each($(input).val().split(';'), function (i, sku) {
+                if ($.trim(sku))
+                    text += '<span class="badge-h">' + sku.split('：')[1] + '</span>';
+            });
+            $(input).parent().html(text);
+        });
+        var GetPointNumber = parseFloat($("#GetPointNumber").html());
+        $(".MemberPointNumber").each(function () {
+            var MemberPointNumber = parseFloat($(this).html());
+            $(this).html(MemberPointNumber - GetPointNumber);
+            $("#OldMemberPointNumber").html($(this).html())
+        });
+
+    });
+</script>
+<script>
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+        if (r != null) return unescape(r[2]); return null; //返回参数值
+    }
+
+    function setvalue(obj, Templateid) {
+        
+    
+
+        var IntegralOffset = 0;
+        var OldMemberPointNumber = parseFloat($("#OldMemberPointNumber").html());
+        var NewMemberPointNumber = parseFloat($("#NewMemberPointNumber").html());
+        if ($.trim(obj.value) == "") {
+            obj.value = 0;
+        }
+
+
+
+       // var total = parseFloat($("#total" + Templateid).html());
+        var PonitToCash_MaxAmount = parseFloat($("#PonitToCash_MaxAmount").html());
+        var PointToCashRate = parseFloat($("#PointToCashRate").html());
+        IntegralOffset = parseFloat(obj.value) / PointToCashRate;
+    
+        var CouponValue = 0;
+        if (typeof ($('#coupon' + Templateid).val()) != "undefined")
+            if ($.trim($('#coupon' + Templateid).val()) != "")
+                CouponValue = parseFloat($('#coupon' + Templateid).val())
+        var oldtotal = parseFloat($('#oldtotal' + Templateid).html());
+        var shopcost = parseFloat($('#shipcost' + Templateid).html());
+        var total = oldtotal - CouponValue + shopcost - IntegralOffset;
+ 
+
+        if (total <0 || PonitToCash_MaxAmount < IntegralOffset) {
+            alert_h("抵现金额不能大于应付总额,最高抵现金额" + PonitToCash_MaxAmount + "元！");
+            $(obj).val(0);
+            $(obj).focus();
+            return;
+        }
+        $("#IntegralOffset" + Templateid).html(IntegralOffset.toFixed(2));
+
+        var sumsetobj = 0;
+        var PointNumber = parseFloat($("#NewMemberPointNumber").html());
+        $(".txtPointNumber").each(function () {
+            if ($.trim($(this).val()) != "")
+                sumsetobj += parseFloat($(this).val());
+
+        });
+
+        if (sumsetobj > PointNumber) {
+            alert_h("积分不足！");
+            $(obj).val(0);
+            $(obj).focus();
+            return;
+        }
+        else {
+         
+            $(".MemberPointNumber").html(OldMemberPointNumber - sumsetobj);
+
+        }
+        SumMoney(Templateid);
+    }
+    //统计运费模板应该金额合计和实付总金额
+    function SumMoney(TemplateId) {
+        var CouponValue = 0;
+        var IntegralOffset = parseFloat($("#IntegralOffset" + TemplateId).html());
+        if (typeof ($('#coupon' + TemplateId).val()) != "undefined")
+            if ($.trim($('#coupon' + TemplateId).val()) != "")
+                CouponValue = parseFloat($('#coupon' + TemplateId).val())
+        var oldtotal = parseFloat($('#oldtotal' + TemplateId).html());
+        var shopcost = parseFloat($('#shipcost' + TemplateId).html());
+        var total = oldtotal - CouponValue + shopcost - IntegralOffset;
+        $('#total' + TemplateId).html(total.toFixed(2));
+
+        $("#total").html('0.00');
+        var sumtotal = 0;
+        $(".sumtotal").each(function () {
+            var totalinfo = parseFloat($(this).html());
+            sumtotal += totalinfo;
+        });
+        $("#total").html(sumtotal.toFixed(2));
+    }
+    function GetSetPointNumber(TemplateId) {
+        var OldMemberPointNumber = parseFloat($("#OldMemberPointNumber").html());
+        $("#IntegralOffset" + TemplateId).html("0.00");
+        $("#txtPointNumber" + TemplateId).val("0");
+        var sumsetobj = 0;
+        $(".txtPointNumber").each(function () {
+            if ($.trim($(this).val()) != "")
+                sumsetobj += parseFloat($(this).val());
+
+        });
+        
+        $(".MemberPointNumber").html(OldMemberPointNumber - sumsetobj);
+    }
+    function IsUsePointNumber(obj, Templateid) {
+        var OldMemberPointNumber = parseFloat($("#OldMemberPointNumber").html());
+        if (!$(obj).hasClass('checked')) {
+            $(obj).addClass('checked');
+            $("#spanPointNumber" + Templateid).css("display", "");
+        } else {
+            $(obj).removeClass('checked');
+            $("#spanPointNumber" + Templateid).css("display", "none");
+            $("#txtPointNumber" + Templateid).val(0);
+            var sumsetobj = 0;
+            $("#IntegralOffset" + Templateid).html(0.00);
+            $(".txtPointNumber").each(function () {
+
+                if ($.trim($(this).val()) != "")
+                    sumsetobj += parseFloat($(this).val());
+
+            });
+            $(".MemberPointNumber").html(OldMemberPointNumber - sumsetobj);
+            SumMoney(Templateid);
+        }
+
+    }
+    $('.rptAddress li a').click(function () {
+        $('.rptAddress button').html($(this).attr('briefAddress') + '<span class="caret"></span>');
+        var regionId = $(this).attr('name');
+        var shippingId = $(this).attr('shippingId');
+        $('#selectShipTo').val(shippingId);
+    });
+    //支付
+    $('.selectPaymentType li a').click(function () {
+
+        $('.selectPaymentType button').html($(this).html() + '<span class="caret"></span>');
+        $('#selectPaymentType').val($(this).attr('name'));
+
+    });
+    function asetselect(Templateid, name, value) {
+        $('#dropdown' + Templateid).html(name + '<span class="caret"></span>');
+        $('#shippingTypeUl' + Templateid).val(value);
+        $("#selectShippingTypeValue" + Templateid).val(value);
+    }
+    function Couponasetselect(TemplateId, name, value, membercouponid, selectCouponValue) {
+        if (parseFloat(selectCouponValue) != 0) {
+            var IsRepeat = false;
+            $(".selectCouponValue").each(function () {
+                if ($(this).val() == selectCouponValue) {
+                    IsRepeat = true;
+                }
+            });
+            if (IsRepeat) {
+                //alert_h("其他订单已选择" + name);
+                return;
+            }
+        }
+        GetSetPointNumber(TemplateId);
+        $('#coupondropdown' + TemplateId).html(name + '<span class="caret"></span>');
+        $('#coupon' + TemplateId).val(value);
+        $('#selectCoupon' + TemplateId).val(value);
+        $("#selectCouponValue" + TemplateId).val(selectCouponValue);
+        var ExemptionMoney = parseFloat($('#Exemption' + TemplateId).html());
+        var oldExemptionMoney = parseFloat($('#oldExemption' + TemplateId).html());
+        var sumtotal = 0;
+        var oldtotal = parseFloat($('#oldtotal' + TemplateId).html());
+        var CouponValue = parseFloat(value);
+        //var bargainId = getUrlParam("bargainDetialId");
+        //if (bargainId == null) {
+            var total = parseFloat($('#total' + TemplateId).html());
+            var shopcost = parseFloat($('#shipcost' + TemplateId).html());
+            total = oldtotal - CouponValue + shopcost;
+            $('#total' + TemplateId).html(total.toFixed(2));
+        //}
+        $('#Exemption' + TemplateId).html(parseFloat(value) + oldExemptionMoney);
+
+        SumMoney(TemplateId);
+    }
+    //送货时间
+    $('.selectShipToDate li a').click(function () {
+        $('.selectShipToDate button').html($(this).html() + '<span class="caret"></span>');
+        $('#selectShipToDate').val($(this).attr('name'));
+    });
+   
+
+    //获取会员选择的城市
+    function getFreightTemplate(id) {
+        $("#shipcost").html("0.00");
+        city = id;
+        $("#Shippingcity").val(id);
+        $(".Template").each(function () {
+            refreshShippingTypes($(this).val())
+        });
+    }
+    //计算运费
+    function countfreighttype(TemplateId, ModeId) {
+        //TemplateId=0,表示合并付款
+       
+        var sumtotal = 0;
+        $("#total").html('0.00');
+        GetSetPointNumber(TemplateId);
+       
+        $.ajax({
+            url: "/API/VshopProcess.ashx",
+            type: 'post', dataType: 'json', timeout: 10000,
+            data: { action: "countfreighttype", TemplateId: TemplateId, productSku: getParam("productSku"), buyAmount: getParam("buyAmount"), from: getParam("from"), RegionId: $("#Shippingcity").val(), ModeId: ModeId },
+            success: function (resultData) {
+                if (resultData.Status == "OK") {
+                    var oldtotal = parseFloat($('#oldtotal' + TemplateId).html());
+                    var ShipCost = parseFloat(resultData.CountFeright);
+
+                    //alert(JSON.stringify(resultData));
+                    //var bargainId = getUrlParam("bargainDetialId");
+                    //if (bargainId == null) {
+                        var total = parseFloat($('#total' + TemplateId).html());
+                        total = total + ShipCost - parseFloat($('#shipcost' + TemplateId).html());
+                        $('#total' + TemplateId).html(total.toFixed(2));
+                    //}
+                    $('#shipcost' + TemplateId).html(resultData.CountFeright);
+                    SumMoney(TemplateId);
+                }
+            }
+        });
+
+    }
+    var city = 0;
+    function refreshShippingTypes(TemplateId) {
+        
+        if ($("#bFreeShipping" + TemplateId).html()=="True") {
+           
+            $('#shippingTypeUl' + TemplateId).find('li').remove();
+
+            //$('.selectShippingType button').html('请选择配送方式<span class="caret"></span>');
+            $('#shippingTypeUl' + TemplateId).html('<li onclick=\"countfreighttype(' + TemplateId + ',0)\"><a id=\"aid' + TemplateId + '0\"  onclick=\"asetselect(' + TemplateId + ',\'包邮\',0)\"  name="0" value="0">包邮</a></li>');
+            countfreighttype(TemplateId, 0);
+            asetselect(TemplateId, '包邮', 0);
+            var goodsmenoy = parseFloat($('#goodsmenoy' + TemplateId).html());
+            var Exemption = parseFloat($('#Exemption' + TemplateId).html());
+            //var bargainId = getUrlParam("bargainDetialId");
+            //if (bargainId == null) {
+                var total = goodsmenoy - Exemption;
+                alltotal = parseFloat(alltotal) + parseFloat(total);
+                $('#total' + TemplateId).html(total.toFixed(2));
+                $('#shipcost' + TemplateId).html('0.00');
+                $('#total').html(alltotal.toFixed(2));
+            //}
+        }
+        else {
+            $.post('/api/vshopprocess.ashx?action=GetShippingTypes',
+             {
+                 buyAmount: getParam('buyAmount'),
+                 productSku: getParam('productSku'),
+                 from: getParam("from"),
+                 city: city,
+                 TemplateId: TemplateId
+             },
+             function (shippingTypes) {
+                 $('#shippingTypeUl' + TemplateId).find('li').remove();
+                 var html = '';
+                 var IsFree = false;
+                 $.each(shippingTypes.data, function (i, shippingType) {
+                     if (shippingType.modelId == 0) {
+                         IsFree = true;
+                     }
+                     html += '<li onclick=\"countfreighttype(' + TemplateId + ',' + shippingType.modelId + ')\"><a id=\"aid' + TemplateId + '' + shippingType.modelId + '\"  onclick=\"asetselect(' + TemplateId + ',\'' + shippingType.text + '\',' + shippingType.modelId + ')\"  name="' + shippingType.modelId + '" value="' + shippingType.modelId + '">' + shippingType.text + '</a></li>';
+                 });
+                 if (IsFree) {
+                     countfreighttype(TemplateId, 0);
+                     asetselect(TemplateId, '包邮', 0);
+                 }
+                 //$('.selectShippingType button').html('请选择配送方式<span class="caret"></span>');
+                 $('#shippingTypeUl' + TemplateId).html(html);
+
+                 var goodsmenoy = parseFloat($('#goodsmenoy' + TemplateId).html());
+                 var Exemption = parseFloat($('#Exemption' + TemplateId).html());
+                 //var bargainId = getUrlParam("bargainDetialId");
+                 //if (bargainId == null) {
+                     var total = goodsmenoy - Exemption;
+                     alltotal = parseFloat(alltotal) + parseFloat(total);
+                     $('#total' + TemplateId).html(total.toFixed(2));
+                     $('#shipcost' + TemplateId).html('0.00');
+                     $('#total').html(alltotal.toFixed(2));
+                // }
+             }, "json");
+
+        }
+
+    }
+
+    var alltotal = 0;
+    $(function () {
+
+        if ($("#addressageul li").length > 2) {
+            $("#Shippingcity").val($("#addressageul li:last-child").prev().prev().attr('id'));
+            city = $("#Shippingcity").val();
+            $(".Template").each(function () {
+
+                refreshShippingTypes($(this).val())
+            });
+        }
+
+        //团购时，去掉货到付款
+        if (getParam('from') == "groupBuy") {
+            $('#selectPaymentType a[name="0"]').parent().remove();
+            $('.coupon').hide();
+            $('.redpager').hide();
+            $('.detailLink').attr('href', '/vshop/GroupBuyProductDetails.aspx?groupBuyId=' + getParam('groupbuyId'));
+            $('#orderProductsChange').hide();
+        }
+
+        if (getParam('from') == 'signBuy')
+            $('#orderProductsChange').hide();
+
+
+        if ($('.coupon li').length == 0)
+            $('.coupon').hide();
+
+        if ($('.redpager li').length == 0)
+            $('.redpager').hide();
+        var regionId = $('#regionId').val();
+
+
+    });
+
+
+
+
+</script>
+<script src="/utility/vshoping.helper.js?2016" type="text/javascript"></script>
+<script>
+    //禁用右上角菜单
+    //document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+    //    WeixinJSBridge.call('hideOptionMenu');
+    //});
+</script>
+<hi:common_footer runat="server" />

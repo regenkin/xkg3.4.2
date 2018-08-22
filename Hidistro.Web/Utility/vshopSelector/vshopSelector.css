@@ -1,0 +1,13 @@
+﻿.btn-group, .btn-group button, .btn-group ul {
+    width: 100%;
+}
+
+    .btn-group button {
+        text-align: left;
+    }
+
+    .btn-group span {
+        position: absolute;
+        right: 10px;
+        top: 14px;
+    }

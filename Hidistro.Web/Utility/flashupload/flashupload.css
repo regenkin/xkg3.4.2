@@ -1,0 +1,55 @@
+﻿
+a {text-decoration:none;
+}
+.uploadimages { width: 100px; float: left;height:35px; }
+.preview { width: 88px; height: 88px; vertical-align: middle; border: #cfcfcf 1px solid; text-align: center; display: table-cell; _display: block;position:absolute }
+.preview img { vertical-align: middle; width: 86px; height: 86px; margin: 1px; }
+
+
+/*2015-05-05 kuaiwei add*/
+#thumbnails {padding-top:20px;}
+.actionBox {width: 90px;height: 30px;clear: both;margin-top: 5px;position: relative;top: 90px;}
+/*a.rightmove{display:none;filter:alpha(opacity=50);-moz-opacity:0.50;opacity:0.50;color:#fff; height: 16px; line-height: 16px; width: 16px; background-color:#888; position: absolute; text-align: center;top:35px;right:1px;}
+a.leftmove{display:none;filter:alpha(opacity=50);-moz-opacity:0.50;opacity:0.50;color:#fff; height: 16px; line-height: 16px; width: 16px; background-color:#888; position: absolute; text-align: center;top:35px;left:1px;}
+a.photodel {display:none;font-size:12px;filter:alpha(opacity=50);-moz-opacity:0.50;opacity:0.50;color:#fff !important; height: 16px; line-height: 16px; width: 16px; background-color:#FF7F00; position: absolute; text-align: center;top:1px;right:1px;}
+a.leftmove:hover,a.rig*/htmove:hover,a.photodel:hover{filter:alpha(opacity=100);-moz-opacity:1;opacity:1;text-decoration:none}
+.uploadimages .actionBox a.actions{width: 90px;height: 20px;line-height:15px;overflow: hidden;display: block;background-color: #cfcfcf;color: #fff !important;text-align: center;font-size: 12px !important;font-family: Microsoft Yahei;text-decoration: none;vertical-align:middle;}
+.uploadimages .actionBox a.actions:hover {background-color: #81BA15;}
+a.current {background-color: #81BA15 !important;}
+#picfirst {display:none;}
+
+
+
+.divoperator { 
+   background:rgba(33,33,33,.7);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#b2404040, endColorstr=#b2404040);
+	z-index:5;
+	position:absolute;
+	bottom:0;
+	left:0;
+	width:86px;
+	height:16px;
+	display:none;
+	/*padding:5px 0 5px 10px*/
+}
+.uploadimages .preview .divoperator a {
+    text-indent: -999px;
+    display: inline-block;
+    cursor: pointer;
+    height: 12px;
+    width: 12px;
+    margin-right: 10px;
+    font-size: 0px;
+    line-height: 0;
+    overflow: hidden;
+    background: transparent url("/Utility/pics/flash_up_ico.png") no-repeat scroll 0% 0%;
+}
+.uploadimages .preview .divoperator a.photodel {
+    background-position: -13px 0px;
+}
+.uploadimages .preview .divoperator a.leftmove {
+    background-position: 0px -13px;
+}
+.uploadimages .preview .divoperator a.rightmove {
+    background-position: -13px -13px;
+}

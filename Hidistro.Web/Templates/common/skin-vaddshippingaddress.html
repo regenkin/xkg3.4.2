@@ -1,0 +1,166 @@
+﻿<hi:common_header runat="server" />
+<script src="/Utility/regionSeletor.js" type="text/javascript"></script>
+<!--<script src="/Utility/regionSelector_FileData.js" type="text/javascript"></script>-->
+<style>
+.dropdown-menu[name=province] {max-height: 200px;overflow-y: scroll;padding-bottom:10px}
+.dropdown-menu li{width:50%;float:left;height:32px;overflow:hidden;text-align:left!important;border-bottom:1px solid #555}
+.dropdown-menu li a { text-align: left !important; line-height: 22px; }
+</style>
+<div class="pbox well">
+    <input id="shipTo" type="text" class="form-control" maxlength="50" placeholder="请填写收货人姓名">
+    <input id="cellphone" type="tel" class="form-control bmargin" placeholder="请输入正确的手机号码!">
+    <div class="btn-group">
+        <div id="vshopRegion">
+        </div> 
+        <input name="address" id="region" style="display: none;" />
+        <input name="addresscity" id="regioncity" style="display: none;" />
+    </div>
+    <textarea id="address" class="form-control bmargin" rows="3" placeholder="请填写收货人详细地址"></textarea>
+    <button type="button" onclick="AddShippingAddress()" class="btn btn-danger btn-block bmargin">
+        保存收货地址</button>
+</div>
+
+<!--<script src="jquery-1.8.3.min.js"></script>-->
+<script type="text/javascript">
+    InitTextCounter(15, "#shipTo", null);
+    InitTextCounter(200, "#address", null);
+    function  getaddress()
+    {
+        var regionSelector = new vShop_RegionSelector('vshopRegion', function (address, code, citycode) {
+            $("#regioncity").val(citycode);
+            $("#address-check-btn").html(address + "<span class='caret'></span>");
+            $('#region').val(code);
+        });
+        if ($(".dropdown-menu[name=province]").length > 0) {
+            $(".dropdown-menu[name=province]").css("max-height", pheight);
+        }
+    }
+ 
+    var pheight = 200;
+    $(function () {
+        setTimeout("getaddress()", 1000);
+        pheight = $(window).height() - 220;
+    })
+
+
+    function AddShippingAddress() {
+        var isValite = true;
+        if ($.trim($("#shipTo").val()).length<1) {
+            $("#shipTo").focus();
+            $("#divShipToTip").show();
+            alert_h($("#shipTo").attr('placeholder'));
+            isValite = false;
+            return false;
+        }
+        else {
+            $("#divShipToTip").hide();
+        }
+        if ($("#address").val().length<1) {
+            $("#divAddressTip").show();
+            $("#address").focus();
+            alert_h($("#address").attr('placeholder'));
+            isValite = false;
+            return false;
+        }
+        else {
+            $("#divAddressTip").hide();
+        }
+       
+        if (!/^\d{11}$/.test($("#cellphone").val())) {
+            $("#divCellphoneTip").show();
+            alert_h($("#cellphone").attr('placeholder'));
+            $("#cellphone").focus();
+            isValite = false;
+            return false;
+        }
+        else {
+            $("#divCellphoneTip").hide();
+        }
+        if ($("#region").val() == "") {
+            //判断详细地址
+            isValite = false;
+            alert_h('请选择省市区');
+            return false;
+        }
+        else {
+
+        }
+
+        $.ajax({
+            url: "/API/VshopProcess.ashx",
+            type: 'post',
+            dataType: 'json',
+            timeout: 10000,
+            data: {
+                action: "AddShippingAddress",
+                shipTo: $.trim($("#shipTo").val()),
+                address: $.trim($("#address").val()),
+                cellphone: $.trim($("#cellphone").val()),
+                regionSelectorValue: $("#region").val()
+            },
+            success: function (resultData) {
+                if (resultData.success) {
+                    if (window.location.search.indexOf("returnUrl=") == -1) {
+                        location.href = "/Vshop/ShippingAddresses.aspx";
+                        return false;
+                    }
+                    var returnURL = window.location.search.substr(window.location.search.indexOf("returnUrl=") + 10);
+                    if (returnURL == undefined) {
+                        location.href = "/Vshop/ShippingAddresses.aspx";
+                        return false;
+                    }
+                    location.href = decodeURIComponent(returnURL);
+                }
+                else {
+                    alert_h("添加失败");
+                }
+            }
+        });
+    }
+
+</script>
+<script type="text/javascript">
+    var JPlaceHolder = {
+        //检测
+        _check: function () {
+            return 'placeholder' in document.createElement('input');
+        },
+        //初始化
+        init: function () {
+            if (!this._check()) {
+                this.fix();
+            }
+        },
+        //修复
+        fix: function () {
+            jQuery(':input[placeholder]').each(function (index, element) {
+                var self = $(this), txt = self.attr('placeholder');
+                self.wrap($('<div></div>').css({ position: 'relative', zoom: '1', border: 'none', background: 'none', padding: 'none', margin: 'none' }));
+                var pos = self.position(), h = self.outerHeight(true), paddingleft = self.css('padding-left');
+                var holder = $('<span></span>').text(txt).css({ position: 'absolute', left: pos.left, top: pos.top, height: h, lienHeight: h, paddingLeft: paddingleft, color: '#aaa' }).appendTo(self.parent());
+                self.focusin(function (e) {
+                    holder.hide();
+                }).focusout(function (e) {
+                    if (!self.val()) {
+                        holder.show();
+                    }
+                });
+                holder.click(function (e) {
+                    holder.hide();
+                    self.focus();
+                });
+            });
+        }
+    };
+    //执行
+    jQuery(function () {
+        JPlaceHolder.init();
+    });
+</script>
+<script>
+    //禁用右上角菜单
+    //document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+    //    WeixinJSBridge.call('hideOptionMenu');
+    //});
+</script>
+<hi:common_footer runat="server" />

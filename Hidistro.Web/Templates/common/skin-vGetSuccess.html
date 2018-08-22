@@ -1,0 +1,82 @@
+﻿<hi:common_header runat="server" />
+    <!-- 未登录 -->
+<asp:Panel ID="divNoLogin" runat="server" Visible="false" CssClass="get-red">
+        <ul class="get-red-content">
+            <li class="get-red-top"></li>
+            <li class="get-red-bottom">
+                <div class="get-red-name"><asp:Literal ID="ltRedPagerActivityNameForOrders" runat="server"></asp:Literal></div>
+                <div class="get-red-explain"></div>
+                <div class="get-red-btn">
+                    <asp:HyperLink ID="hlinkLogin" runat="server" Text="登陆领取"></asp:HyperLink>
+                </div>
+            </li>
+        </ul>
+</asp:Panel>
+    <!-- 未登录 -->
+    <!-- 领光了 -->
+<asp:Panel ID="divNoNum" runat="server" Visible="false" CssClass="get-red">
+    <ul class="get-red-content">
+        <li class="get-red-top"></li>
+        <li class="get-red-bottom">
+            <div class="get-red-img"></div>
+            <div class="get-red-text">讨厌 ！不早点来！！</div>
+            <div class="get-red-txt">被领完啦！！</div>
+            <div class="get-red-btn">
+                <a href="/default.aspx">返回首页</a>
+            </div>
+        </li>
+    </ul>
+</asp:Panel>
+    <!-- 领光了 -->
+    <!-- 成功领取 -->
+<asp:Panel ID="divSuccess" runat="server" Visible="false" CssClass="get-red">
+    <ul class="get-red-content">
+        <li class="get-red-top"></li>
+        <li class="get-red-money">
+            <h1>￥<span><asp:Literal ID="ltGetTotal" runat="server"></asp:Literal></span> <em id="emCondition">满<asp:Literal ID="ltOrderAmountCanUse" runat="server"></asp:Literal>可用</em></h1>
+            <div class="get-red-date">有效期至 <asp:Literal ID="ltExpiryTime" runat="server"></asp:Literal></div>
+        </li>
+        <li class="get-red-bottom">
+            <div class="get-red-name"><asp:Literal ID="ltRedPagerActivityName" runat="server"></asp:Literal></div>
+            <div class="get-red-explain"><asp:Literal ID="ltRedPagerLimit" runat="server"></asp:Literal></div>
+            <div class="get-red-btn">
+                <a href="/Default.aspx">去购物</a>
+            </div>
+        </li>
+    </ul>
+</asp:Panel>
+    <!-- 成功领取 -->
+
+<!-- 错误 -->
+<asp:Panel ID="divError" runat="server" Visible="false" CssClass="get-red">
+    <ul class="get-red-content">
+        <li class="get-red-top"></li>
+        <li class="get-red-bottom">
+            <div class="get-red-name"><asp:Literal ID="ltErrorMessage" runat="server"></asp:Literal></div>
+            <div class="get-red-explain"></div>
+            <div class="get-red-btn">
+                <a href="/Default.aspx">返回</a>
+            </div>
+        </li>
+    </ul>
+</asp:Panel>
+<!-- 错误 -->
+
+<input type="hidden" id="hdCondition" runat="server" />
+    <script type="text/javascript">
+        $(function () {
+            $(".get-red").height($(window).height());
+
+            $(".get-red .get-red-content").css({ "left": ($(".get-red").width() - $(".get-red .get-red-content").width()) / 2, "top": ($(".get-red").height() - $(".get-red .get-red-content").height()) / 3 });
+
+            var condition = $('#vGetSuccess_hdCondition').val();
+            if(condition == "0")
+            {
+                $('#emCondition').hide();
+            }
+            else
+            {
+                $('#emCondition').show();
+            }
+        })
+    </script>

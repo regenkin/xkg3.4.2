@@ -1,0 +1,154 @@
+﻿<hi:common_header runat="server" />
+<div id="editTx" style="cursor:pointer;display:none;font-size:20px;color:#fff;background: rgba(0,0,0,0.6);position:absolute; border-radius: 100px; width: 200px; height: 200px; border: 2px  dotted #ccc; line-height: 100px; text-align: center">
+    修改头像
+    <form id="ImageForm" method="post" enctype="multipart/form-data" style="position:absolute;top:0px;left:0px">
+    <input id="idFile" name="idFile" type="file" style="height: 100%; width: 100%; opacity: 0;" />
+    </form>
+
+</div>
+<div id="editPanel" runat="server" clientidmode="Static" style="color:#fff;padding:5px;width:100%;line-height:22px;background:#999;">
+    <input type="button" class="btn btn-xs btn-info" id="reCreat" value="重新生成" style="float:right;" />长按图片，保存后分享给朋友!
+</div>
+<div id="QrcodeDiv" style="margin:0px auto  0px auto">
+    <img id="QrcodeImg" src="/Utility/pics/wfxqrcode.jpg" clientidmode="Static"  runat="server"  style="width:100%" />
+</div>
+<input type="hidden" value="" id="ShareInfo" clientidmode="Static" runat="server" />
+<img id="ShowLoad" src=""  style="display:none" alt="用来存放预览图片"/>
+<hi:common_footer runat="server" isshownav="1" />
+<script>
+
+    var setJson = null;
+
+    function showResponse(data) {
+
+        if (data == "0") {
+            alert_h("背景图片上传图片失败!");
+           
+            return;
+        } else if (data == "1") {
+            alert_h("背景图片大小超过1M，不能上传!");
+           
+            return;
+
+        } else if (data == "2") {
+            alert_h("上传的背景图片文件格式不正确！上传格式有(.gif、.jpg、.png、.bmp)!");
+          
+            return;
+
+        } else if (data == "3") {
+            data = ""; //为空值
+            alert_h("没有图片上传成功！");
+            return;
+        }
+
+        $.ajax({
+            url: "StoreCard.aspx",
+            type: 'post', dataType: 'json', timeout: 10000,
+            data: {imageUrl: data, action: "ReCreadt"},
+            success: function (resultData) {
+                if (resultData.success) {
+                    alert_h("上传并生成成功", function () {
+                        window.location.reload();
+                    });
+                }
+                else {
+                    alert_h(resultData.message);
+                }
+            }
+        });
+
+
+
+    }
+
+
+    $(function () {
+
+        $("#idFile").uploadPreview({
+            Img: "ShowLoad", Callback: function () {
+                var bgurl= $("#ShowLoad").attr("src");
+
+                $("#editTx").css({
+                    "background": 'url(' + bgurl + ') no-repeat center',
+                    'backgroundSize': 'cover'
+                });;
+
+
+                var action = setJson["DefaultHead"];
+                if (action == "2") {
+
+                    return;
+                }
+                else if (action == "1") {
+                    action = "LogoUpload"; //上传分销商头像
+                }
+                else {
+                    action = "MemberLogoUpload"; //上传会员头像
+                }
+
+
+                myConfirm("上传图片确认", "确定上传新头像，并重新生成新名片？", "立即上传图片", function () {
+
+
+                        if ($("#idFile").val().trim() == "") { showResponse("3"); return; }
+                        var options = {
+                            type: "POST",
+                            url: '/API/Files.ashx?action='+action+'&dlogo=true',
+                            success: showResponse
+                        };
+                        // 将options传给ajaxForm
+                        $('#ImageForm').ajaxSubmit(options);
+                          
+
+                });
+
+            }
+        }); //预览
+
+
+
+        //读取原设置数据
+        jQuery.getJSON("/Utility/Storage/StoreCardSet.js", { random: Math.random() }, function (SetData) {
+            if (SetData != null) {
+                setJson = SetData;
+            }
+        });
+
+
+        $("#reCreat").click(function () {
+
+            myConfirm("掌柜名片重新生成", "确定重新生成新的掌柜名片？", "立即生成", function () {
+                window.location.href = "StoreCard.aspx?type=reCreat";
+            });
+
+        });
+
+       
+
+        if ($("#QrcodeImg").attr("Admin")) {
+
+            $("#QrcodeImg").click(function () {
+                if (setJson != null && setJson["DefaultHead"] != "2") {
+                    var s = $(this).offset();
+                    var w = $(this).width();
+                    var h = $(this).height();
+
+                    $("#editTx").css({ "left": s.left + setJson.posList[0].left * w + "px", "top": s.top + setJson.posList[0].top * w/320 + "px" });
+                    $("#editTx").width(setJson.posList[0].width * w).height(setJson.posList[0].width * w);
+                    $("#editTx").css("border-radius", $("#editTx").width() / 2 + "px");
+                    $("#editTx").css("line-height", $("#editTx").width() + "px")
+
+                    $("#editTx").toggle();
+                }
+
+            });
+
+        }
+       
+
+        $(window).resize(function () {
+            $("#editTx").hide();
+        });
+
+    })
+</script>  

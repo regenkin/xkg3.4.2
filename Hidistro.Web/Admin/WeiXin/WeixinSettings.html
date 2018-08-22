@@ -1,0 +1,188 @@
+﻿
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>微信模板消息配置帮助</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        background: #e7e8eb;
+        color: #222;
+        font-family: 'microsoft yahei', 'simsun';
+        font-size: 14px;
+    }
+
+    a {
+        color: #C00;
+        text-decoration: none;
+    }
+
+    img {
+        border: 1px solid black;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    .content {
+        width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 20px 0 88px;
+    }
+
+    .container_box {
+        border: 1px solid #d9dadc;
+        background-color: #fff;
+    }
+
+        .container_box .inner {
+            padding: 75px;
+        }
+
+        .container_box h3 {
+            padding-bottom: 1em;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+    .inner {
+        line-height: 23px;
+    }
+
+    .guide {
+        line-height: 36px;
+        padding-left: 10px;
+    }
+
+    .inner p {
+        padding-bottom: 1em;
+    }
+
+    .inner img {
+        max-width: 1000px;
+        display: block;
+        margin: 10px auto;
+    }
+
+    table {
+        border: 1px solid #ccc;
+        max-width: 1000px;
+        margin: 20px auto;
+        border-left: 0;
+        border-bottom: 0;
+    }
+
+        table td, table th {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-collapse: collapse;
+            border-spacing: 0;
+            border-top: 0;
+            border-right: 0;
+        }
+
+        table td {
+            padding-left: 20px;
+        }
+        .colorblue{
+            color: #0070C0;
+        }
+</style>
+<body>
+    <div class="content">
+        <div class="guide">请在<a href="https://mp.weixin.qq.com/cgi-bin/loginpage?t=wxm2-login&lang=zh_CN" target="_blank">微信公众平台</a>下进行如下设置</div>
+        <div class="container_box">
+            <div class="inner">
+                <h3>如何在系统中使用微信模板消息</h3>
+                <p>模板消息仅用于微信公众号（服务号）向用户发送重要的服务通知，只能用于符合其要求的服务场景中，如商品购买成功通知、商品发货通知等。不支持广告等营销类消息以及其它所有可能对用户造成骚扰的消息。</p>
+                <p><label style="color:red"> *使用微信模板消息功能前，请确保在本系统的“绑定微信公众号设置”中已经正确的配置了公众账号信息。</label></p>
+                <img src="/Admin/images/weixin_templateMsg.jpg" />
+                <p>步骤：<br />第一步，在功能->添加功能插件处申请模板消息使用权限。 </p>
+                <img src="/Admin/images/weixin_templateMsg_step1.png" /> <br />
+                <p>第二步，在模版消息的模版库中，选择模版消息对应的两个行业，请在<span class="colorblue">主营行业选择 IT科技中的互联网|电子商务</span> （适用的消息类型是订单消息提醒、退款通知、提现结果提醒、分销商申请成功提醒、账户变更提醒）。在<span class="colorblue">副营行业选择IT科技中的IT软件与服务</span>（适用的消息类型是服务消息通知、个人消息通知）</p>
+                <label style="color:red">只有主营行业和副营行业全部选择后，才能确保系统平台发送的消息提醒可以正常使用</label>
+                <img src="/Admin/images/weixin_templateMsg_step2.png" /><br />
+                <p>第三步，点击添加模板。</p>
+                <img src="/Admin/images/weinxin_templateMsg_addTemplate.png"><br />
+                <p>第四步，搜索并添加模板。</p>
+                <p>1.在搜索框中输入模板名称并搜索，在搜索结果中找到表格中对应编号的模板点击“详情”。<br /><label style="color:red">（模板名称请依据表格中所列出的填写，请确保模板编号与表格中所提供的编号一致）</label></p>
+                <img src="/Admin/images/weinxin_templateMsg_search.png"><br />
+                <p>2.点击"添加"按钮</p>
+                <img src="/Admin/images/weinxin_templateMsg_addBtn.png"><br />
+
+                <p>*功能与模板对应表（请确保在公众平台中添加如下模板）</p>
+                <table cellspacing="0" cellpadding="0" width="600">
+                    <thead>
+                        <tr>
+                            <th>功能</th>
+                            <th>模板标题</th>
+                            <th>模板编号</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td> 订单状态变化时</td>
+                            <td> 订单消息提醒</td>
+                            <td> OPENTM205109409</td>
+                        </tr>
+                        <tr>
+                            <td> 服务内容变更时</td>
+                            <td> 服务消息通知</td>
+                            <td> OPENTM207572068</td>
+                        </tr>
+                        <tr>
+                            <td> 账户状态变更时</td>
+                            <td> 账户变更提醒</td>
+                            <td> TM00370</td>
+                        </tr>
+                        <tr>
+                            <td> 提现申请成功/失败时</td>
+                            <td> 提现结果申请</td>
+                            <td> OPENTM207601150</td>
+                        </tr>
+                        <tr style="display:none;">
+                            <td> 优惠券即将过期时</td>
+                            <td> 优惠券过期提醒</td>
+                            <td> TM00853</td>
+                        </tr>
+                        <tr>
+                            <td> 退款成功/失败时</td>
+                            <td> 退款通知 </td>
+                            <td> TM00599</td>
+                        </tr>
+                        <tr>
+                            <td> 个人信息变更时 </td>
+                            <td> 个人消息通知</td>
+                            <td> OPENTM207372725</td>
+                        </tr>
+                        <tr>
+                            <td> 分销商申请成功时</td>
+                            <td> 分销商申请成功提醒</td>
+                            <td> OPENTM207126233</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br />
+
+                <p id="step5">第五步，将添加后的模板Id保存到本系统中</p>
+                <p>1.复制模板Id</p>
+                <img src="/Admin/images/weinxin_templateMsg_copyTemplateId.png"><br />
+                <p>2.在本系统中打开消息模板页面</p>
+                <img src="/Admin/images/weinxin_templateMsg_editTemplateId302.png"><br />
+                <p>3.粘贴复制的模板Id，全部模版Id设置完毕后，点击保存设置；</p>
+                <img src="/Admin/images/weinxin_templateMsg_saveTemplate302.png"><br />
+            </div>
+        </div>
+    </div>
+</body>
+</html>

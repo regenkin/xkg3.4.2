@@ -1,0 +1,123 @@
+﻿<hi:common_header runat="server" />
+<style type="text/css">
+    html, body { min-height: 100%; font-family: "微软雅黑"; background-color: #E6E6E6; }
+    .container { max-width: 640px; min-height: 100%; padding: 0; }
+    .winning-results { background-color: #fff; margin-bottom: 10px; }
+        .winning-results ul li { padding: 10px; border-bottom: 1px solid #E4E4E4; }
+            .winning-results ul li:last-child { border: none; }
+            .winning-results ul li .winning-results-info { position: relative; min-height: 60px; padding-top: 2px; }
+                .winning-results ul li .winning-results-info .userimg { position: absolute; left: 0; top: 0; }
+                    .winning-results ul li .winning-results-info .userimg img { width: 60px; height: 60px; border-radius: 50%; }
+                .winning-results ul li .winning-results-info .results-info { margin-left: 70px; color: #999999; }
+    .winning-results-info .results-info p { margin-bottom: 2px; }
+    .winning-results-info .results-info span.colorb { color: #009DDA; }
+    .winning-results-info .results-info span.colorr { color: #E14472; }
+    .winning-results-info .results-info .results-user { margin-bottom: 5px; }
+    .loading { text-align: center; height: 20px; line-height: 20px; margin-bottom: 5px; }
+        .loading span { display: inline-block; text-indent: 25px; height: 20px; line-height: 20px; background: url(../images/iconfont-jiazaizhong.gif) no-repeat; background-size: 20px; }
+    .noneActivity { background:#fff;text-align: center; line-height: 100px; border: 1px solid #ccc; margin: 10px; color: #999; border-radius: 6px; }
+   
+</style>
+
+<div class="container" id="VlistP">
+    <div class="winning-results">
+        <ul id="Vlist"></ul>
+    </div>
+    <div class="loading">
+        <span>正在加载中····</span>
+    </div>
+</div>
+
+
+<script>
+    var ajaxflag = false;
+    var PostData = { action: "nextPage", pageIndex: 1, ActivityId: getParam("vaid") };
+
+    $(function () {
+
+        ajaxData(); //读取第1页
+
+        $(document).on('scroll', function (evt) {
+            var elementT = $('.loading').offset().top;
+            if ($(document).scrollTop() + $(window).height() >= elementT) {
+                if (!ajaxflag) {
+                    ajaxData();
+                }
+            }
+        });
+
+    });
+
+   
+
+
+    function ajaxData()
+    {
+        ajaxflag = true;
+        //这里写ajax发送  发送成功记得把flag变量设置成false
+        //alert(1234);
+        $.ajax({
+            url: window.location.href,
+            type: "post",
+            data: PostData,
+            datatype: "json",
+            success: function (jsonData) {
+                //
+                PostData.pageIndex++; //翻页成功！
+                if (jsonData.state == true) {
+
+                    addMore(jsonData.Data);//读取JSON数据
+
+                    if (jsonData.Data.length == 10) {
+                        ajaxflag = false;
+                    }
+                    else {
+
+                        $('.loading').remove(); //移除
+                        if (jsonData.Data.length == 0 && PostData.pageIndex == 2) {
+                            $("#VlistP").html("<div class='noneActivity'>活动暂未有人员参与！<div>");
+                        }
+                    }
+
+                }
+                else {
+                    alert_h(jsonData.msg);
+                    ajaxflag = false;
+                }
+            },
+            error: function () {
+                //
+            }
+        });
+
+    }
+
+
+    function addMore(jsondata) {
+
+        if (jsondata.length == 0)
+            return;
+        var addhtml = "";
+
+
+        for (var i = 0; i < jsondata.length; i++) {
+            var item = jsondata[i];
+            addhtml += '   <li>'+
+            ' <div class="winning-results-info">'+
+            '        <div class="userimg">'+
+            '            <img src="' + item.UserHead + '">' +
+            '        </div>'+
+            '        <div class="results-info">'+
+            '            <p class="results-user"><span class="colorb">' + item.UserName + '</span>【' + item.Name + '】</p>' +
+            '            <p>购买了<span class="colorr">' + item.BuyNum + '</span>份</p>' +
+            '            <p>购买时间：' + item.BuyTime + '</p>' +
+            '        </div>'+
+            '    </div>' +
+            ' </li>';
+        }
+
+
+        $("#Vlist").append(addhtml);
+      
+    }
+</script>

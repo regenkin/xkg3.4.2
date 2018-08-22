@@ -1,0 +1,164 @@
+﻿<hi:common_header runat="server" />
+<div id="slides">
+    <asp:literal id="litImgae" runat="server"></asp:literal>
+</div>
+
+
+<hi:vshoptemplatedrepeater id="rptCategories" visible="true" templatefile="/Tags/skin-Common_HomeCategories.ascx"
+                           runat="server">
+    <headertemplate>
+        <div class="mid-nav">
+            <ul class="mid-nav-tags"
+                id="ulcsd">
+    </headertemplate><footertemplate>
+        </ul>
+        </div>
+    </footertemplate>
+</hi:vshoptemplatedrepeater>
+
+
+<ul class="right-tags">
+    
+    <li class="right-tags-select" id="attention"><a href='<asp:literal id="litattention" runat="server"></asp:literal>'></a></li>
+</ul>
+
+<div class="firIndex bg-wt">
+    <hi:hiimage runat="server" id="imglogo" cssclass="img-circle" imageurl="/Utility/pics/headLogo.jpg" />
+    <div style="display: none;">
+        <span>
+            <asp:literal id="litstorename" runat="server"></asp:literal>
+        </span>
+        <p>
+            <asp:literal id="litdescription" runat="server"></asp:literal>
+        </p>
+    </div>
+</div>
+<div class="pbox ">
+    <div class="row" id="products">
+        <hi:vshoptemplatedrepeater id="rptProducts" templatefile="/Tags/skin-Common_DefaultProducts.ascx"
+                                   runat="server" />
+    </div>
+    <div id="empty" style=" text-align:center;">
+        <img src="/Utility/pics/nonestore.gif" />
+    </div>
+    <nav>
+        <div class="pagination">
+            <%<UI:Pager runat="server" ShowTotalPages="false" DefaultPageSize="50" ID="pager" />%>
+        </div>
+    </nav>
+</div>
+<p class="text-center text-des text-muted copyright" style="margin-bottom: 5px;">
+    <hi:licensecontrol runat="server" />
+</p>
+<%<hi:ServiceSet id="ServiceSet" runat="server"></hi:ServiceSet>%>
+<span id="ItemParams" style="display:none">
+    <asp:literal id="litItemParams"
+                 runat="server"></asp:literal>
+</span>
+<script src="../script/slider.js"></script>
+<script type="text/javascript" charset="utf-8">$("div.index-content img").lazyload();</script>
+<script type="text/javascript">
+    //微信分享接口开始
+    var Items = $("#ItemParams").text();
+    var SetItems = Items.split('$')[0];
+    var NoSetItems = Items.split('$')[1];
+    var title;
+    var link;
+    var imgUrl;
+    var Dec;
+
+    if ($.trim(SetItems.split('|')[0]) != "") {
+        imgUrl = $.trim(SetItems.split('|')[0]);
+    }
+    else {
+        imgUrl = $.trim(NoSetItems.split('|')[0]);
+    }
+    if ($.trim(SetItems.split('|')[1]) != "") {
+        title = SetItems.split('|')[1];
+    }
+    else {
+        title = $.trim(NoSetItems.split('|')[1]);
+    }
+    if ($.trim(SetItems.split('|')[2]) != "") {
+        Dec = SetItems.split('|')[2];
+    }
+    else {
+        Dec = $.trim(NoSetItems.split('|')[2]);
+    }
+    link = NoSetItems.split('|')[3];
+
+    wxinshare_title = title;
+    wxinshare_desc = Dec;
+    wxinshare_link = link;
+    wxinshare_imgurl = imgUrl;
+    function isWeiXin() {
+        var ua = window.navigator.userAgent.toLowerCase();
+        if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    //微信分享接口结束
+    $(function () {
+        if (!isWeiXin()) {
+            $("#attention").css("display", "none");
+        }
+        if (!$.trim($('#products').html())) {
+            $('#empty').css('display', '');
+        }
+        else {
+            $('#empty').css('display', 'none');
+        }
+        if ($(".pagination").html().replace(/\s/g, "").length <= 0) {
+            $("nav").remove();
+        }
+
+        $('.price em').click(function () {
+            $('.price .actionnone').css('display', 'block');
+            $(this).css("display", "none");
+        })
+        var slidesImg = $('#slides img');
+        var aherf = $('#ahref').attr("href");
+        var width = 650, height = 320;
+        if (slidesImg.length > 1) {
+            $('#slides').slidesjs({
+                width: width,
+                height: height,
+                play: {
+                    active: true,
+                    auto: true,
+                    interval: 4000,
+                    swap: true
+                }
+            });
+            $(".slidesjs-play, .slidesjs-stop, .slidesjs-previous, .slidesjs-next").remove();
+            $(".slidesjs-pagination li").css("width", function () { return 100 / slidesImg.length + "%" });
+        }
+        else {
+
+            $('#slides').css('display', 'block').html('<div style="width:100%;"><a href=' + aherf + '></a></div>');
+            $('#slides div a').append(slidesImg);
+        }
+
+        $(".firIndex").css({ "top": $("#slides").height() / 1.6 })
+
+    });
+
+
+
+    InitDom.prototype.foranimation = function (idx) {
+        var thisidx = idx.toString();
+        switch (thisidx) {
+            case '0':
+                break;
+            case '1':
+                break;
+        }
+    };
+    new InitDom({
+        warp: 'ulcsd'
+    });
+
+</script>
+<hi:common_footer runat="server" />

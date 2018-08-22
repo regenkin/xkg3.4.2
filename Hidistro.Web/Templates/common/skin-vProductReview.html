@@ -1,0 +1,85 @@
+﻿<hi:common_header runat="server" />
+    <asp:hyperlink id="productLink" runat="server">
+      
+            <div class="well goods-box">
+                <img runat="server" id="productImage" />
+                <div class="info">
+                    <div class="name font-l"> <asp:literal runat="server" id="litProdcutName" /></div>
+                    <!--<div class="intro font-m text-muted"><asp:literal runat="server" id="litShortDescription" /></div>-->
+                    <div class="price text-danger">
+                        ¥<asp:literal runat="server" id="litSalePrice" />
+                        <span class="sales font-s text-muted">已售<asp:literal runat="server" id="litSoldCount" />件</span>
+                    </div>
+                </div>
+            </div>
+        </asp:hyperlink>
+    <div class="pbox">  
+	    <textarea id="review" class="form-control" rows="3" placeholder="请填写您对该商品的评价"></textarea>
+	    <button type="button" onclick="Submit()" class="btn btn-danger btn-block">
+	        提交评价</button>
+   </div>
+    <div id="reviews">
+        <hr />
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    全部评价</h3>
+            </div>
+            <div class="panel-body" id="reviewsList">
+                <hi:vshoptemplatedrepeater id="rptProducts" templatefile="/Tags/skin-Common_ProductReview.ascx"
+                    runat="server" />
+            </div>
+        </div>
+        <div id="pager">
+</div>
+    </div>
+
+
+<input type="hidden" clientidmode="Static" value="" runat="server" id="txtTotal" />
+<input type="hidden" id="pid" value='<asp:literal runat="server" id="litPID" />' />
+<input type="hidden" id="itemid" value='<asp:literal runat="server" id="litItemid" />' />
+<input type="hidden" id="skuid" value='<asp:literal runat="server" id="litSkuId" />' />
+<input type="hidden" id="orderid" value='<asp:literal runat="server" id="litOrderId" />' />
+<script src="/Utility/common.js?2016" type="text/javascript"></script>
+<script src="/Utility/pager.js" type="text/javascript"></script>
+<script type="text/javascript">
+    function Submit() {
+        var reviewText = $("#review").val();
+        if (!$.trim(reviewText)) {
+            alert_h('请输入评论内容!');
+        }
+        else {
+            var id = $("#pid").val();// window.location.search.substr(window.location.search.lastIndexOf("=") + 1, window.location.search.length - (window.location.search.lastIndexOf("=")+1));
+            var skuid = $("#skuid").val();
+            var orderid = $("#orderid").val();
+            var itemid = $("#itemid").val();
+            var data = {};
+            data.ProductId = id;
+            data.ReviewText = reviewText;
+            data.skuid = skuid;
+            data.orderid = orderid;
+            data.itemid = itemid;
+            $.post("/api/VshopProcess.ashx?action=AddProductReview", data, function (json) {
+                if (json.success === true) {
+                    alert_h("提交成功", function () {
+                        location.reload();
+                    });
+                }
+                else {
+                    alert_h(json.msg);
+                }
+            });
+           
+
+         
+        }
+    }
+
+    $(function () {
+        if (!$.trim($('#reviewsList').html()))
+            $('#reviews').hide();
+        vshopPager('pager', $('#txtTotal').val(), 1, 20);
+    });
+
+</script>
+<hi:common_footer runat="server" />

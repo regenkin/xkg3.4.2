@@ -1,0 +1,144 @@
+﻿<hi:common_header runat="server" />
+<link href="../templates/common/css/activities.css" rel="stylesheet" />
+<style type="text/css">
+    .activityimg img {width:620px;height:200px;}
+    .activityInner .activityInfo img {
+    max-width:100%;
+    }
+</style>
+<div class="container">
+    <header>
+        <ul class="clearfix prizeBtn">
+            <li class="active" act="0">所有活动</li>
+            <li act="1">积分兑换</li>
+            <li act="2">满减活动</li>
+            <li act="3">优惠券</li>
+            <li act="4">其他活动</li>
+        </ul>
+    </header>
+    <div class="content">
+        <div class="tabList">
+            <div class="activityTopic" id="actList">
+
+            </div>
+        </div>
+        <p class="text-center list-empty hide" id="empty">
+            暂无相关活动
+        </p>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $('.prizeBtn li').click(function () {
+            $('.prizeBtn li').removeClass('active');
+            $(this).addClass('active');
+            var act = $(this).attr("act");
+            getData(act);
+        })
+
+        getData(0);
+    });
+
+	function getData(act) {
+	    $.ajax({
+	        type: "post",
+	        url: "/API/Hi_Ajax_GetActivityTopics.ashx",
+	        data: { act: act },
+	        dataType: "json",
+	        success: function (data) {
+	            $('#actList').empty();
+	            if (data.length > 0) {	                
+	                insertHtml(data);
+	            }
+	            else
+	            {
+	                $('#empty').removeClass('hide');
+	            }
+	        }
+	    });
+	}
+
+	function insertHtml(data)
+	{
+	    var html = [];
+	    for (var i = 0; i < data.length; i++) {
+	        var type = data[i].ActivityType;
+	        if (type == 1)//积分兑换
+	        {
+	            html.push('<h2>' + data[i].Name + '</h2>');
+	            html.push('<div class="activityInner" onclick="location.href=\'' + data[i].Url + '\'">');
+	            html.push('<div class="activityimg"><img src="' + data[i].ImgUrl + '"></div>');
+	            html.push('<div class="activityInfo">');
+	            html.push('<p><span>参与会员：</span><span>' + data[i].NewMemberGrades + '</span></p>');
+	            html.push('<p class="color">活动时间：' + data[i].BeginDate + '~' + data[i].EndDate + '</p>');
+	            html.push('</div>');
+	            html.push('<div class="activityFooter">');
+	            html.push('<a href="' + data[i].Url + '">我要参加<span class="glyphicon glyphicon-menu-right"></span></a>');
+	            html.push('</div>');
+	            html.push('</div>');
+	        }
+	        else if (type == 2)//满减活动
+	        {
+	            html.push('<h2>' + data[i].Name + '</h2>');
+	            html.push('<div class="activityInner" onclick="location.href=\'' + data[i].Url + '\'">');
+	            html.push('<div class="activityInfo">');
+	            html.push('<p><span>参与会员：</span><span>' + data[i].NewMemberGrades + '</span></p>');
+	            html.push('<p><span>参与限制：</span><span>' + data[i].Limit + '</span></p>');
+	            html.push('<p><span>优惠方式：</span><span>' + data[i].Discount + '</span></p>');
+	            html.push('<p><span>活动商品：</span><span>' + data[i].Product + '参与</span></p>');
+	            html.push('<p class="color">活动时间：' + data[i].BeginDate + '~' + data[i].EndDate + '</p>');               
+	            html.push('</div>');
+	            if (data[i].Product != "全部商品") {
+	                html.push('<div class="activityFooter">');
+	                html.push('<a href="' + data[i].Url + '">我要参加<span class="glyphicon glyphicon-menu-right"></span></a>');
+	                html.push('</div>');
+	                html.push('</div>');
+	            }
+	        }
+	        else if (type == 3)//自助领券
+	        {
+	            html.push('<h2>' + data[i].Name + '</h2>');
+	            html.push('<div class="rollCollar">');
+	            html.push('<a href="' + data[i].Url + '">');
+	            html.push('<div class="left"><span>优惠券</span><span>￥<i>' + data[i].CouponMoeny + '</i></span></div>');
+	            html.push('<div class="right"><h5>' + data[i].Limit + '</h5><p>生效时间：' + data[i].BeginDate + '</p><p>到期时间：' + data[i].EndDate + '</p></div>');
+	            html.push('</a>');
+	            html.push('</div>');
+	        }
+	        else if (type == 4)//投票调查
+	        {
+	            html.push('<h2>' + data[i].Name + '</h2>');
+	            html.push('<div class="activityInner" onclick="location.href=\'' + data[i].Url + '\'">');
+	            html.push('<div class="activityimg"><img src="' + data[i].ImgUrl + '"></div>');
+	            html.push('<div class="activityInfo">');
+	            html.push('<p>' + data[i].Description + '</p>');
+	            html.push('<p><span>参与会员：</span><span>' + data[i].NewMemberGrades + '</span></p>');
+	            html.push('<p class="color">活动时间：' + data[i].BeginDate + '~' + data[i].EndDate + '</p>');
+	            html.push('</div>');
+	            html.push('<div class="activityFooter">');
+	            html.push('<a href="' + data[i].Url + '">我要参加<span class="glyphicon glyphicon-menu-right"></span></a>');
+	            html.push('</div>');
+	            html.push('</div>');
+	        }
+	        else if (type == 5)//抽奖游戏
+	        {
+	            html.push('<h2>' + data[i].Name + '</h2>');
+	            html.push('<div class="activityInner" onclick="location.href=\'' + data[i].Url + '\'">');
+	            html.push('<div class="activityInfo">');
+	            html.push('<p><span>参与会员：</span><span>' + data[i].NewMemberGrades + '</span></p>');
+	            html.push('<p><span>参与限制：</span><span>' + data[i].Limit + '</span></p>');
+	            html.push('<p><span>消费积分：</span><span>' + data[i].Point + '积分/次</span></p>');
+	            html.push('<p><span>游戏说明：</span><span>' + data[i].Description + '</span></p>');
+	            html.push('<p class="color">活动时间：' + data[i].BeginDate + '~' + data[i].EndDate + '</p>');
+	            html.push('</div>');
+	            html.push('<div class="activityFooter">');
+	            html.push('<a href="' + data[i].Url + '">我要参加<span class="glyphicon glyphicon-menu-right"></span></a>');
+	            html.push('</div>');
+	            html.push('</div>');
+	        }
+	    }
+	    $('#actList').append(html.join(''));
+	}
+</script>
+
+<hi:common_footer runat="server" />

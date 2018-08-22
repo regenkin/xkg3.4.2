@@ -1,0 +1,65 @@
+﻿@charset "utf-8";
+/* CSS Document */
+/* 全局 2012.7.11*/
+*{margin:0;padding:0;}
+table{border-collapse:collapse;border-spacing:0;}
+fieldset,img{border:none;}
+cite,em{font-style:normal;}
+h1,h2,h3,h4,h5,h6{font-size:100%;}
+abbr,acronym{border:none;}
+input,button,textarea,select{outline:none;}
+body{font:12px/1.5 arial;background:#f3f3f3; color:#333}
+a{text-decoration:none; color:#333}
+a:hover{text-decoration:underline;}
+/*background:url(../images/process/ba_l.jpg) repeat-x;*/
+.header{ background-color:black;  height:97px; overflow:hidden;}
+.header_c,.main_c,.footer{ width:750px; overflow:hidden; margin:0 auto;} 
+.header_c .l_logo{ width:236px; overflow:hidden; float:left; margin-top:25px;}
+.header_c .r_word{ float:right; width:229px;}
+.header_c .r_word p{ background:url(../images/process/quit_btn.jpg) no-repeat; width:97px; height:23px; line-height:20px; text-align:center; float:right}
+.header_c .r_word p a{ font-family:"Microsoft yahei"; font-size:14px; color:#fff; text-decoration:none;}
+.header_c .r_word div{ clear:both;font-family:"Microsoft yahei"; font-size:18px;  color:#4d4d4d; padding-top:18px;}
+
+.main{ background:url(../images/process/ce_l.jpg) repeat-x;  }
+.main .m_hd{ text-align:center; font-size:26px;font-family:"Microsoft yahei"; color:#FFF; background:url(../images/process/tit_ba.jpg) no-repeat; height:180px; padding-top:20px;}
+.main .m_bd{ background:#FFF; border:1px solid #cccccc; border-radius:5px; height:375px; margin-top:-117px; padding:25px; position:relative;}
+.main .m_bd .exp{ display:block; height:25px; line-height:18px; color:#EA0404;margin-left:6px;}
+
+.m_word{ border:1px solid #e6e5e5; padding:10px 20px 20px 20px; height:270px; text-indent:2em; line-height:22px; overflow-y:scroll; overflow-x:none; color:#666;}
+.m_ac{ background:#f9f8f8; height:136px; overflow:hidden; padding:25px;}
+.m_ac .ac_pic{float:left; width:137px;}
+.m_ac .ac_text{float:left; width:470px; margin-left:32px; color:#666; font-size:14px;}
+.m_ac .ac_text p{font-family:"Microsoft yahei"; font-size:16px; color:#333; margin-top:20px;}
+
+.ac_enter{ text-align:center; font-size:14px; font-weight:bold; margin-top:46px; }
+.ac_enter input{ border:1px solid #c8c8c8; height:34px;line-height:34px; padding:0px 10px; width:380px;}
+
+.config_info{ overflow:hidden;}
+.config_info .c_i_l{ float:left; width:324px;}
+.config_info .c_i_r{ float:right; width:324px;}
+.config_info .c_i_l h2,.config_info .c_i_r h2{font-family:"Microsoft yahei"; font-size:16px; font-weight:normal; line-height:18px; margin-left:6px;}
+.config_info .c_i_l p,.config_info .c_i_r p{ height:36px; line-height:36px; margin-top:20px;}
+.config_info .c_i_l p span,.config_info .c_i_r p span{ display:block; float:left; width:100px; text-align:right; font-size:14px; color:#999}
+.config_info .c_i_l p input,.config_info .c_i_r p input{ height:34px;  border:1px solid #c8c8c8; width:190px; line-height:34px; padding:0px 5px;}
+.config_info .c_i_l p em,.config_info .c_i_r p em{ color:#eb0101; margin-left:8px; font-family:"宋体"; font-size:10px;}
+.addDemo{ text-align:center; margin-top:30px;}
+
+.success h2{font-family:"Microsoft yahei"; font-size:16px; font-weight:normal; line-height:18px;}
+.success .prompt{ height:30px; line-height:30px; border:1px dotted #dedede; padding:0px 12px; margin-top:12px; color:#a7a6a6}
+.success .url_token{ margin-top:25px;}
+.success .url_token p{ clear:both; font-size:18px; padding-top:16px;}
+.success .url_token span{ float:left; font-size:14px; display:block; width:70px; line-height:32px; text-align:right}
+.success .url_token em{ display:block;  background:#efefef; height:32px; line-height:32px; float:left; padding:0px 15px; color:#000;}
+
+.btn,.btn input{ text-align:center; font-size:14px; font-weight:bold; color:#fff; background:none; border:0px;line-height:35px;}
+.btn span,.btn b,.btn p,.btn em,.btn samp{ display:block;height:38px; position:absolute;  bottom:23px; cursor:pointer;line-height:35px;}
+.btn span{ background:url(../Images/process/icon.gif) no-repeat 0px -362px; width:150px; left:299px; }
+.btn b{ background:url(../Images/process/icon.gif) no-repeat -159px -362px; width:100px; right:267px;}
+.btn #disable{ background:url(../Images/process/icon.gif) no-repeat -159px -403px; width:100px; right:267px;}
+.btn p{ background:url(../Images/process/icon.gif) no-repeat -159px -362px; width:100px; left:267px;}
+.btn em{background:url(../Images/process/icon.gif) no-repeat -159px -362px; width:100px; left:190px;}
+.btn samp{background:url(../Images/process/icon.gif) no-repeat -159px -362px; width:100px; right:190px;}
+.btn a{ color:#fff;} 
+
+.footer p{ color:#b0aeae; text-align:center; margin:50px 0px  30px 0px; }
+

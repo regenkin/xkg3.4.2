@@ -1,0 +1,87 @@
+﻿<hi:common_header runat="server" />
+<form>
+
+    <div class="alipay" id="alipay">
+        <h1>请填写提现账号信息</h1>
+        <nav style="margin:10px">
+            提示：您此次可提现的最大金额为<span id="maxmoney"><asp:Literal ID="litmaxmoney" runat="server"></asp:Literal></span>元
+        </nav>
+
+        <div class="form-group">
+            <label for="txtstorename">帐号类型：</label>
+            <select id="accoutType" runat="server" class="form-control">
+                <option value="">-请选择-</option>
+            </select>
+        </div>
+
+        <div class="form-group" id="drawBank">
+            <label for="txtstorename">帐号说明：</label>
+            <input type="text" class="form-control" placeholder="帐号说明，如开户行/支付宝/财付通" name="txtBankName" runat="server" id="txtBankName" />
+        </div>
+
+        <div class="form-group" id="drawAccountName">
+            <label for="txtstorename">收款人：</label>
+            <input type="text" class="form-control" placeholder="帐号真实姓名" name="txtAccountName" runat="server" id="txtAccountName" />
+        </div>
+
+        <div class="form-group" id="drawAccount">
+            <label for="txtstorename">提现帐号：</label>
+            <input type="text" class="form-control" placeholder="收款帐号" name="txtaccount" runat="server" id="txtaccount" />
+        </div>
+        <div class="form-group">
+            <label for="txtstorename">提现金额：</label>
+            <input name="txtmoney" runat="server" class="form-control" id="txtmoney" type="text" placeholder='提现金额' />
+            <input id="hidmoney" type="hidden" runat="server" />
+        </div>
+        <div class="alipay-btn"><a href="#" id="requestcommission1" runat="server">确认提现</a></div>
+        <div class="alipay-wechatpay" id="alipay-btn" style='<asp:Literal id="litAlipayBtn" runat="server"></asp:Literal>'>微信红包提现</div>
+    </div>
+
+
+    <div class="alipay" id="shortcut" style="display: none;">
+        <h1>红包提现——微信红包发放佣金</h1>
+        <nav style="margin:10px;">提示：申请金额不能大于200元，请于红包发放后24小时内领取！</nav>
+        <div class="form-group">
+            <label for="txtstorename">提现金额：</label>
+            <input id="txtmoneyweixin" class="form-control" runat="server" type="text" placeholder="可提现金额180元" name="moneyShortcut" />
+        </div>
+        <div class="alipay-btn"><a id="requestcommission"  runat="server">确认提现</a></div>
+        <div class="alipay-wechatpay" id="shortcut-btn" style='<asp:Literal id="litWechatBtn" runat="server"></asp:Literal>'>返回支付宝</div>
+    </div>
+ 
+    <script type="text/javascript">
+
+        $(function(){
+            $("#alipay-btn").click(function () {
+
+                $("#alipay").hide();
+                $("#shortcut").show();
+            });
+
+
+            $("#VRequestCommissions_accoutType").change(function () {
+                
+                if ($(this).val() == "0") {
+                    $("#drawAccount").hide();
+                    $("#drawBank").hide();
+                } else {
+                    $("#drawAccount").show();
+                }
+                if ($(this).val() == "2") {
+                    $("#drawBank").show();
+                } else {
+                    $("#drawBank").hide();
+                }
+                
+            });
+
+            $("#shortcut-btn").click(function(){
+                $("#shortcut").hide();
+                $("#alipay").show();
+            });
+
+            $("#drawBank").hide();
+        })
+    </script>
+</form>
+<hi:common_footer runat="server" />

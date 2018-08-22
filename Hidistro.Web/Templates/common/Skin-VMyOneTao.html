@@ -1,0 +1,173 @@
+﻿<hi:common_header runat="server" />
+<link href="../templates/common/css/public.css" rel="stylesheet" type="text/css">
+<style>
+    html, body { min-height: 100%; max-width:100%; background-color: #F8F8F8; }
+    .container { max-width: 640px; min-height: 100%; padding: 0; margin:0px auto}
+        .container header { height: 40px; padding-top: 5px; border-bottom: 1px solid #B8B8B8; margin-bottom: 10px; }
+            .container header ul li { float: left; height: 35px; line-height: 35px; width: 33.33333%; text-align: center; font-size: 14px; background-color: #fff; }
+                .container header ul li a { color: #2C2B30; }
+                .container header ul li.active { border-bottom: 2px solid #D61716; }
+                    .container header ul li.active a { color: #D94444; }
+    .luckdrawinlist { margin-bottom: 10px; }
+        .luckdrawinlist ul li { padding: 0 10px; background-color: #fff; border-bottom: 1px solid #E4E4E4; }
+            .luckdrawinlist ul li .luckdrawinfo { position: relative; padding: 10px 0; border-bottom: 1px solid #E4E4E4; min-height: 100px; }
+                .luckdrawinlist ul li .luckdrawinfo .img { position: absolute; width: 80px; height: 80px; left: 0; top: 10px; overflow: hidden; }
+                .luckdrawinlist ul li .luckdrawinfo .drawinfo { margin-left: 90px; width: 55%; text-align: justify; }
+                .luckdrawinlist ul li .luckdrawinfo .img img{width:100%;height:100%}
+     .luckdrawinfo .drawinfo h3 { font-size: 12px; margin-bottom: 5px; line-height: 16px; }
+    .luckdrawinfo .drawinfo .progress { height: 6px; margin-bottom: 2px; background-color: #CCCCCC; }
+    .luckdrawinfo .drawinfo .color { color: #999999; }
+    .luckdrawinfo .drawinfo .no { margin-bottom: 2px; }
+    .luckdrawinfo .drawinfo .button { position: absolute; right: 0; top: 30px; width:60px;display:block}
+    .luckdrawinlist ul li .lookmyinfo { height: 35px; line-height: 35px; }
+        .luckdrawinlist ul li .lookmyinfo p span { color: #DA4453; }
+        .luckdrawinlist ul li .lookmyinfo a { color: #337AB7; }
+    .loading { text-align: center; height: 20px; line-height: 20px; margin-bottom: 5px; }
+        .loading span { display: inline-block; text-indent: 25px; height: 20px; line-height: 20px; background: url(../images/iconfont-jiazaizhong.gif) no-repeat; background-size: 20px; }
+</style>
+
+<div class="container">
+    <header>
+        <ul class="clearfix">
+            <li class="active"><a href="javascript:void(0)">进行中</a></li>
+            <li><a href="MyOneTaoIsEnd.aspx">已揭晓</a></li>
+            <li><a href="MyOneTaoSuccess.aspx">中奖记录</a></li>
+        </ul>
+    </header>
+    <div class="luckdrawinlist">
+        <ul id="Vlist">
+           
+
+        </ul>
+    </div>
+    <div class="loading">
+        <span>正在加载中····</span>
+    </div>
+</div>
+
+
+
+
+
+<script>
+
+    var ajaxflag = false;
+    var PostData = { action: "nextPage", pageIndex: 1, ActivityId: getParam("vaid") };
+
+    $(function () {
+
+        ajaxData(); //读取第1页
+
+        $(document).on('scroll', function (evt) {
+            var elementT = $('.loading').offset().top;
+            if ($(document).scrollTop() + $(window).height() >= elementT) {
+                if (!ajaxflag) {
+                    ajaxData();
+                }
+            }
+        });
+
+    });
+
+
+
+
+    function ajaxData() {
+        ajaxflag = true;
+        //这里写ajax发送  发送成功记得把flag变量设置成false
+        //alert(1234);
+        $.ajax({
+            url: window.location.href,
+            type: "post",
+            data: PostData,
+            cache: false,
+            datatype: "json",
+            success: function (jsonData) {
+                //
+                PostData.pageIndex++; //翻页成功！
+                if (jsonData.state == true) {
+
+                    addMore(jsonData.Data);//读取JSON数据
+
+                    if (jsonData.Data.length == 10) {
+                        ajaxflag = false;
+                    }
+                    else {
+                        $('.loading').remove(); //移除
+                    }
+
+                }
+                else {
+                    if (jsonData.msg) {
+                        alert_h(jsonData.msg);
+                        ajaxflag = false;
+                    }
+                    else {
+                        window.location.reload();
+                    }
+                }
+            },
+            error: function () {
+                //
+            }
+        });
+
+    }
+
+
+    function addMore(jsondata) {
+
+        if (jsondata.length == 0)
+            return;
+        var addhtml = '';
+
+
+        for (var i = 0; i < jsondata.length; i++) {
+            var item = jsondata[i];
+
+            var btn = '<a class="btn btn-danger btn-xs  button" href="ViewOneTao.aspx?vaid=' + item.ActivityId + '">追加</a>';
+            var vhtml = '<a href="MyluckNum.aspx?vaid=' + item.ActivityId + '">查看我的号码</a>';
+
+            if (!item.IsPay) {
+                btn = '<a class="btn btn-success btn-xs button" href="OneTaoPayView.aspx?Pid=' + item.Pid + '">去支付</a>';
+                vhtml = '<a href="javascript:void(0)" style="color:red">未支付</a>';
+            }
+
+          
+            var MaxNum = (item.ReachNum - item.FinishedNum);
+            MaxNum = MaxNum < 0 ? 0 : MaxNum;
+
+            addhtml += '<li>' +
+ '               <div class="luckdrawinfo">' +
+ '                   <div class="img">' +
+ '                       <img src="' + item.ProductImg + '">' +
+  '                  </div>' +
+  '                  <div class="drawinfo">' +
+  '                      <h3>' + item.ProductTitle + '</h3>' +
+  '                      <p class="no color">夺宝编号：' + item.ActivityId + '</p>' +
+  '                      <div class="progress">' +
+  '                          <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: ' + parseInt(100 * ((item.FinishedNum / item.ReachNum) > 1 ? 1 : (item.FinishedNum / item.ReachNum))) + '%">' +
+  '                              <span class="sr-only">60% Complete (warning)</span>' +
+  '                          </div>' +
+  '                      </div>' +
+  '                      <div class="clearfix color">' +
+  '                          <p class="fl">总需' + item.ReachNum + '人次</p>' +
+  '                          <p class="fr">剩余<span>' + MaxNum + '</span></p>' +
+  '                      </div>' +
+                         btn +
+ '                   </div>' +
+ '               </div>' +
+ '               <div class="lookmyinfo clearfix">' +
+ '                   <p class="fl">购买份数：<span>' + item.BuyNum + '</span>份</p>' +
+ '                   <p class="fr">'+vhtml+'</p>' +
+ '               </div>' +
+ '           </li>';
+        }
+
+
+        $("#Vlist").append(addhtml);
+
+    }
+
+</script>
+<hi:common_footer runat="server" />

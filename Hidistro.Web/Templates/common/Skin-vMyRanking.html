@@ -1,0 +1,87 @@
+﻿<hi:common_header runat="server" />
+<div class="main-box">
+    <div class="top-tags">
+        <a id="store" href="javascript:;" style="color: #ff4a02;">小店总排名</a><a id="team" href="javascript:;">我的团队排名</a>
+    </div>
+    <div class="store-top">
+        <Hi:VshopTemplatedRepeater ID="rptMyRanking" TemplateFile="/Tags/skin-Common_MyRanking.ascx" runat="server" />
+        <ul class="top">
+            <Hi:VshopTemplatedRepeater ID="rptMyRankingList" TemplateFile="/Tags/skin-Common_MyTeamRanking.ascx" runat="server" />
+        </ul>
+    </div>
+    <div class="team-top" style="display: none;">
+        <ul class="top" id="MyTeamRankingList">
+            <Hi:VshopTemplatedRepeater ID="rptMyTeamRankingList" TemplateFile="/Tags/skin-Common_MyTeamRanking.ascx" runat="server" />
+        </ul>
+        <div id="QRcode" style="display:none;text-align:center;padding-top:20px;">
+            <div>你还没有团队成员，长按图片发送给朋友</div>
+            <img id="ifameQRcode" src='/API/GetQRCode.ashx?code=<asp:literal runat="server" id="liturl" />'     height="300"></img>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+//禁用右上角菜单
+//document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+//    WeixinJSBridge.call('hideOptionMenu');
+//});
+$(function () {
+    if ($.trim($("#MyTeamRankingList").html()) == "")
+    {
+        $("#QRcode").show();
+    }
+    $(".main-box .store-top .my-store-top").width($(".main-box .store-top .top li").width());
+    $(".main-box .store-top .my-store-top").css({ "left": ($(window).width() - $("body").width()) / 2 + "px" });
+    $(".main-box .store-top .my-store-top .my-exp").width($(".main-box .store-top .my-store-top").width() - ($(".main-box .store-top .my-store-top .my-num").width() + $(".main-box .store-top .my-store-top .my-img").width() + 40));
+    $(".top li .top-exp").width($(".top li").width() - ($(".top li .top-num").width() + $(".top li .top-img").width() + 40));
+    $(window).scroll(function () {
+        var windowTop = $(this).scrollTop();
+        var myTop = parseInt($(".main-box .store-top .my-store-top").css("top"));
+        if (windowTop > 45) {
+            $(".main-box .store-top .my-store-top").css({ "top": 0 });
+        } else {
+            $(".main-box .store-top .my-store-top").css({ "top": 45 + "px" });
+        }
+    });
+    var tempid=$("#hdMyUserID").val();
+    $("#li" + tempid).hide();/*隐藏自己的排名行*/
+    var itemp = 0;
+    var maxAmount =0;
+    $(".store-top .top li .top-num").each(function () {
+        if (itemp == 0) {
+            maxAmount = parseFloat($(this).parent().attr("total"));
+        }
+        itemp++;
+        $(this).html(itemp);
+    });
+    if (maxAmount > 0) {
+        $(".top li .top-exp .exp-bottom em").each(function () {
+            $(this).width((parseFloat($(this).attr("title")) * 100 / maxAmount) + "%");
+        });
+        $(".main-box .store-top .my-store-top .my-exp .exp-bottom em").width((parseFloat($(".main-box .store-top .my-store-top .my-exp .exp-bottom em").attr("title")) * 100 / maxAmount) + "%");
+    }
+
+    itemp = 0;
+    maxAmount = 0;
+    $(".team-top .top li .top-num").each(function () {
+        if (itemp == 0) {
+            maxAmount = parseFloat($(this).parent().attr("total"));
+        }
+        itemp++;
+        $(this).html(itemp);
+    });
+
+    $("#store").click(function () {
+        $(this).css({ "color": "#ff4a02" });
+        $("#team").css({ "color": "#ccc" });
+        $(".team-top").hide();
+        $(".store-top").show();
+    });
+    $("#team").click(function () {
+        $(this).css({ "color": "#ff4a02" });
+        $("#store").css({ "color": "#ccc" });
+        $(".store-top").hide();
+        $(".team-top").show();
+    });
+})
+</script>
+<hi:common_footer runat="server" />

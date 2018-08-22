@@ -1,0 +1,255 @@
+﻿
+    html, body {
+        min-height: 100%;
+        font-family: "微软雅黑";
+        background-color: #E6E6E6;
+        max-width:100%;
+    }
+
+    .container {
+        max-width: 640px;
+        min-height: 100%;
+        padding: 0;
+    }
+    .header{
+        position:relative;
+    }
+    .header .shopmaskinfo{
+        position:absolute;
+        left:0;
+        bottom:0;
+        width:100%;
+        height:30px;
+        line-height:30px;
+        color:#fff;
+        background-color:rgba(0,0,0,0.5);
+        text-align:center;
+             z-index:1039;
+    }
+    .header .shopmaskinfo .addnumber{
+        position:absolute;
+        right:10px;
+        top:0;
+        line-height:30px;
+    }
+    .header .shopmaskinfo .addnumber strong{
+        color:#F90;
+        font-weight:normal;
+    }
+    .header img {
+        width: 100%;
+    }
+
+    .container .shopinfobox {
+        padding: 10px 10px 15px 10px;
+        margin-bottom: 10px;
+        background-color: #fff;
+        box-shadow: 0 1px 1px #ccc;
+    }
+
+        .container .shopinfobox h2 {
+            font-size: 12px;
+            line-height: 18px;
+        }
+
+    .shopinfobox strong.str {
+        font-weight: normal;
+        word-bread: break-all;
+        color: #FF0000;
+    }
+
+    .shopinfobox .setbottom {
+        margin-bottom: 7px;
+    }
+
+    .colorc {
+        color: #999999;
+    }
+
+    .shopinfobox .progress {
+        height: 10px;
+        background-color: #CCCCCC;
+        margin-bottom: 2px;
+    }
+
+    .shopinfobox .lotteryCase {
+        position: relative;
+        color: #999999;
+    }
+
+        .shopinfobox .lotteryCase .lotteryCaseinfo {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            -webkit-transform: translateX(-42%);
+        }
+
+        .shopinfobox .lotteryCase .colorr {
+            color: #DA4453;
+        }
+
+    span.colorl {
+        color: #009DE1;
+    }
+
+    .shopinfobox .colorlu {
+        color: #008000;
+    }
+
+    .shopinfobox .awards {
+        margin-bottom: 10px;
+        margin-top: 10px;
+    }
+
+        .shopinfobox .awards.sp {
+            margin-bottom: 15px;
+        }
+
+        .shopinfobox .awards .specifications a {
+            padding: 3px 10px;
+            border: 1px solid #ccc;
+            border-radius: 2px;
+        }
+
+            .shopinfobox .awards .specifications a.active {
+                background-color: #DA4453;
+                color: #fff;
+                border: 1px solid #DA4453;
+            }
+
+        .shopinfobox .awards .left, .shopinfobox .reset .left {
+            width: 60px;
+            text-align: right;
+        }
+
+    .shopinfobox .reset {
+        line-height: 25px;
+        font-size: 12px;
+    }
+
+        .shopinfobox .reset .resetnumber span {
+            display: block;
+            width: 25px;
+            height: 25px;
+            line-height: 25px;
+            text-align: center;
+            background-color: #DA4453;
+            font-size: 18px;
+            color: #fff;
+            float: left;
+        }
+
+        .shopinfobox .reset .resetnumber input {
+            width: 40px;
+            height: 25px;
+            text-align: center;
+            float: left;
+            border: none;
+            border-top: 1px solid #CCCCCC;
+            border-bottom: 1px solid #CCCCCC;
+        }
+
+    .shopinfotable {
+        background-color: #fff;
+        box-shadow: 0 0 3px #ccc;
+    }
+
+        .shopinfotable ul li {
+            width: 33.3333%;
+            float: left;
+            height: 32px;
+            line-height: 32px;
+            border-bottom: 1px solid #E4E4E4;
+            text-align: center;
+        }
+
+            .shopinfotable ul li a {
+                display: block;
+                height: 32px;
+                line-height: 32px;
+                border-left: 1px solid #E4E4E4;
+                background-color: #EEEEEE;
+            }
+
+        .shopinfotable .textinfo {
+            padding: 10px;
+        }
+         .shopinfotable .textinfo img {
+            max-width:100%;        }
+            .shopinfotable .textinfo p {
+                line-height: 18px;
+            }
+
+    .fixednav {
+        z-index:1039;
+        position: fixed;
+        left: 50%;
+        bottom: 0;
+        -webkit-transform: translateX(-50%);
+        -moz-transform: translateX(-50%);
+        height: 40px;
+        background-color: #fff;
+    }
+
+        .fixednav ul li {
+            float: left;
+            height: 40px;
+            text-align: center;
+        }
+
+            .fixednav ul li:nth-of-type(1), .fixednav ul li:nth-of-type(2) {
+                width: 20%;
+                display: table;
+            }
+
+            .fixednav ul li:nth-of-type(3) , .fixednav ul li:nth-of-type(4) {
+                width: 30%;
+                color: #fff;
+                line-height: 40px;
+            }
+
+            .fixednav ul li button.wait {
+                color:#fff;
+                width:100%;
+                border:none;
+                background-color: #FF9900;
+            }
+
+            .fixednav ul li .buy {
+                color:#fff;
+                width:100%;
+                border:none;
+                background-color: #DA4453;
+            }
+            .fixednav ul li .com {
+                display: block;
+                width:100%;
+                color: #fff;
+                border:none;
+                background-color: #ccc;
+            }
+
+            .fixednav ul li:nth-of-type(1) .navinner {
+                border-right: 1px solid #E4E4E4;
+            }
+
+            .fixednav ul li .navinner {
+                display: table-cell;
+                vertical-align: middle;
+            }
+
+                .fixednav ul li .navinner img {
+                    width: 20px;
+                    height: 20px;
+                }
+
+        .good-bargain-list{margin-bottom: 10px;box-shadow: 0 0 3px #ccc;background-color: #fff;padding: 10px;padding-bottom: 0;}
+		.good-bargain-list h6{padding-bottom: 5px;border-bottom: 1px solid #E4E4E4;}
+		.good-bargain-list ul li p:first-child{width: 60%;white-space: nowrap;overflow: hidden;text-overflow:ellipsis;}
+		.good-bargain-list ul li{height: 30px;line-height: 30px;border-bottom: 1px solid #E4E4E4;}
+		.good-bargain-list .look-all{height: 30px;line-height: 30px;}
+         #divtimer{text-align:left;text-indent:10px;}
+
+        #mcover { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); display: none; z-index: 20000; }
+        #mcover img { position: fixed; right: 18px; top: 5px; width: 260px !important; height: 180px !important; z-index: 20001; }
+      

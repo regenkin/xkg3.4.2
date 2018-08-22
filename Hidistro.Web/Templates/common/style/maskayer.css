@@ -1,0 +1,5 @@
+﻿#BgDiv1{background-color:#000; position:absolute; z-index:9999;  display:none;left:0px; top:0px; width:100%; height:100%;opacity: 0.6; filter: alpha(opacity=60);}
+.DialogDiv{position:absolute;z-index:99999;}/*配送公告*/
+.bakimage span{ background:url(../images/loading.gif) no-repeat; background-size: 100% 100%; width: 20px; height:20px; display: inline-block;}
+.U-guodu-box { padding:5px 15px;  background:#3c3c3f; filter:alpha(opacity=90); -moz-opacity:0.9; -khtml-opacity: 0.9; opacity: 0.9;  min-heigh:200px; border-radius:10px;}
+.U-guodu-box div{ color:#fff; line-height:20px; font-size:12px; margin:0px auto; height:100%; padding-top:10%; padding-bottom:10%;}

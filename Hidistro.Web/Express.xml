@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<companys Kuaidi100Key="29833628d495d7a5" Kuaidi100NewKey="" Url="http://m.kuaidi100.com/index_all.html?postid={numberId}&amp;type={companyCode}&amp;callbackurl={callbackurl}">
+  <company name="顺丰快递" Kuaidi100Code="shunfeng" TaobaoCode="SF" />
+  <company name="联昊通物流" Kuaidi100Code="lianhaowuliu" TaobaoCode="LTS" />
+  <company name="全峰快递" Kuaidi100Code="quanfengkuaidi" TaobaoCode="QFKD" />
+  <company name="全一快递" Kuaidi100Code="quanyikuaidi" TaobaoCode="APEX" />
+  <company name="圆通速递" Kuaidi100Code="yuantong" TaobaoCode="YTO" />
+  <company name="中通速递" Kuaidi100Code="zhongtong" TaobaoCode="ZTO" />
+  <company name="宅急送" Kuaidi100Code="zhaijisong" TaobaoCode="ZJS" />
+  <company name="韵达快运" Kuaidi100Code="yunda" TaobaoCode="YUNDA" />
+  <company name="海航天天快递" Kuaidi100Code="tiantian" TaobaoCode="TTKDEX" />
+  <company name="联邦快递" Kuaidi100Code="lianbangkuaidi" TaobaoCode="FEDEX" />
+  <company name="汇通快运" Kuaidi100Code="huitongkuaidi" TaobaoCode="HTKY" />
+  <company name="德邦物流" Kuaidi100Code="debangwuliu" TaobaoCode="DBL" />
+  <company name="中铁快运" Kuaidi100Code="zhongtiewuliu" TaobaoCode="CRE" />
+  <company name="CCES" Kuaidi100Code="cces" TaobaoCode="CCES" />
+  <company name="申通物流" Kuaidi100Code="shentong" TaobaoCode="STO" />
+  <company name="龙邦物流" Kuaidi100Code="longbanwuliu" TaobaoCode="LB" />
+  <company name="新邦物流" Kuaidi100Code="xinbangwuliu" TaobaoCode="XB" />
+  <company name="港中能达" Kuaidi100Code="ganzhongnengda" TaobaoCode="NEDA" />
+  <company name="优速物流" Kuaidi100Code="youshuwuliu" TaobaoCode="UC" />
+  <company name="全日通快递" Kuaidi100Code="quanritongkuaidi" TaobaoCode="QRT" />
+  <company name="邮政平邮" Kuaidi100Code="youzhengguonei" TaobaoCode="POST" />
+  <company name="亚风" Kuaidi100Code="yafengsudi" TaobaoCode="AIR" />
+  <company name="长宇物流" Kuaidi100Code="changyuwuliu" TaobaoCode="CYEXP" />
+  <company name="大田物流" Kuaidi100Code="datianwuliu" TaobaoCode="DTW" />
+  <company name="其它" Kuaidi100Code="other" TaobaoCode="OTHER" />
+  <company name="uyiuy" Kuaidi100Code="jhuhuy" TaobaoCode="uyuyuuuu" />
+  <company name="EMS" Kuaidi100Code="ems" TaobaoCode="ems" New="Y" />
+</companys>

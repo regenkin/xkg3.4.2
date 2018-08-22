@@ -1,0 +1,77 @@
+﻿<hi:common_header runat="server" />
+<style>
+    html, body { min-height: 100%; font-family: "微软雅黑"; background-color: #F8F8F8; }
+    .container { max-width: 640px; min-height: 100%; padding: 0; }
+     
+    .luckdrawinlist { margin-bottom: 10px; }
+        .luckdrawinlist ul li { padding: 0 0px; background-color: #fff; border-bottom: 1px solid #E4E4E4; }
+            .luckdrawinlist ul li .luckdrawinfo { position: relative; padding: 10px 0; border-bottom: 1px solid #E4E4E4; min-height: 100px; }
+                .luckdrawinlist ul li .luckdrawinfo .img { position: absolute; width: 80px; height: 80px; left: 5px; top: 10px; overflow: hidden; }
+                .luckdrawinlist ul li .luckdrawinfo .drawinfo { margin-left: 90px; text-align: justify; }
+                .luckdrawinlist ul li .luckdrawinfo .img img { width: 100%; height: 100%; } 
+                .luckdrawinfo .drawinfo h3 { font-size: 12px; margin-bottom: 5px; line-height: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .luckdrawinfo .drawinfo .color { color: #999999; }
+    .luckdrawinfo .drawinfo .no { margin-bottom: 2px; }
+    .luckdrawinfo { padding: 25px; }
+    .Atitle { color: #444; line-height: 20px; background: #E6E9ED; padding: 10px 15px; font-weight: bold; }
+    .redColor{color:red}
+</style>
+<div class="container">
+    <div class="luckdrawinlist">
+        <ul>
+            <li>
+                <div class="Atitle">夺宝商品</div>
+                <div class="luckdrawinfo">
+                    <div class="img">
+                        <img src="/Utility/pics/none.gif"  id="ProductImg" runat="server" clientidmode="Static" />
+                    </div>
+                    <div class="drawinfo">
+                        <h3><asp:literal runat="server" id="litProdcutName" /></h3>
+                        <p class="no color" style="height:20px;overflow:hidden">商品规格：<asp:literal runat="server" id="litProdcutAttr" /></p>
+                        <p class="no color">夺宝编号：<asp:literal runat="server" id="litActivityID" /></p>
+                        <div class="clearfix color">
+                             <p style="">开奖方式：<asp:literal runat="server" id="litReachType" /></p>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="clearfix color">
+                    <p style="float: right; padding: 2px 20px">当前选购：<span class="redColor">￥<asp:literal runat="server" id="litPrice" /></span> × <asp:literal runat="server" id="litBuyNum" />份</p>
+                </div>
+                <p style="text-align:right;padding:5px 20px;line-height:30px">应付金额：<span class="redColor">￥<asp:literal runat="server" id="litPayPrice" /></span> </p>
+               
+                <div class="Atitle" id="PayWaytxt" runat="server" clientidmode="Static">当前可用支付方式：</div>
+                <div class="clearfix"></div>
+                <a class="btn btn-danger" style="width:94%;margin:10px auto 10px auto;display:block" id="PayBtn" runat="server" clientidmode="Static">确认支付</a>
+            </li>
+            
+        </ul>
+    </div>
+   
+</div>
+
+<script>
+
+    
+
+    $(function () {
+
+        if (/micromessenger/i.test(navigator.userAgent.toLowerCase())) {
+            //微信支付
+            $("#PayBtn").click(function () {
+                window.location.href = "/pay/wx_OneTaoSubmit.aspx?showwxpaytitle=1&Ptype=OneTao&orderId=" + $("#PayWaytxt").attr("Pid");//转到微信支付
+            });
+        }
+        else {
+            //支付宝支付
+            $("#PayBtn").click(function () {
+                window.location.href = "/pay/wap_alipaySubmit.aspx?Ptype=OneTao&orderId="+$("#PayWaytxt").attr("Pid"); //转到支付宝支付
+            });
+        }
+
+        
+
+    });
+
+</script>
+<hi:common_footer runat="server" />

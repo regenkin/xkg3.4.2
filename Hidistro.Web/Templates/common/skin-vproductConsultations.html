@@ -1,0 +1,84 @@
+﻿<hi:common_header runat="server" />
+
+    <a id="productImage">
+        <div class="well goods-box clearfix" style="padding:10px;">
+            <img runat="server" id="imgProductImage">
+            <div class="info">
+                <div class="name font-l">
+                    <asp:literal runat="server" id="litProductTitle" /></div>
+                <!--<div class="intro font-m text-muted">
+                    <asp:literal runat="server" id="litShortDescription" /></div>-->
+                <div class="price text-danger">
+                    ¥<asp:literal runat="server" id="litSalePrice" /><span class="sales font-s text-muted">已售<asp:literal runat="server" id="litSoldCount" />件</span>
+                </div>
+            </div>
+        </div>
+    </a>
+   <div class="pbox"> 
+    <textarea id="consultation" class="form-control" rows="5" placeholder="请填写您对该商品的咨询"></textarea>
+    <button type="button" onclick="Submit()" class="btn btn-danger btn-block">
+        提交咨询</button>
+    <div id="historyConsultation">
+        <hr />
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    全部咨询</h3>
+            </div>
+            <div class="panel-body" id="historyConsultationlist">
+                <hi:vshoptemplatedrepeater id="rptProducts" templatefile="/Tags/skin-Common_ProductConsultations.ascx"
+                    runat="server" />
+            </div>
+        </div>
+        <div id="pager"></div>
+    </div>
+</div>
+<input type="hidden" clientidmode="Static" value="" runat="server" id="txtTotal" />
+<script src="/Utility/common.js?2016" type="text/javascript"></script>
+<script src="/Utility/pager.js" type="text/javascript"></script>
+<script type="text/javascript">
+    function Submit() {
+        if ($("#consultation").val() == "") {
+            alert_h("必须填写咨询内容");
+            return;
+        }
+
+        var id = getParam('ProductId');
+        var data = {};
+        data.ProductId = id;
+        data.ConsultationText = $("#consultation").val();
+
+        $.post("/api/VshopProcess.ashx?action=AddProductConsultations", data, function (json) {
+            if (json.success === true) {
+                alert_h("您的咨询已经提交成功，请耐心等待客服的回复！", function () { 
+                    /*location.reload();*/
+                    location.href = "/ProductDetails.aspx?productId=" + id;
+                });
+               
+            }
+            else {
+                alert_h(json.msg);
+            }
+        });
+    }
+
+
+    $(function () {
+        $('#productImage').attr('href', '/ProductDetails.aspx?productId=' + getParam('ProductId'));
+
+    });
+    if (!$.trim($('#historyConsultationlist').html()))
+        $('#historyConsultation').hide();
+    vshopPager('pager', $('#txtTotal').val(), 1, 20);
+
+
+    var answerDetails = $('.answerDetail');
+    $.each(answerDetails, function (i, answerDetail) {
+        if (!$.trim($(answerDetail).html()))
+            $(answerDetail).parent().hide();
+    });
+
+
+</script>
+
+<hi:common_footer runat="server" />

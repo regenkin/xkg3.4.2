@@ -1,0 +1,211 @@
+﻿<hi:common_header runat="server" />
+<style>
+    .title {
+     line-height:20px;font-weight:bold;font-size:16px
+    }
+
+    .share_title {
+        line-height: 20px;color:#aaa
+    }
+
+    .mate-img-div {
+        -moz-border-radius: 5px; /* Gecko browsers */
+        -webkit-border-radius: 5px; /* Webkit browsers */
+        border-radius: 5px; /* W3C syntax */
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin: 5px 5px 10px 5px;
+    }
+
+    .mate-img {
+        position: relative;
+        overflow: hidden;
+        height: 180px;
+        width: 100%;
+    }
+
+        .mate-ctx, .mate-img .title {
+            text-align: left;
+        }
+
+    .mate-ctx {
+        margin-top: 5px;
+        margin-bottom: 20px;
+    }
+
+    .subimg {
+        width: 50px;
+        height: 50px;
+        float: right;
+    }
+
+    .mate-sub {
+        margin-top: 5px;
+        text-align: left;
+        border-top: 1px solid #ccc;
+        padding: 3px;
+    }
+
+    .subtitle {
+        line-height: 56px;
+    }
+ #mcover {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        display: none;
+        z-index: 20000;
+    }
+
+    #mcover img {
+        position: fixed;
+        right: 18px;
+        top: 5px;
+        width: 260px !important;
+        height: 180px !important;
+        z-index: 20001;
+    }
+
+    .mate-img-div img{width:100%}
+</style>
+
+<div id="mcover" onclick="document.getElementById('mcover').style.display='';" style="display:none;">
+    <img src="/images/guide.png" />
+</div>
+
+<div style="max-width:650px;text-align:left">
+    <!--单条图文-->
+    <div class="mate-inner top">
+        <div class="mate-img-div">
+            <hi:vshoptemplatedrepeater id="TopCtx" runat="server" templatefile="/Tags/skin-Common_FriendsCircleTopCtx.ascx">
+
+            </hi:vshoptemplatedrepeater>
+            <hi:vshoptemplatedrepeater id="ItemCtx" runat="server" templatefile="/Tags/skin-Common_FriendsCircleTopCtx.ascx">
+
+            </hi:vshoptemplatedrepeater>
+        </div>
+    </div>
+
+
+
+
+    <p>   </p>
+    <div style="text-align:center">
+        <a class="btn btn-info" style="width:42%" onclick="shareTimeline()">分享到微信</a>
+        <a class="btn btn-info" style="width:42%" onclick="shareToWeibo()">分享到微博</a>
+
+    </div>
+    
+  
+</div>
+
+
+
+
+
+
+
+
+
+<script>
+    //禁用右上角菜单
+    //document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+    //    WeixinJSBridge.call('hideOptionMenu');
+    //});
+</script>
+<script type="text/javascript">
+
+
+    var title = $(".title").eq(0).text();
+    var link = window.location.href;
+    var imgUrl ="http://"+ window.location.host + $("img").eq(1).attr("src");//获取第一张图片
+    var Dec = "["+title+ "]" + $(".mate-ctx").eq(0).text().trim();//获取第一条数据
+
+
+
+    wx.ready(function () {
+       
+        wx.error(function (res) {
+            // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+            console.log("公众号信息验证失败:" + res.errMsg);
+            
+        });
+        initWx()
+    });
+
+    function initWx() {
+
+        wx.onMenuShareTimeline({
+            title: title, // 分享标题
+            link: link, // 分享链接,将当前登录用户转为puid,以便于发展下线
+            desc: Dec,
+            imgUrl: imgUrl, // 分享图标
+            success: function () {
+                // 用户确认分享后执行的回调函数
+                alert_h('分享成功');
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+
+
+        wx.onMenuShareAppMessage({
+            title: title,
+            desc: Dec,
+            link: link,
+            imgUrl: imgUrl,
+            type: "",
+            dataUrl: "",
+            success: function () { },
+            cancel: function () { }
+        });
+
+        wx.onMenuShareQQ({
+            title:title , // 分享标题
+            desc: Dec, // 分享描述
+            link: link, // 分享链接
+            imgUrl: imgUrl, // 分享图标
+            success: function () {
+                // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+
+
+    }
+
+    function shareTimeline() {
+        if (/MicroMessenger/i.test(navigator.userAgent)) {
+            $("#mcover").show();
+        }
+        else {
+            alert_h("当前客户端不是微信，不能分享到微信！");
+        }
+  
+    }
+
+    function shareToWeibo() {
+        shareTSina(title, link, Dec, imgUrl)
+    }
+
+    /*title是标题，rLink链接，summary内容，site分享来源，pic分享图片路径,分享到新浪微博*/
+    function shareTSina(title, rLink, Dec, pic) {
+        window.open("http://service.weibo.com/share/share.php?pic=" +pic + "&title=" +
+        title + "&url=" + link + "&summary="+Dec,
+        title);
+
+    }
+
+    wxinshare_title = title;
+    wxinshare_desc = Dec;
+    wxinshare_link = link;
+    wxinshare_imgurl = imgUrl;
+
+</script>
+<hi:common_footer runat="server" isshownav="1" />

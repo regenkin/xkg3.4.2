@@ -1,0 +1,35 @@
+﻿<hi:common_header runat="server" />
+    <div id="imgGetRedPager"></div>
+<input type="hidden" id="hdID" runat="server" />
+<input type="hidden" id="hdUserid" runat="server" />
+<script type="text/javascript">
+    var reurl = location.href;
+    $(document).ready(function () {
+        $("#imgGetRedPager").click(function () {
+            var id = $("#vGetRedPager_hdID").val();
+            var userid = $("#vGetRedPager_hdUserid").val();
+            $.ajax({
+                url: "/API/VshopProcess.ashx",
+                type: 'post', dataType: 'json', timeout: 10000,
+                data: { action: "GetOrderRedPager", id: id, userid: userid, time: (new Date()).getTime() },
+                success: function (resultData) {
+                    if (resultData.status == "0") {
+                        location.href = "/vshop/getsuccess.aspx?type=1&id=" + id + "&m=" + resultData.tips;
+                    } else if (resultData.status == "-5") {
+                        /*已经领过红包*/
+                        location.href = "/vshop/getsuccess.aspx?type=5&id=" + id + "&m=" + resultData.tips;
+                    }
+                    else {
+                        location.href = "/vshop/getsuccess.aspx?type=" + resultData.status + "&id=" + id + "&m=" + encodeURI(resultData.tips);
+                    }
+                }
+            });
+        });
+    });
+    /*如果是从登录界面进来的，则直接点击操作*/
+    $(document).ready(function () {
+        $("#imgGetRedPager").click();
+    })
+    
+</script>
+<hi:common_footer runat="server" />

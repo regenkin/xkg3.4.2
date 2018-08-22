@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Menu>
+  <Module Title="店铺" IsDivide="true" ID="m01" Link="Default.aspx?firstPage=1">
+    <Item ID="dpi01">
+      <PageLink ID="dpp01"  Title="店铺概况" Link="Default.aspx"/>
+    </Item>
+    <Item ID="dpi02" Title="店铺管理" Class="glyphicon ico-dianp">
+      <PageLink ID="dpp02"  Title="店铺信息" Link="shop/Config.aspx"/>
+      <PageLink ID="dpp03"  Title="店铺主页" Link="shop/ShopIndex.aspx"/>
+      <PageLink ID="dpp04" Title="店铺导航" Link="shop/ShopMenu.aspx"/>
+      <PageLink ID="dpp05" Title="在线客服" Link="shop/saleservice.aspx"/>
+      <PageLink ID="dpp11" Title="消息公告" Link="shop/NoticeList.aspx"/>
+    </Item>
+    <Item ID="dpi03">
+      <PageLink ID="dpp06"  Title="素材管理" Link="shop/Articles.aspx"/>
+      <PageLink ID="dpp10"  Title="九图一文" Link="shop/ManageNineImages.aspx"/>
+    </Item>
+    <Item ID="dpi04" Title="图库管理" Class="glyphicon ico-tupian">
+      <PageLink ID="dpp07"  Title="图片库" Link="shop/imagedata.aspx"/>
+      <PageLink ID="dpp09"  Title="图片分组" Link="shop/imagetype.aspx"/>
+    </Item>
+  </Module>
+  <Module Title="商品" ID="m02" Link="goods/productonsales.aspx?firstPage=1">
+    <Item ID="spi01">
+      <PageLink ID="spp01"  Title="上架新商品" Link="goods/selectcategory.aspx" Class="ui-btn ui-btn-success" Style="padding-left:0px;"/>
+    </Item>
+    <Item ID="spi02"  Title="商品管理" Class="glyphicon ico-shangpin">
+      <PageLink ID="spp02"  Title="出售中的商品" Link="goods/productonsales.aspx"/>
+      <PageLink ID="spp03"  Title="仓库中的商品" Link="goods/productonstock.aspx"/>
+      <PageLink ID="spp10"  Title="已售罄的商品" Link="goods/productzero.aspx"/>      
+      <PageLink ID="spp11"  Title="商品回收站" Link="goods/productondeleted.aspx"/>
+      <PageLink ID="spp04"  Title="数据包导入" Link="goods/importfromtb.aspx"/>
+      <PageLink ID="spp05"  Title="批量导出" Link="goods/exporttotb.aspx"/>
+    </Item>
+    <Item ID="spi03" Title="分组管理" Class="glyphicon ico-fenlei">
+      <PageLink ID="spp06"  Title="商品分类" Link="goods/managecategories.aspx"/>
+      <PageLink ID="spp07"  Title="类型管理" Link="goods/producttypes.aspx"/>
+      <PageLink ID="spp14"  Title="标签管理" Link="goods/producttags.aspx"/>
+      <PageLink ID="spp08"  Title="品牌管理" Link="goods/brandcategories.aspx"/>
+    </Item>
+    <Item ID="spi04" Title="客户咨询" Class="glyphicon ico-zixun">
+      <PageLink ID="spp09" Link="goods/productconsultations.aspx" Title="客户咨询"/>
+      <PageLink ID="spp13"  Title="客户评论" Link="goods/ProductReviews.aspx"/>
+    </Item>
+  </Module>
+  <Module Title="订单" ID="m03" Link="trade/manageorder.aspx?firstPage=1">
+    <Item ID="ddi01">
+      <PageLink ID="ddp01"  Title="订单设置" Link="trade/setorderoption.aspx"/>
+    </Item>
+    <Item ID="ddi02" Title="订单管理" Class="glyphicon ico-dingdan">
+      <PageLink ID="ddp03"  Title="所有订单" Link="trade/manageorder.aspx"/>
+      <PageLink ID="ddp14"  Title="等待付款"  Link="trade/WaitBuyerPay.aspx"/>
+      <PageLink ID="ddp04"  Title="等待发货"  Link="trade/BuyerAlreadyPaid.aspx"/>
+      <PageLink ID="ddp05"  Title="已发货"  Link="trade/SellerAlreadySent.aspx"/>
+      <PageLink ID="ddp06"  Title="交易成功"  Link="trade/Finished.aspx"/>
+      <PageLink ID="ddp07"  Title="交易关闭"  Link="trade/Closed.aspx"/>
+      <PageLink ID="ddp08"  Title="订单回收站"  Link="trade/RecycleStation.aspx"/>
+    </Item>
+    <Item ID="ddi04">
+      <PageLink ID="ddp11"  Title="快递单模板" Link="trade/expresstemplates.aspx"/>
+    </Item>
+    <Item ID="ddi05" Title="售后服务" Class="glyphicon ico-shouhou">
+      <PageLink ID="ddp12"  Title="售后订单" Link="trade/returnsapply.aspx"/>
+    </Item>
+  </Module>
+  <Module Title="会员" IsDivide="true" ID="m04" Link="member/MemberGaiKuang.aspx?firstPage=1">
+    <Item ID="hyi01">
+      <PageLink ID="hyp01" Title="会员概况" Link="member/MemberGaiKuang.aspx"/>
+    </Item>
+    <Item ID="hyi02" Title="会员管理" Class="glyphicon ico-huiyuang">
+      <PageLink ID="hyp02"  Title="会员列表" Link="member/managemembers.aspx"/>
+      <PageLink ID="hyp03"  Title="会员等级" Link="member/membergrades.aspx"/>
+      <PageLink ID="hyp05"  Title="会员分组设置" Link="member/CustomDistributorList.aspx"/>
+      <PageLink ID="hyp10"  Title="会员积分查询" Link="member/MembersIntegralQuery.aspx"/>
+    </Item>
+    <Item ID="hyi03" Title="会员积分设置" Class="glyphicon ico-huiyuans">      
+      <PageLink ID="hyp07"  Title="签到送积分" Link="member/setScore_sign.aspx"/>
+      <PageLink ID="hyp06"  Title="购物送积分" Link="member/setScore_shopping.aspx"/>
+  </Item>
+  <Item ID="hyi04" Title="短信发送设置" Class="glyphicon ico-duanxinf">
+      <PageLink ID="hyp08"  Title="短信发送设置" Link="member/smssettings.aspx"/>
+      <PageLink ID="hyp09"  Title="购买短信套餐" Target="_blank" Link="http://sms.kuaidiantong.cn/SMSPackList.aspx"/>
+    </Item>
+  </Module>
+  <Module Title="分销" ID="m05"  Link="Fenxiao/DistributorSummary.aspx?firstPage=1">
+    <Item ID="fxi01">
+      <PageLink ID="fxp01"  Title="分销概况" Link="Fenxiao/DistributorSummary.aspx"/>
+      <PageLink ID="fxp02"  Title="申请分销设置" Link="Fenxiao/distributorapplyset.aspx"/>
+      <PageLink ID="fxp13"  Title="掌柜名片设置" Link="Fenxiao/StoreCardSet.aspx"/>
+    </Item>
+    <Item ID="fxi02" Title="分销商管理" Class="glyphicon ico-fenxiao">
+      <PageLink ID="fxp03"  Title="分销商列表" Link="Fenxiao/distributorlist.aspx"/>
+      <PageLink ID="fxp04"  Title="分销商等级" Link="Fenxiao/distributorgradelist.aspx"/>
+      <PageLink ID="fxp12"  Title="分销商升级奖励" Link="Fenxiao/distributorupdateset.aspx"/>
+      <PageLink ID="fxp05"  Title="销售排行榜" Link="Fenxiao/DistributorStatistics.aspx"/>
+      <PageLink ID="fxp11"  Title="自定义排行榜" Link="Fenxiao/CustomDistributorStatistics.aspx"/>
+      <PageLink ID="fxp07"  Title="批量生成账号" Link="Fenxiao/branchadddistributors.aspx"/>
+    </Item>
+    <Item ID="fxi03" Title="佣金管理" Class="glyphicon ico-yongjin">
+      <PageLink ID="fxp08"  Title="佣金明细" Link="Fenxiao/CommissionsAllList.aspx"/>
+      <PageLink ID="fxp09"  Title="提现申请" Link="Fenxiao/BalanceDrawApplyList.aspx"/>
+      <PageLink ID="fxp10"  Title="提现记录" Link="Fenxiao/BalanceDrawRequestList.aspx"/>
+      <PageLink ID="fxp06"  Title="提现设置" Link="Fenxiao/BalanceDrawRequestSet.aspx"/>
+    </Item>
+  </Module>
+  <Module Title="微信" IsDivide="true" ID="m06" Link="weixin/wxconfig.aspx?firstPage=1">
+    <Item ID="wxi01">
+      <PageLink ID="wxp01"  Title="绑定微信公众号" Link="weixin/wxconfig.aspx"/>
+    </Item>
+    <Item ID="wxi02" Title="微信设置" Class="glyphicon ico-weixin">
+      <PageLink ID="wxp02"  Title="一键关注" Link="weixin/concernurl.aspx"/>
+      <PageLink ID="wxp07"  Title="一键登录" Link="weixin/validationservice.aspx"/>
+      <PageLink ID="wxp03"  Title="自动回复"  Link="weixin/replyonkey.aspx"/>
+      <PageLink ID="wxp04"  Title="自定义菜单"  Link="weixin/managemenu.aspx"/>
+      <PageLink ID="wxp05"  Title="多客服设置"  Link="weixin/manyservice.aspx"/>
+      <PageLink ID="wxp06"  Title="消息模板"  Link="weixin/messagetemplets.aspx"/>
+    </Item>
+    <Item ID="wxi03">
+      <PageLink ID="wxp08"  Title="微信支付" Link="Settings/WeixinPay.aspx"/>
+      <PageLink ID="wxp09"  Title="微信证书设置"  Link="weixin/redpacksetting.aspx"/>
+    </Item>
+    <Item ID="wxi04" Title="群发" Class="glyphicon ico-qunfa">
+      <PageLink ID="wxp10"  Title="微信群发" Link="weixin/sendalllist.aspx"/>
+    </Item>
+  </Module>
+  <Module Title="微博" ID="m07" Link="Weibo/timeline.aspx?firstPage=1">
+    <Item ID="wbi01">
+      <PageLink ID="wbp01"  Title="绑定微博账号" Link="Weibo/setting.aspx"/>
+    </Item>
+    <Item ID="wbi02" Title="微博管理" Class="glyphicon ico-weibo">
+      <PageLink ID="wbp02"  Title="好友的微博" Link="Weibo/timeline.aspx"/>
+      <PageLink ID="wbp03"  Title="我的微博" Link="Weibo/usertimeline.aspx"/>
+      <PageLink ID="wbp04"  Title="微博消息" Link="Weibo/message.aspx"/>
+      <PageLink ID="wbp05"  Title="发布微博" Link="Weibo/post.aspx"/>
+    </Item>
+    <Item ID="wbi03" Title="消息推送" Class="glyphicon ico-xiaoxit">
+      <PageLink ID="wbp06"  Title="群发私信" Link="Weibo/letter.aspx"/>
+      <PageLink ID="wbp07"  Title="自动回复" Link="Weibo/autoreply.aspx"/>
+    </Item>
+    <Item ID="wbi04">
+      <PageLink ID="wbp08"  Title="自定义菜单" Link="Weibo/menu.aspx"/>
+    </Item>
+  </Module>
+  <Module Title="服务窗" ID="m11" Link="AliFuwu/AliFuwuConfig.aspx?firstPage=1">
+    <Item ID="fwi01">
+      <PageLink ID="fwp01"  Title="绑定服务窗" Link="AliFuwu/AliFuwuConfig.aspx"/>
+    </Item>
+    <Item ID="fwi02" Title="服务窗管理" Class="glyphicon ico-weibo">
+      <PageLink ID="fwp04"  Title="一键关注" Link="AliFuwu/concernurl.aspx"/>
+      <PageLink ID="fwp06"  Title="自动回复"  Link="AliFuwu/replyonkey.aspx"/>
+      <PageLink ID="fwp02"  Title="自定义服务窗菜单" Link="AliFuwu/ManageAlipayMenu.aspx"/>
+      <PageLink ID="fwp05"  Title="消息模板" Link="AliFuwu/AliFuWuMessageTemplates.aspx"/>
+    </Item>
+    <Item ID="fwi03" Title="群发管理" Class="glyphicon ico-qunfa">
+      <PageLink ID="fwp03"  Title="服务窗群发" Link="AliFuwu/Alisendalllist.aspx"/>
+    </Item>
+  </Module>
+  <Module Title="营销" IsDivide="true" ID="m08" Link="Promotion/CouponsList.aspx?firstPage=1">
+    <Item ID="yxi04" Title="优惠券"  Class="glyphicon ico-youhuiquan"> 
+      <PageLink ID="yxp01"  Title="优惠券列表" Link="Promotion/CouponsList.aspx?bFininshed=false"/>
+      <PageLink ID="yxp17"  Title="会员注册送优惠券" Link="Promotion/SetRegisterSendCoupon.aspx"/>
+      <PageLink ID="yxp18"  Title="优惠券手动发放" Link="Promotion/SendCouponByManager.aspx"/>
+    </Item>
+    <Item ID="yxi01" Title="促销活动" Class="glyphicon ico-chuoxiao">
+      <PageLink ID="yxp02"  Title="积分兑换" Link="Promotion/ExChangeList.aspx"/>
+      <PageLink ID="yxp03"  Title="积分抵现" Link="Promotion/PointToCash.aspx"/>
+      <PageLink ID="yxp04"  Title="分享助力" Link="Promotion/ShareActList.aspx"/>
+      <PageLink ID="yxp05"  Title="满减活动" Link="Promotion/ActivityList.aspx"/>
+      <PageLink ID="yxp24"  Title="限时折扣" Link="Promotion/LimitedTimeDiscountList.aspx"/>
+    </Item>
+    <Item ID="yxi05">
+      <PageLink ID="yxp20"  Title="一元夺宝" Link="Oneyuan/OneyuanList.aspx"/>
+      <PageLink ID="yxp22"  Title="活动退款" Link="Oneyuan/RefoundList.aspx"/>
+      <PageLink ID="yxp21"  Title="好友砍价" Link="Bargain/ManagerBargain.aspx?Type=0"/>
+    </Item>
+    <Item ID="yxi02">
+      <PageLink ID="yxp06"  Title="投票调查" Link="Promotion/voteList.aspx"/>
+    </Item>
+    <Item ID="yxi03" Title="抽奖游戏" Class="glyphicon ico-youxi">
+      <PageLink ID="yxp07"  Title="幸运大转盘" Link="Promotion/GameLists.aspx"/>
+      <PageLink ID="yxp08"  Title="疯狂砸金蛋" Link="Promotion/GameEggLists.aspx"/>
+      <PageLink ID="yxp09"  Title="好运翻翻看" Link="Promotion/GameXingYunLists.aspx"/>
+      <PageLink ID="yxp10"  Title="大富翁" Link="Promotion/GameDaFuWenLists.aspx"/>
+      <PageLink ID="yxp11"  Title="刮刮乐" Link="Promotion/GameGuaGuaLeLists.aspx"/>
+      <PageLink ID="yxp16"  Title="奖品发货管理" Link="Promotion/PrizeList.aspx"/>
+    </Item>
+  </Module>
+  <Module Title="设置" IsDivide="true" ID="m09" Link="Settings/Alipay.aspx?firstPage=1">
+    <Item ID="szi01" Title="设置收款账号" Class="glyphicon ico-zhifu">
+      <PageLink ID="szp01"  Title="支付宝" Link="Settings/Alipay.aspx"/>
+      <PageLink ID="szp03"  Title="盛付通" Link="Settings/ShengPay.aspx"/>
+      <PageLink ID="szp04"  Title="线下支付" Link="Settings/OfflinePay.aspx"/>
+      <PageLink ID="szp05"  Title="货到付款" Link="Settings/COD.aspx"/>
+    </Item>
+    <Item ID="szi02" Title="物流配送" Class="glyphicon ico-wuliu">
+      <PageLink ID="szp06"  Title="运费模板" Link="Settings/manageshippingtemplates.aspx"/>
+      <PageLink ID="szp08"  Title="物流公司" Link="Settings/ExpressComputerpes.aspx"/>
+      <PageLink ID="szp09"  Title="物流地址管理" Link="Settings/shippers.aspx"/>
+      <PageLink ID="szp13"  Title="物流跟踪配置" Link="Settings/ExpressSet.aspx"/>
+    </Item>
+    <Item ID="szi03" Title="安全中心" Class="glyphicon ico-anquan">
+      <PageLink ID="szp10"  Title="部门管理" Link="Settings/roles.aspx"/>
+      <PageLink ID="szp11"  Title="人员管理" Link="Settings/managers.aspx"/>
+      <PageLink ID="szp12"  Title="操作日志" Link="Settings/managelogs.aspx"/>
+    </Item>
+  </Module>
+  <Module Title="分析统计" ID="m10" Link="tongji/salereport.aspx?firstPage=1">
+    <Item ID="tji01">
+      <PageLink ID="tjp01"    Title="经营简报" Link="tongji/salereport.aspx"/>
+    </Item>
+    <Item ID="tji02" Title="销售分析" Class="glyphicon ico-xiaoshou">
+      <PageLink ID="tjp02"  Title="订单统计" Link="tongji/orderstatistics.aspx"/>
+      <PageLink ID="tjp03"  Title="老顾客回头率" Link="tongji/huitou.aspx"/>
+    </Item>
+    <Item ID="tji03">
+      <PageLink ID="tjp04"  Title="商品销售排行榜" Link="tongji/productsaleranking.aspx"/>
+    </Item>
+    <Item ID="tji04" Title="会员分析" Class="glyphicon ico-huiyuanf">
+      <PageLink ID="tjp06"  Title="会员排行榜" Link="tongji/memberranking.aspx"/>
+      <PageLink ID="tjp07"  Title="会员地区分布" Link="tongji/memberregion.aspx"/>
+      <PageLink ID="tjp08"  Title="会员增长统计" Link="tongji/userincreasestatistics.aspx"/>
+    </Item>
+  </Module>
+</Menu>

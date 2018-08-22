@@ -1,0 +1,63 @@
+﻿<hi:common_header runat="server"/>
+ <ul class="clearfix con-title">
+        <li><a href="CommissionDetails.aspx">佣金明细</a></li>
+        <li class="activenum"><a>提现结算列表</a></li>
+      </ul>
+    <div class="pbox commission-title">
+      <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>提现日期</th>
+          <th>提现金额</th>
+          <th>状态</th>
+        </tr>
+      </thead>
+      <tbody id="shopbalancedraw">
+      <hi:vshoptemplatedrepeater id="vshopbalancedraw" templatefile="/Tags/skin-Common_BalanceDrawRequest.ascx"
+        runat="server" />
+      </tbody>
+    </table>
+    <div id="empty" style="text-align: center;">
+        <img src="/Utility/pics/nonestore.gif" />
+    </div>
+    </div>
+    <script>
+        $(function () {
+          
+            if (!$.trim($('#shopbalancedraw').html())) {
+                $('#empty').css('display', '');
+            }
+            else {
+                $('#empty').css('display', 'none');
+            }
+
+
+            $(".DrawStatus").click(function () {
+                var SerialID = $(this).attr("SerialID");
+              
+                $.ajax({
+                    url: "/API/VshopProcess.ashx",
+                    type: 'post',timeout: 10000,
+                    data: { action: "GetDrawStatus", SerialID: SerialID },
+                    cache: false,
+                    success: function (resultData) {
+                        if (resultData != "N" && resultData != "") {
+                            alert_h(resultData);
+                        } 
+                    },
+                    error: function (data, status, e) {
+                       //alert_h("访问服务器出错了！");
+                    }
+                });
+            });
+
+        });
+
+
+
+
+      
+    </script>
+<Hi:Common_Footer runat="server" />
+
+

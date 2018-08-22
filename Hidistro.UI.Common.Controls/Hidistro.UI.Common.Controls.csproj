@@ -1,0 +1,190 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A62A60D2-EFAE-4B2A-9D22-86EE029FA5B4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Hidistro.UI.Common.Controls</RootNamespace>
+    <AssemblyName>Hidistro.UI.Common.Controls</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AopSdk">
+      <HintPath>..\DLL\AopSdk.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\DLL\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BrandCategoriesDropDownList.cs" />
+    <Compile Include="ButtonManager.cs" />
+    <Compile Include="ButtonWrapper.cs" />
+    <Compile Include="ClassShowOnDataLitl.cs" />
+    <Compile Include="CloseTranReasonDropDownList.cs" />
+    <Compile Include="CnzzShow.cs" />
+    <Compile Include="CustomChart.cs" />
+    <Compile Include="DecimalLengthDropDownList.cs" />
+    <Compile Include="DistributorGradeLitral.cs" />
+    <Compile Include="ExportFieldsCheckBoxList.cs" />
+    <Compile Include="ExportFormatRadioButtonList.cs" />
+    <Compile Include="ExpressRadioButtonList.cs" />
+    <Compile Include="FormatedMoneyLabel.cs" />
+    <Compile Include="FormatedSiteUrl.cs" />
+    <Compile Include="FormatedTimeLabel.cs" />
+    <Compile Include="Formatter.cs" />
+    <Compile Include="FormFixerHtml32TextWriter.cs" />
+    <Compile Include="FormFixerHtmlTextWriter.cs" />
+    <Compile Include="FreightTemplateDownList.cs" />
+    <Compile Include="GroupBuyStatusLabel.cs" />
+    <Compile Include="HeadContainer.cs" />
+    <Compile Include="HiImage.cs" />
+    <Compile Include="HiLabel.cs" />
+    <Compile Include="HiLiteral.cs" />
+    <Compile Include="HiPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HourDropDownList.cs" />
+    <Compile Include="HtmlDecodeTextBox.cs" />
+    <Compile Include="IButton.cs" />
+    <Compile Include="ImageLinkButton.cs" />
+    <Compile Include="ImageLinkButtonWrapper.cs" />
+    <Compile Include="ImageOrderDropDownList.cs" />
+    <Compile Include="ImagePosition.cs" />
+    <Compile Include="ImageUploader.cs" />
+    <Compile Include="IText.cs" />
+    <Compile Include="LabelWrapper.cs" />
+    <Compile Include="LeaveListTime.cs" />
+    <Compile Include="LicenseControl.cs" />
+    <Compile Include="LinkButtonWrapper.cs" />
+    <Compile Include="ListImage.cs" />
+    <Compile Include="ListRadioButton.cs" />
+    <Compile Include="LiteralWrapper.cs" />
+    <Compile Include="MailPriorityRadioButtonList.cs" />
+    <Compile Include="MeiQiaSet.cs" />
+    <Compile Include="MoneyColumnForAdmin.cs" />
+    <Compile Include="MonthDropDownList.cs" />
+    <Compile Include="OperationDropDownList.cs" />
+    <Compile Include="OrderAdminRemark.cs" />
+    <Compile Include="OrderCombineStatus.cs" />
+    <Compile Include="OrderItemsStatus.cs" />
+    <Compile Include="OrderItemStatusAndRefundLabel.cs" />
+    <Compile Include="OrderItemStatusLabel.cs" />
+    <Compile Include="OrderRemarkImage.cs" />
+    <Compile Include="OrderRemarkImageRadioButtonList.cs" />
+    <Compile Include="OrderStatusLabel.cs" />
+    <Compile Include="OrderStautsDropDownList.cs" />
+    <Compile Include="OrderUserRemark.cs" />
+    <Compile Include="PageSizeDropDownList.cs" />
+    <Compile Include="PageTitle.cs" />
+    <Compile Include="ProductDetailsLink.cs" />
+    <Compile Include="ProductFlashUpload.cs" />
+    <Compile Include="ProductTagsDropDownList.cs" />
+    <Compile Include="ProductTagsLiteral.cs" />
+    <Compile Include="ProductTypeDownList.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RefundOrderModeRadioButtonList.cs" />
+    <Compile Include="RegionAllName.cs" />
+    <Compile Include="RegionHandler.cs" />
+    <Compile Include="RegionSelector.cs" />
+    <Compile Include="SaleStatisticsTypeRadioButtonList.cs" />
+    <Compile Include="SaleStatusDropDownList.cs" />
+    <Compile Include="Script.cs" />
+    <Compile Include="ServiceSet.cs" />
+    <Compile Include="SimpleTemplatedWebControl.cs" />
+    <Compile Include="SiteUrl.cs" />
+    <Compile Include="SkinNotFoundException.cs" />
+    <Compile Include="SmallStatusMessage.cs" />
+    <Compile Include="StatusMessage.cs" />
+    <Compile Include="Style.cs" />
+    <Compile Include="SubStringLabel.cs" />
+    <Compile Include="SystemPageDropDownList.cs" />
+    <Compile Include="TemplatedWebControl.cs" />
+    <Compile Include="TextControlHelper.cs" />
+    <Compile Include="TrimTextBox.cs" />
+    <Compile Include="UpImg.cs" />
+    <Compile Include="UploadHandler.cs" />
+    <Compile Include="UploadType.cs" />
+    <Compile Include="UserStatisticeChart.cs" />
+    <Compile Include="VMemberTemplatedWebControl.cs" />
+    <Compile Include="VshopTemplatedRepeater.cs" />
+    <Compile Include="VshopTemplatedWebControl.cs" />
+    <Compile Include="WangWangConversations.cs" />
+    <Compile Include="WeixinSet.cs" />
+    <Compile Include="YearDropDownList.cs" />
+    <Compile Include="YesNoRadioButtonList.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ImageUploader.css.style.css" />
+    <EmbeddedResource Include="ImageUploader.images.upload.png" />
+    <EmbeddedResource Include="ImageUploader.script.upimg.js" />
+    <EmbeddedResource Include="ImageUploader.script.upload.js" />
+    <EmbeddedResource Include="region.helper.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ASPNET.WebControls\ASPNET.WebControls.csproj">
+      <Project>{b416b0d8-04ee-40c0-9427-89e10684a455}</Project>
+      <Name>ASPNET.WebControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hidistro.ControlPanel\Hidistro.ControlPanel.csproj">
+      <Project>{7198f147-387a-4bab-88d4-7e4d4e6c318d}</Project>
+      <Name>Hidistro.ControlPanel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hidistro.Core\Hidistro.Core.csproj">
+      <Project>{ba978d9c-daad-4c14-a46a-2fe5c9ee44d5}</Project>
+      <Name>Hidistro.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hidistro.Entities\Hidistro.Entities.csproj">
+      <Project>{064e5464-4c86-4372-92cf-560005bc22c6}</Project>
+      <Name>Hidistro.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hidistro.SaleSystem.Vshop\Hidistro.SaleSystem.Vshop.csproj">
+      <Project>{74e0ac16-89a0-4ef1-9e76-82698da459f4}</Project>
+      <Name>Hidistro.SaleSystem.Vshop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hishop.AlipayFuwu.Api\Hishop.AlipayFuwu.Api.csproj">
+      <Project>{66184087-38b2-457a-92ff-82a09cb413bc}</Project>
+      <Name>Hishop.AlipayFuwu.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hishop.Weixin.MP\Hishop.Weixin.MP.csproj">
+      <Project>{30ffb131-4107-4aa8-a6e3-cc55ff2726b0}</Project>
+      <Name>Hishop.Weixin.MP</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

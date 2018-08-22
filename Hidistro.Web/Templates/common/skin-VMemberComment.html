@@ -1,0 +1,60 @@
+﻿<hi:common_header runat="server" />
+<link href="/style/memberorder.css" rel="stylesheet" type="text/css">
+<div class="container" style="padding-bottom: 0;">
+    <header></header>
+    <div class="orderbox" id="divorderlist">
+        <hi:vshoptemplatedrepeater id="rptOrderItemList" templatefile="/Tags/skin-Common_MemberCenterComment.ascx"
+                                   runat="server" />
+    </div>
+    <script>
+        //禁用右上角菜单
+        //document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+        //    WeixinJSBridge.call('hideOptionMenu');
+        //});
+    </script>
+    <p id="divEmpty" class="text-center list-empty hide">
+        <span class="glyphicon glyphicon-list-alt" style="margin-left: -3px;"></span><em>待评价订单列表为空</em>
+    </p>
+</div>
+
+<div id="pager"></div>
+<!--翻页相关-->
+<input type="hidden" clientidmode="Static" value="" runat="server" id="txtTotal" />
+<input type="hidden" runat="server" clientidmode="Static" value="0" id="txtShowTabNum">
+<script src="/Utility/common.js?2016" type="text/javascript"></script>
+<script src="/Utility/pager.js" type="text/javascript"></script>
+<script type="text/javascript">
+    vshopPager('pager', $('#txtTotal').val(), 1, 10);
+</script>
+<script type="text/javascript">
+
+
+    $(function () {
+        if (!$.trim($("#divorderlist").html())) {
+            $("#divorderlist").hide();
+            $("#divEmpty").removeClass('hide');
+        }
+        var list_h = (document.documentElement.clientHeight - 49 - $('.list-empty').height()) * .5 + 'px';
+        $('.list-empty').css('margin-top', list_h);
+
+        var skuInputs = $('.specification input');
+        $.each(skuInputs, function (j, input) {
+            var text = '';
+            var sku = $(input).val().split(';');
+            var changsku = '';
+            for (var i = sku.length - 2; i >= 0; i--) {
+                changsku += sku[i] + ';';
+            }
+            $.each(changsku.split(';'), function (i, sku) {
+                if ($.trim(sku))
+                    text += '<span class="property">' + sku.split('：')[1] + '</span>';
+            });
+            $(input).parent().html(text);
+        });
+    });
+</script>
+
+
+
+
+    <hi:common_footer runat="server" />

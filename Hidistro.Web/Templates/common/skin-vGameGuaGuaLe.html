@@ -1,0 +1,227 @@
+﻿<hi:common_header runat="server" />
+<asp:Literal ID="litJs" runat="server"></asp:Literal>
+<link href="/style/guaguale.css" rel="stylesheet" />
+<style>
+    .prizeCss tr { border-bottom: 1px solid #f26868; }
+    .prizeCss td { padding: 8px; color: #eee; text-align: left; }
+    .prize_Info { color: #fff !important; }
+    .prize DIV span { display: none; }
+
+    .mask .phone-box{position:absolute;padding:0 20px;left:0;top:80px;width:100%;}
+	.mask .phone-box .form-phone{position:relative; background-color:#fff;padding:25px;border-radius:8px;}
+	.mask .phone-box .form-phone h5{font-size:18px;color:#1CC3D4;text-align:center;margin-bottom:15px;}
+	.phone-box .form-phone .form-input{position:relative;border-bottom:1px solid #80DEE7;}
+	.phone-box .form-phone .form-input input{width:100%;border:none;height:30px;padding-left:30%;font-size:16px;outline:none;}
+	.phone-box .form-phone .form-input label{position:absolute;left:0;width:30%;line-height:30px;font-size:16px;}
+	.phone-box .form-phone .btn-phone{width:100%;height:40px;background-color:#01BBD0;color:#fff;border:none;border-radius:8px;font-size:16px;outline:none;}
+	.form-phone .btn-close{position:absolute;right:0;top:0;font-size:24px;width:30px;height:30px;text-align:center;line-height:30px;}
+    .phone-box .form-phone .showmessage{height:25px;line-height:25px;text-align:center;}
+</style>
+<div style="display:none;">
+    <img src="/images/01.png">
+    <img src="/images/02.png">
+    <img src="/images/03.png">
+    <img src="/images/04.png">
+    <img src="/images/05.png">
+</div>
+<div class="container">
+     <div class="comeAgain">再来一次</div> 
+    <div class="box">
+        <div class="margin canvasbg ">
+            <div class="zj" id="prize">
+                <canvas id="CanvasLe" width="280" height="140" style="margin-top:10px;"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="infoList">
+        <div class="infoTitle">游戏奖品：</div>
+        <table width="100%">
+            <tbody class="prizeCss">
+            </tbody>
+        </table>
+    </div>
+    <div class="infoList">
+        <h3 class="infoTitle">游戏说明：</h3>
+        <p id="dGameDescription"></p> 
+    </div>
+    <div class="infoList">
+        <h3 class="infoTitle">活动时间：</h3>
+        <p id="gameTime"></p>
+    </div>
+    <div class="infoList nobg">
+        <h3 class="infoTitle">中奖名单：</h3>
+        <div class="nameListTop">
+            <ul>
+                <li>昵称</li>
+                <li>奖品</li>
+                <li>等级</li>
+                <li>中奖时间</li>
+            </ul>
+        </div>
+        <div class="nameList" id="userPrizeLists"></div>
+    </div>
+    <div class="myWinning">
+        <a href="Vshop/MyPrizeList.aspx?ShowTab=0" style="height: 68.86px;">点击查看我的奖品</a>
+    </div>
+</div>
+<script src="/script/vgame.js?201603"></script>
+<script type="text/javascript">
+    var flag = false;
+    var flagTF = IsCanPlay();
+    $(function () {
+        if (!flagTF) {
+            $('.comeAgain').hide();
+    }
+        function setH() {
+            $('.myWinning a').height($('.myWinning a').width() * 0.22);
+            $('.infoTitle').height($('.infoTitle').width() * 0.341).css('lineHeight', $('.infoTitle').width() * 0.341 + 'px');
+    }
+        setH();
+        $(window).resize(function () {
+            setH();
+    })
+        BindData();
+        $(".comeAgain").click(function () {
+            flag = false;
+            if (IsCanPlay()) {
+                item = -2;
+                init();
+                $('#prize').removeAttr('style');
+    }
+    else {
+                alert_h("超过每人每天限次！！");
+    }
+    });
+        GetPrizeTdHtml();
+
+        //电话号码的验证
+        CheckMemberPhone();
+
+        //保存手机号码
+        SavePhone();
+    });
+    window.onload = function () {
+        init();
+    }
+    var item = -2;
+    var imageWidth = "280";
+    var imageheight = "140";
+
+    function init() {
+        //定义绘画宽 高
+
+        //定义Canvas对象
+        var Canavas = document.getElementById("CanvasLe");
+        var Context2D = Canavas.getContext("2d");
+        //var img = new Image();
+        //img.src ="zj.png";
+
+        var bool = true;
+        Context2D.fillStyle = '#cccccc';	//设置覆盖层的颜色
+        Context2D.fillRect(0, 0, imageWidth, imageheight);	//设置覆盖的区域
+        if (flagTF) {
+            //触发触屏滑动事件
+            Canavas.addEventListener('touchmove', function (event) {
+                if (!flag) {
+                    flag = true;
+                    GetItem();
+                    if (item < 0) {
+                        item = 5;
+                    }
+                    // 如果这个元素的位置内只有一个手指的话
+                }
+                if (event.targetTouches.length == 1) {
+                    if (!$('#prize').attr('style')) {
+                        $('#prize').css('background', 'url(/images/0' + item + '.png) no-repeat');
+                    }
+                    event.preventDefault();// 阻止浏览器默认事件，重要 
+                    var touch = event.targetTouches[0];
+                    // 把元素放在手指所在的位置
+                    var canvasOffset = $(Canavas).offset();
+                    var canvasX = Math.floor(touch.pageX - canvasOffset.left);
+                    var canvasY = Math.floor(touch.pageY - canvasOffset.top);
+                    //$("#touchCoordinate").text("x:"+ canvasX +"  y:"+canvasY);
+                    lottery(touch.pageX, touch.pageY, Context2D);
+                }
+            }, false);
+            //增加Canvas鼠标滑动事件
+            Canavas.onmousemove = function (e) {
+                if (!flag) {
+                    flag = true;
+                    GetItem();
+                    if (item < 0) {
+                        item = 5;
+                    }
+                }
+                if (!$('#prize').attr('style')) {
+                    $('#prize').css('background', 'url(/images/0' + item + '.png) no-repeat')
+                }
+                var canvasOffset = $(Canavas).offset();
+                var canvasX = Math.floor(e.pageX - canvasOffset.left);
+                var canvasY = Math.floor(e.pageY - canvasOffset.top);
+                canvasY += parseInt(imageheight);
+                lottery(canvasX, canvasY, Context2D);
+            }
+        }
+        else {
+            alert_h("超过每人每天限次！！");
+        }
+    }
+    //刮刮函数
+    function lottery(x, y, c) {
+        c.clearRect(x, y - imageheight, 20, 20);
+    }
+
+    function returnFn() {
+        $('.mask').animate({
+            opacity: 0
+        }, function () {
+            $('.mask').remove();
+        });
+    };
+
+    function GetItem() {
+        var data = GetPrize();
+        switch (data.prizeName) {
+            case "一等奖":
+                item = 1;
+                break;
+            case "二等奖":
+                item = 2;
+                break;
+            case "三等奖":
+                item = 3;
+                break;
+            case "四等奖":
+                item = 4;
+                break;
+            default:
+        }
+    }
+    function BindData() {
+        InitInfo();
+        //绑定游戏信息
+        var len = gameData.prizeLists.length;
+        for (var i = 0; i < len; i++) {
+            if (gameData.prizeLists[i].prizeCount > 0) {
+                $("#prizeItem" + i).html(gameData.prizeLists[i].PrizeFullName);
+            }
+        }
+
+        $("#dGameDescription").html(gameData.Description);
+        $("#gameTime").html(gameData.BeginDate + " 至 " + gameData.EndDate);
+        UserPrizeLists();
+    }
+
+    ///获取游戏奖品信息
+    function GetPrizeTdHtml() {
+        var prizeTdHtml = "";
+        var prizeLists = gameData.prizeLists;
+        for (var i = 0; i < prizeLists.length; i++) {
+            var item = prizeLists[i];
+            prizeTdHtml += "<tr><td>" + item.prizeType + "：</td><td class=\"prize_Info\" id=\"prizeItem" + i + "\">" + item.prize + "</td></tr> ";
+        }
+        $(".prizeCss").append(prizeTdHtml);
+    }
+</script>
+<hi:common_footer runat="server" />

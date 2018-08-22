@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link href="../bootflat/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="../bootflat/bootflat/css/bootflat.min.css" rel="stylesheet" type="text/css" />
+
+
+    <link href="vshopSelector.css" rel="stylesheet" type="text/css" />
+    <script src="jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="vshopSelector.js" type="text/javascript"></script>
+    <script src="../bootflat/js/bootstrap.min.js" type="text/javascript"></script>
+</head>
+<body>
+
+<div style="width:400px;">
+<div id="selector"></div>
+</div>
+
+
+
+
+
+</body>
+<script type="text/javascript">
+    $(function () {
+        var data = [{ text: 'aaa', value: 1 }, { text: 'bbb', value: 2 }, { text: 'ccc', value: 3}];
+        var sel = $('#selector').vshopSelector({ data: data });
+    });
+
+
+
+</script>
+
+
+
+</html>

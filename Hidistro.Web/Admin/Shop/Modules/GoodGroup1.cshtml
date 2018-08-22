@@ -1,0 +1,36 @@
+﻿@{string renminbi = "￥";}
+<div class="members_con">
+@if (@Model.layout == 1)
+{
+    <section class="members_goodspic">
+        <ul>
+            @if (@Model.goodslist.Count > 0)
+            {
+                for (int i = 0; i < @Model.goodslist.Count; i++)
+                {
+                    var good = @Model.goodslist[i];
+                    <li class="mingoods">
+                        <a href="@good.link "><img src="@good.pic" width="100%"></a>
+                        @if (@Model.showIco || @Model.showPrice)
+                        {
+                            <span class="replace">
+                                @if (@Model.showIco)
+                                {
+                                    <i></i>
+                                }
+                                @if (@Model.showPrice)
+                                {
+                                    @renminbi;@good.price;
+                                    <span class="original_price"><s>&yen; @good.original_price</s></span>
+                                }
+                            </span>
+                        }
+
+                    </li>
+                }
+            }
+        </ul>
+    </section>
+}
+
+</div>

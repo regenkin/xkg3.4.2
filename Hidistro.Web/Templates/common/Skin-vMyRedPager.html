@@ -1,0 +1,41 @@
+﻿<hi:common_header runat="server" />
+<ul class="clearfix orders-title title_bg">
+    <li class="activenum"><a href="myredpager.aspx">可用代金券</a></li>
+    <li><a href="myredpager.aspx?status=2">历史代金券</a></li>
+</ul>
+<p class="text-center list-empty hide" id="empty">
+    <span class="glyphicon glyphicon-star" style="margin-left: 6px;"></span>
+    <em>代金券为空</em>
+</p>
+<div class="pbox">
+    <div id="redpagerList">
+        <Hi:VshopTemplatedRepeater ID="rptRedPagerList" TemplateFile="/Tags/skin-Common_MyRedPager.ascx" runat="server" />
+    </div>
+    <div id="pager"></div>
+</div>
+<input type="hidden" clientidmode="Static" value="" runat="server" id="txtTotal" />
+<script src="/Utility/common.js?2016" type="text/javascript"></script>
+<script src="/Utility/pager.js" type="text/javascript"></script>
+<script>
+    vshopPager('pager', $('#txtTotal').val(), 1, 20);
+    //禁用右上角菜单
+    //document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+    //    WeixinJSBridge.call('hideOptionMenu');
+    //});
+</script>
+<script type="text/javascript">
+    var temporderId = null;
+    var strparam = getParam('status');
+    if (strparam == "2") {
+        $(".orders-title li:eq(1)").addClass("activenum").siblings().removeClass("activenum");
+    }
+    $(function () {
+        if (!$.trim($('#redpagerList').html())) {
+            $('.pbox').addClass('hide');
+            $('#empty').removeClass('hide');
+        }
+        var list_h = (document.documentElement.clientHeight - 49 - $('.list-empty').height()) * .5 + 'px';
+        $('.list-empty').css('margin-top', list_h);
+    });
+</script>
+<hi:common_footer runat="server" />

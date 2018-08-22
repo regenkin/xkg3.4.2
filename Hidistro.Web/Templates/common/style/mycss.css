@@ -1,0 +1,26 @@
+
+html,body{height: 100%;font-size: 12px;font-family: "微软雅黑";background-color: #fff;}
+.container{max-width: 640px;min-height: 100%; padding: 0;background-color: #F5F5F5;}
+header{margin-bottom: 10px;}
+header img{display: block;max-width: 100%;}
+.content{padding: 0 10px;}
+.content .vote{padding:4% 3%; margin-bottom: 5%; background-color: #fff;border-radius: 5px;box-shadow: 1px 1px 5px #ccc;}
+.content .vote h2{font-size: 14px;margin-bottom: 5px;}
+.content .datatime{color: #666666;}
+.content .explain{margin: 10px 0;}
+.content .votingNumber{height: 33px;text-align: center;background-color: #F2F2F2;line-height: 33px;border: 1px solid #E4E4E4;}
+.startVote{padding: 0 2%;}
+.startVote ul li{padding: 3%;display: table;width: 100%;border-bottom: 1px dashed #E4E4E4;font-style:normal;}
+.startVote ul li h6{margin-bottom: 3%;}
+.startVote ul li .select .progress{float: left; width: 60%; height: 10px;position: relative;overflow: visible;margin-bottom: 0;}
+.startVote ul li .select .progress .progress-bar{border-radius: 5px;}
+.startVote ul li .select:after{content:"";clear:both;display:block;height:0;}
+.startVote ul li .select label{float: right;margin-bottom: 0;margin-top: -3px;font-style:normal;}
+.startVote ul li .select label input{vertical-align: middle;margin: -2px 5px 0 0;}
+.startVote ul li .select .progress .complete{position: absolute; right: -17%;top: -3px;z-index: 999；}
+.startVote ul li .select .progress .complete i{color: #009900;font-style: normal;}
+.startVote ul li .select .progress .complete.check{right: -35%;}
+.startVote .subbtn{padding: 4%; padding-bottom: 0;text-align: right;font-style:normal;}
+.startVote .subbtn button{width: 50px;}
+h5{font-size:100%;}
+

@@ -1,0 +1,34 @@
+﻿<hi:common_header runat="server" />
+      <ul class="clearfix orders-title title_bg">
+    <li class="activenum"><a href="/Vshop/MemberOrderReturn.aspx">售后列表</a></li>
+    <li><a href="/ProgressCheck.aspx">历史记录</a></li>
+</ul>
+<div id="divorderlist" class="">
+    <hi:vshoptemplatedrepeater id="rptOrders" templatefile="/Tags/skin-Common_MemberOrderReturn.ascx"
+        runat="server" />
+</div>
+<script>
+    //禁用右上角菜单
+    //document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+    //    WeixinJSBridge.call('hideOptionMenu');
+    //});
+</script>
+<p id="divEmpty" class="te
+xt-center list-empty hide">
+    <span class="glyphicon glyphicon-list-alt" style="margin-left: -3px;"></span><em>订单列表为空</em>
+</p>
+<script type="text/javascript">
+    $(function () {
+        if (!$.trim($("#divorderlist").html())) {
+            $("#divorderlist").hide();
+            $("#divEmpty").removeClass('hide');
+        }
+        
+        var list_h = (document.documentElement.clientHeight - 49 - $('.list-empty').height())*.5 + 'px';
+       $('.list-empty').css('margin-top',list_h);
+    })
+</script>
+
+
+
+<hi:common_footer runat="server" />

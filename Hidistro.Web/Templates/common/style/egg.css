@@ -1,0 +1,32 @@
+﻿body { padding:0px;}
+.container{max-width: 640px;margin: 0 auto;padding:0;}
+.container .gameInt{padding: 0 4.6%; background:-webkit-gradient(linear, 0 0, 0 100%, from(#ED844B), to(#F3507D));color: #FFF6F1;background:-moz-linear-gradient(top, #ED844B, #F3507D);}
+.gameInt .inttext{padding-top: 68%;background: url(../images/eggtop.png) no-repeat center 10px;background-size: 85%;}
+.inttextList .prizeTitle{margin-bottom: 4%;}
+.inttextList .prizeTitle h3{position: relative; width: 39%; text-indent: 8%; background: url(../images/prize.png) no-repeat; background-size: 100%;font-size: 14px;}
+.inttextList .prizeTitle h3 span{position: absolute;display:block;width:100px; bottom: 10%;left: 35%;color: #fff;text-shadow:0 0 2px #fff;}
+.prizeList table tr td{min-height: 20px; vertical-align:top;}
+.inttextList{margin-bottom: 6%;}
+.inttextList p{line-height: 20px;}
+.startGame{background: url(../images/game.png) no-repeat;background-size: 100%;margin-bottom: 5%;overflow: hidden;}
+.egg{height:400px; margin:10% auto 5% auto;}
+.egg ul li{z-index:999;}
+.eggList{padding-top:20%;position:relative;}
+.eggList li{list-style-type:none;float:left;background:url(../images/egg_1.png) no-repeat bottom;background-size: 100%; width:27.2%;cursor:pointer;position:relative;margin-left:4%;outline: none;}
+.eggList li span{position:absolute; width:30px; height:60px;text-align: center; left:50%; margin-left: -15px; top:50%;margin-top: -30px; color:#ff0; font-size:42px; font-weight:bold}
+.eggList li.curr{background:url(../images/egg_2.png) no-repeat bottom;background-size: 100%;cursor:default;z-index:300;}
+.eggList li.curr sup{position:absolute;background:url(../images/img-4.png) no-repeat;background-size: 100%;width:147%; top:-20%;left:-21%;z-index:800;}
+.hammer{background:url(../images/img-6.png) no-repeat;background-size: 100%;width:12.7%;position:absolute; text-indent:-9999px;z-index:150;left:10%;top:90%;}
+.resultTip{position:absolute; background:#ffc ;padding:6px;width: 100%; color:#f60; text-align:center;overflow:hidden;display:none;z-index:500;}
+.resultTip b{font-size:12px;}
+.prizeList table tr td { text-align:left;}
+.winningList{margin-bottom:5%;}
+.nameListTop ul li{height: 40px;width: 25%;float: left;line-height: 40px;text-align: center;font-weight: 700;font-size: 14px;background-color: #D6374B;}
+.nameList{max-height: 240px;overflow: auto;}
+.nameListTop ul:after,.nameList ul:after{content:"";clear:both;display:block;height:0;}
+.nameList ul,.nameListTop ul{margin-bottom:0;}
+.nameList ul li{float: left;width: 25%;height: 40px;text-align: center;line-height: 40px;font-size: 12px;}
+.nameList ul:nth-of-type(2n){background-color: #E54463;}
+.myWinning{width: 54%;margin: 0 auto;display: table;}
+.myWinning a{display:table-cell;vertical-align: middle; background-color: #FAD294;color: #000;box-shadow: 0 5px 1px #9C1001;text-align: center;font-size: 14px;border-radius: 5px;}
+.comeAgain{position: fixed;top: 10%;padding:5px 10px; width: 44px; font-size: 12px; border-radius: 5px; background-color: rgba(255,255,255,0.8); cursor:pointer;    z-index: 100; }

@@ -1,0 +1,233 @@
+﻿<hi:common_header runat="server" />
+<style>
+    body {
+        background: #fff;
+    }
+    .ninefigureoneinfoimg p.info {
+        line-height: 24px;
+        color: #000;
+        text-align:left;
+        margin-bottom:10px;
+    }
+
+    .ninefigureoneinfoimg {
+        clear: both;
+        text-align: center;
+        margin-left: 10px;
+        margin-right: 10px;
+        border: 1px solid #BBB;
+        border-radius: 5px;
+        padding: 10px;
+        margin-right: 10px;
+        margin-top: 10px;
+        position: relative;
+        box-shadow: -0px 0 0px #fff, /*左边阴影*/
+        1px 0 1px #ccc, /*右边阴影*/
+        0 -0px 0px #fff, /*顶部阴影*/
+        0 6px 6px #ccc; /*底边阴影*/
+    }
+        .ninefigureoneinfoimg .y-imglist li img {
+            height: 100%;
+        }
+        .ninefigureoneinfoimg .y-imglist li {
+            width: 31%;
+            height: auto;
+            display: inline-block;
+            margin-right: 2px;
+            margin-bottom: 2px;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+        }
+       
+            .ninefigureoneinfoimg .y-imglist li p {
+                width: 100%;
+                height: 100%;
+                border: 1px dashed #CCC;
+                color: #CCC;
+                text-align: center;
+                line-height: 89px;
+            }
+
+    ul li {
+        list-style: outside none none;
+    }
+    
+
+    .pageNumber {
+        text-align: center;
+        clear:both
+    }
+
+        .pageNumber .pagination {
+            border-left: 1px solid #ddd;
+        }
+
+            .pageNumber .pagination .page-skip {
+                display: inline-block;
+                height: 29px;
+                font-size: 12px;
+                line-height: 29px;
+                margin-left: 5px;
+            }
+
+                .pageNumber .pagination .page-skip input {
+                    line-height: 26px;
+                    border: 1px solid #ddd;
+                    width: 29px;
+                    height: 29px;
+                    text-align: center;
+                    margin: 0 5px;
+                    vertical-align: middle;
+                }
+
+    .pagination span.page-cur, .pagination a {
+        padding: 5px 10px;
+        float: left;
+        border: 1px solid #ddd;
+        border-left: none;
+        color: #337ab7;
+        font-size: 12px;
+    }
+
+    .pageNumber .pagination .page-skip input.button {
+        background-color: #5bc0de;
+        border-color: #46b8da;
+        border-radius: 4px;
+        color: #fff;
+        width: auto;
+        margin-right: 3px;
+    }
+    .shareHelp div {
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        padding: 10px 20px 10px 20px;
+        color: #f66d06;
+        display: none;
+    }
+    .shareHelp {
+        padding:2px 10px 5px 10px
+    }
+     .shareHelp .shareTx {
+        color: #46b8da;
+        cursor: pointer;
+    }
+</style>
+<ul class="clearfix orders-title title_bg">
+    <li><a href ="FriendsCircle.aspx">图文素材</a></li>
+    <li><a class="activenum">九图一文素材</a></li>
+</ul>
+
+<div class="shareHelp">
+    <p class="shareTx">
+        <img src="/images/helpnine.png" style="margin-right:5px" />怎么将多图文素材分享到朋友圈
+        <img src="/images/downshow.png" style="margin-left:2px" />
+    </p>
+    <div>
+        <p>第一步：选择待分享的多图效果；</p>
+        <p>第二步：长按每个图片，分别将图片分别收藏到本地；</p>
+        <p>第三步：长按标题文字，复制标题；</p>
+        <p>第四步：打开微信朋友圈，粘贴标题、选择收藏的图片，将多图分享到朋友圈</p>
+    </div>
+</div>
+
+<div id="ctxmain">
+    <hi:vshoptemplatedrepeater id="refriendscircle" templatefile="/Tags/skin-Common_NineImagesItem.ascx" runat="server" />
+</div>
+
+<div class="pageNumber">
+    <div class="pagination">
+        <UI:Pager runat="server" ShowTotalPages="false" DefaultPageSize="10" ID="pager" />
+    </div>
+</div>
+
+<script type="text/javascript">
+
+
+    var title = $(".info").eq(0).text().trim();
+    var link = window.location.href;
+    var imgUrl = "http://" + window.location.host + $("img").eq(2).attr("src");//获取第一张图片
+    var Dec = title;//获取第一条数据
+
+   
+    wx.ready(function () {
+
+        wx.error(function (res) {
+            // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+           // alert_h("公众号信息验证失败:" + res.errMsg);
+        });
+        initWx();
+
+    });
+
+   
+    $(function () {
+
+        $(".shareTx").click(function () {
+            $(".shareHelp div").toggle(100);
+        });
+
+        $(".img").each(function () {
+            if ($(this).text().trim() != "") {
+               // $(this).remove();
+            }
+        });
+
+        reSetHeight();
+     
+    });
+
+    $(window).resize(reSetHeight);
+
+    function reSetHeight() {
+        var liwith = $(".img").eq(0).width();
+        $(".img").height(liwith);
+    }
+
+    function initWx() {
+
+        wx.onMenuShareTimeline({
+            title: Dec, // 分享标题
+            link: link, // 分享链接,将当前登录用户转为puid,以便于发展下线
+            desc: Dec,
+            imgUrl: imgUrl, // 分享图标
+            success: function () {
+                // 用户确认分享后执行的回调函数
+                alert_h('分享成功');
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+
+
+        wx.onMenuShareAppMessage({
+            title: title,
+            desc: Dec,
+            link: link,
+            imgUrl: imgUrl,
+            type: "",
+            dataUrl: "",
+            success: function () { },
+            cancel: function () { }
+        });
+
+        wx.onMenuShareQQ({
+            title: Dec, // 分享标题
+            desc: title, // 分享描述
+            link: link, // 分享链接
+            imgUrl: imgUrl, // 分享图标
+            success: function () {
+                // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+
+
+    }
+
+
+</script>
+<hi:common_footer runat="server" isshownav="1" />

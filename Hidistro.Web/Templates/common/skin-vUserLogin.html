@@ -1,0 +1,146 @@
+﻿<hi:common_header runat="server" />
+ 
+<div class="pbox" style="padding:50px 15px 0;">
+    <form id="form" role="form" class="clearfix apply">
+        <div class="login-name">
+            <span class="glyphicon glyphicon-user"></span>
+            <input type="text" class="" id="txtUserName" style="font-size: 14px;" placeholder="请输入您的用户名" />
+        </div>
+        <div class="login-name">
+            <span class="glyphicon glyphicon-lock"></span>
+            <input type="password" class="" id="txtPassword" placeholder="请输入您的密码" />
+        </div>
+        <div class="form-group">
+            <button type="button" class="btn btn-danger btn-block login-btn" style="width:100%" id="btnUserLogin">立即登录</button>
+            <p class="text-center" style="margin-top: 5px; font-size: 16px;"><a id="Register" class="text-muted">免费注册</a></p>
+        </div>
+    </form>
+</div>
+<script>
+    //禁用右上角菜单
+    //document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+    //    WeixinJSBridge.call('hideOptionMenu');
+    //});
+</script>
+
+<script type="text/javascript">
+    var JPlaceHolder = {
+        //检测
+        _check: function () {
+            return 'placeholder' in document.createElement('input');
+        },
+        //初始化
+        init: function () {
+            if (!this._check()) {
+                this.fix();
+            }
+        },
+        //修复
+        fix: function () {
+            jQuery(':input[placeholder]').each(function (index, element) {
+                var self = $(this), txt = self.attr('placeholder');
+                self.wrap($('<div></div>').css({ position: 'relative', zoom: '1', border: 'none', background: 'none', padding: 'none', margin: 'none' }));
+                var pos = self.position(), h = self.outerHeight(true), paddingleft = self.css('padding-left');
+                var holder = $('<span></span>').text(txt).css({ position: 'absolute', left: pos.left, top: pos.top, height: h, lienHeight: h, paddingLeft: paddingleft, color: '#aaa' }).appendTo(self.parent());
+                self.focusin(function (e) {
+                    holder.hide();
+                }).focusout(function (e) {
+                    if (!self.val()) {
+                        holder.show();
+                    }
+                });
+                holder.click(function (e) {
+                    holder.hide();
+                    self.focus();
+                });
+            });
+        }
+    };
+    //执行
+    jQuery(function () {
+        JPlaceHolder.init();
+    });
+</script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#txtUserName").next('span').attr("style", "left: 93px; top: 0px; height: 16px; color: #aaa; padding-left: 0px; position: absolute;padding-top: 10px;font-size:inherit");
+        $("#txtPassword").next('span').attr("style", "left: 93px; top: 0px; height: 16px; color: #aaa; padding-left: 0px; position: absolute;padding-top: 10px;font-size:inherit");
+        $("#btnUserLogin").bind("click", function () { UserLogin(); });
+        $("#Register").bind("click", function () { Register(); });
+    });
+    function Register() {
+  
+        location.href = "/Register.aspx?openId=" + getParam("openId") + "&headimgurl=" + getParam("headimgurl") + "&returnUrl=" +encodeURIComponent(getParam("returnUrl"))
+    }
+    var returnUrl;
+    //alert(getParam("returnUrl"));
+    function UserLogin() {
+        var username = $.trim($("#txtUserName").val())
+        var password = $.trim($("#txtPassword").val());
+        if (username == "") {
+            alert_h("用户名不能为空！");
+            return;
+        }
+        if (password == "") {
+            alert_h("密码不能为空！");
+            return;
+        }
+        if (username.length < 2) {
+            alert_h('用户名至少要2个字符');
+            return;
+        }
+        if (password.length < 6) {
+            alert_h('密码至少要6个字符');
+            return;
+        }
+        $.ajax({
+            url: "/API/VshopProcess.ashx",
+            type: 'post', dataType: 'json', timeout: 10000,
+            data: { action: "UserLogin", userName: $("#txtUserName").val(), headimgurl: getParam("headimgurl"), openId: getParam("openId"), password: $("#txtPassword").val() },
+            success: function (resultData) {
+                if (resultData.Status == "OK") {
+                    returnUrl = getParam("returnUrl");
+                    $.cookie('BindName_tx', "", { expires:-1}); //清空绑定检查cookie
+                    //if (resultData.ReferralUserId != 0) {
+                    //    if (returnUrl.indexOf("?") > -1) {
+                    //        returnUrl += "&ReferralId=" + resultData.ReferralUserId;
+                    //    }
+                    //    else {
+                    //        returnUrl += "?ReferralId=" + resultData.ReferralUserId;
+                    //    }
+                    //}
+                    if (returnUrl != "" && returnUrl.indexOf("logout.aspx") < 0) {
+                        //alert(returnUrl)
+                        location.href = returnUrl;
+                    }
+                    else {
+                        
+                        location.href = "/Vshop/MemberCenter.aspx";
+                    }
+                 
+                }
+                else {
+                    if (resultData.Status == "-1") {
+
+                        alert_h("用户名不存在！");
+                    }
+                    else if (resultData.Status == "-3") {
+
+                        alert_h("用户名不能为空！");
+                    }
+                    else if (resultData.Status == "-4") {
+
+                        alert_h("该用户已被管理员删除！");
+                    }
+                    else {
+                        alert_h("密码错误！");
+                    }
+                }
+            }
+        });
+    }
+</script>
+<hi:common_footer runat="server" isshownav="1" />
+

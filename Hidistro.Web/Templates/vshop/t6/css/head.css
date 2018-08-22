@@ -1,0 +1,14 @@
+﻿body {
+    background: #f1f1f1;
+}
+
+.members_search {
+    width: 100% !important;
+    border: 0;
+    border-bottom: #dbdada solid 1px !important;
+    border-radius: 0;
+}
+
+.membersbox-box {
+    margin-top: -10px;
+}

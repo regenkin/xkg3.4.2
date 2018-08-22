@@ -1,0 +1,29 @@
+﻿<hi:common_header runat="server" />
+<div id="divorderlist">
+    <hi:vshoptemplatedrepeater id="rptOrderReturns" templatefile="/Tags/skin-Common_ProgressDetail.ascx"
+        runat="server" />
+   
+</div>
+<script>
+    //禁用右上角菜单
+    //document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+    //    WeixinJSBridge.call('hideOptionMenu');
+    //});
+</script>
+<p id="divEmpty" class="text-center list-empty hide">
+    <span class="glyphicon glyphicon-list-alt" style="margin-left: -3px;"></span><em>进度明细为空</em>
+</p>
+<script type="text/javascript">
+
+    $(function () {
+        if (!$.trim($("#divorderlist").html())) {
+            $("#divorderlist").hide();
+            $("#divEmpty").removeClass('hide');
+        }
+
+        var list_h = (document.documentElement.clientHeight - 49 - $('.list-empty').height()) * .5 + 'px';
+        $('.list-empty').css('margin-top', list_h);
+    })
+ 
+</script>
+<hi:common_footer runat="server" />

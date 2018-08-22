@@ -1,0 +1,321 @@
+﻿<hi:common_header runat="server" />
+<link href="../templates/common/css/mycss.css" rel="stylesheet" type="text/css">
+<link href="../templates/common/css/public.css" rel="stylesheet" type="text/css">
+<style>
+    body {
+        max-width: 100%;
+    }
+
+    .usernameimginfo .my-message i {
+        display: block;
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        top: 2px;
+        right: 0px;
+        background-color: #00FC55;
+        border-radius: 50%;
+    }
+    /*公告消息*/
+    .new_message {
+        position: relative;
+        height: 35px;
+        background-color: #FFFFCC;
+        overflow: hidden;
+    }
+
+        .new_message ul {
+            position: absolute;
+            left: 0;
+            top: 0;
+            padding-right: 10px;
+            overflow: hidden;
+            width: 100%;
+        }
+
+            .new_message ul li {
+                height: 35px;
+                line-height: 35px;
+                overflow: hidden;
+            }
+
+                .new_message ul li a {
+                    display: block;
+                    color: #999999;
+                    padding-left: 20px;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                }
+
+                    .new_message ul li a:hover, .new_message ul li a:link {
+                        color: #999;
+                    }
+
+    .navlist a {
+        color: #ccc;
+    }
+
+    .active a {
+        color: #fff;
+    }
+
+    .signOut {
+        width: 98%;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+
+    .container {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .navlist p {
+        color: #ccc;
+    }
+
+    .usernames {
+        font-size: 12px !important;
+    }
+
+        .usernames span {
+            color: #ffd800;
+        }
+
+    img {
+        max-width: 100%;
+    }
+
+    .navlist ul li a span {
+        width: 25px;
+        height: 25px;
+    }
+    .navgtionList ul li a span img {
+    max-width:100%;}
+    .navlist ul li a span img{
+        max-width:100%;
+    }
+    .navlist ul li a span {
+    width: 25px;
+    height: 25px;
+}
+</style>
+<div class="container">
+
+    <header>
+        <div class="usernameimginfo">
+
+            <div class="usernameimg" onclick="window.location.href = 'DistributorInfo.aspx'">
+                <asp:image runat="server" width="60" height="60" ImageUrl="/Utility/pics/headLogo.jpg"
+                           id="image"></asp:image>
+            </div>
+
+            <div class="usernameinfo">
+                <div class="usernamecontent" onclick="window.location.href = 'DistributorInfo.aspx'">
+
+                    <p class="username"><asp:literal runat="server" id="litStroeName" />&nbsp;&nbsp;【<asp:literal runat="server" id="litrGradeName" />】</p>
+                    <p class="integralsign">
+                        佣金余额：<span class='integral'>￥<asp:literal runat="server" id="litReferralBlance" /></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                    </p>
+                    <p class="usernames" style="margin-top:10px" id="UpClassInfo" runat="server"></p>
+                </div>
+            </div>
+            <a class="my-message" href="notice.aspx"><!--<i></i>--></a>
+        </div>
+        <nav>
+            <ul class="clearfix" id="tabMenu">
+                <li><a href="MemberCenter.aspx">会员中心</a></li>
+                <li class="active"><a href="DistributorCenter.aspx">分销中心</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="distribution navlist">
+        <ul class="clearfix">
+            <li>
+                <span>￥<Hi:FormatedMoneyLabel ID="saletotal" runat="server" NullToDisplay="0.00"></Hi:FormatedMoneyLabel></span>
+                <p>销售额</p>
+            </li>
+            <li>
+                <span>￥<Hi:FormatedMoneyLabel ID="refrraltotal" runat="server" NullToDisplay="0.00"></Hi:FormatedMoneyLabel></span>
+                <p>今日佣金</p>
+            </li>
+            <li>
+                <span><asp:Literal ID="litTodayOrdersNum" runat="server" Text="0"></asp:Literal></span>
+                <p>今日订单</p>
+            </li>
+        </ul>
+    </div>
+    <div class="content">
+
+
+        <div class="tabList">
+
+            <div class="tabcontent" style="display:block">
+                <div class="tabnav distribution">
+
+                </div>
+                <div class="new_message">
+                    <ul>
+                        <!--  <li><a href="javascript:void(0)">1【最新消息】最新一期最激流勇进的分销商奖励名单下来啦！</a></li>
+                        <li><a href="javascript:void(0)">2【最新消息】最新一期最激流勇进的分销商奖励名单下来啦！</a></li>-->
+                    </ul>
+                </div>
+                <div class="navgtionList">
+                    <ul>
+                        <li style="display:none">
+                            <a href="MyProducts.aspx">
+                                <span><img src="/images/iconfont-shangjiashangpin.png?201601"></span>
+                                <strong>店铺商品</strong>
+                                <span class="number"><asp:Literal ID="litProtuctNum" runat="server"></asp:Literal></span>
+                            </a>
+                            <span class="glyphicon glyphicon-menu-right"></span>
+                        </li>
+                        <li>
+                            <a href="DistributorOrders.aspx">
+                                <span><img src="/images/iconfont-dingdan.png?201601"></span>
+                                <strong>店铺订单</strong>
+                                <span class="number"><asp:Literal ID="litOrders" runat="server"></asp:Literal></span>
+                            </a>
+                            <span class="glyphicon glyphicon-menu-right"></span>
+                        </li>
+                    </ul>
+                    <ul>
+                        <li>
+                            <a href='MyMembers.aspx?gradeId=1&UserID=
+                                <asp:Literal ID="litUserId4" runat="server"></asp:Literal>'>
+                                <span><img src="/images/iconfont-wodezhanghu.png?201601"></span>
+                                <strong>我的下属</strong>
+                            </a>
+                            <span class="glyphicon glyphicon-menu-right"></span>
+                        </li>
+                        <li>
+                            <a href='MyMembers.aspx?gradeId=1&UserID=
+                                <asp:Literal ID="litUserId3" runat="server"></asp:Literal>'>
+                                <span></span>
+                                <strong>店铺会员</strong>
+                                <span class="number"><asp:Literal ID="litMysubMember" runat="server"></asp:Literal></span>
+                            </a>
+                            <span class="glyphicon glyphicon-menu-right"></span>
+                        </li>
+                        <li>
+                            <a href="ChirldrenDistributors.aspx?gradeId=2">
+                                <span></span>
+                                <strong>一级分店</strong>
+                                <span class="number"><asp:Literal ID="litMysubFirst" runat="server"></asp:Literal></span>
+                            </a>
+                            <span class="glyphicon glyphicon-menu-right"></span>
+                        </li>
+                        <li>
+                            <a href="SecondDistributors.aspx?gradeId=3">
+                                <span></span>
+                                <strong>二级分店</strong>
+                                <span class="number"><asp:Literal ID="litMysubSecond" runat="server"></asp:Literal></span>
+                            </a>
+                            <span class="glyphicon glyphicon-menu-right"></span>
+                        </li>
+                    </ul>
+                    <ul>
+                        <li>
+                            <a href='StorePromotion.aspx?UserID=
+                                <asp:Literal ID="litUserId" runat="server"></asp:Literal>'>
+                                <span><img src="/images/iconfont-tuiguang.png?201601"></span>
+                                <strong>店铺推广</strong>
+                            </a>
+                            <span class="glyphicon glyphicon-menu-right"></span>
+                        </li>
+                        <li>
+                            <a href='StoreCard.aspx?userId=<asp:Literal ID="litUserId1" runat="server" />'>
+                                <span><img src="/images/iconfont-haoyoumingpian.png?201601"></span>
+                                <strong>掌柜名片</strong>
+                            </a>
+                            <span class="glyphicon glyphicon-menu-right"></span>
+                        </li>
+                        <li>
+                            <a href='FriendsCircle.aspx?UserID=
+                                <asp:Literal ID="lituserid2" runat="server" />'>
+                                <span><img src="/images/iconfont-pengyouquanyin.png?201601"></span>
+                                <strong>朋友圈素材</strong>
+                            </a>
+                            <span class="glyphicon glyphicon-menu-right"></span>
+                        </li>
+                    </ul>
+                    <ul>
+                        <li>
+                            <a href="DistributorCommission.aspx">
+                                <span><img src="/images/iconfont-xiaoshounayongjin.png?201601"></span>
+                                <strong>我的佣金</strong>
+                            </a>
+                            <span class="glyphicon glyphicon-menu-right"></span>
+                        </li>
+                    </ul>
+                    <ul>
+                        <li>
+                            <a href="DistributorInfo.aspx">
+                                <span><img src="/images/iconfont-dianpuxinxi.png?201601"></span>
+                                <strong>店铺信息</strong>
+                            </a>
+                            <span class="glyphicon glyphicon-menu-right"></span>
+                        </li>
+                        <li>
+                            <a href="MyRanking.aspx">
+                                <span><img src="/images/iconfont-shujutongji.png?201601"></span>
+                                <strong>店铺排名</strong>
+                            </a>
+                            <span class="glyphicon glyphicon-menu-right"></span>
+                        </li>
+                        <li>
+                            <a href="DistributorDescription.aspx">
+                                <span><img src="/images/iconfont-explanation.png?201601"></span>
+                                <strong>分销说明</strong>
+                            </a>
+                            <span class="glyphicon glyphicon-menu-right"></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a class="signOut btn btn-danger" href="/logout.aspx">退出</a>
+</div>
+
+
+<script>
+    //禁用右上角菜单
+    //document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+    //    WeixinJSBridge.call('hideOptionMenu');
+    //});
+    $(function () {
+        if ($('.my-message i').length > 0) {
+            $('.new_message').show();
+            if ($('.new_message li').length > 1) {
+                (function () {
+                    var elementsUl = $('.new_message ul');
+                    function timeFn() {
+                        elementsUl.animate({
+                            'top': '-35px'
+                        }, function () {
+                            elementsUl.css('top', 0).append(elementsUl.find('li').eq(0));
+                        });
+                        setTimeout(timeFn, 3000);
+                    }
+                    setTimeout(timeFn, 3000);
+                })();
+            }
+        }
+        else {
+            $('.new_message').hide();
+        }
+        $('.tabList .tabcontent').eq(0).show();
+        $('#tab li').click(function () {
+            $('#tab li').removeClass('active');
+            $(this).addClass('active');
+            $('.tabList .tabcontent').hide();
+            $('.tabList .tabcontent').eq($(this).index()).show();
+        })
+    })
+
+</script>
+<script type="text/javascript" src="/API/FootJs.aspx"></script>
+<hi:common_footer runat="server" />

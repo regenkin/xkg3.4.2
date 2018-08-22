@@ -1,0 +1,483 @@
+﻿<hi:common_mybaseheader runat="server" />
+<asp:Literal ID="litJs" runat="server"></asp:Literal>
+<link href="/style/dafuwen.css?20151028" rel="stylesheet" />
+<link href="/style/gamecommon.css?20151028" rel="stylesheet" type="text/css">
+<style>
+    .prizeCss tr { border-bottom: 1px solid#d71d1d; }
+    .prizeCss td { padding: 8px; color: #eee;text-align:left }
+    .prize_Info { color: #fff !important; }
+    .prize DIV span{display:none}
+    .opportunity-num{font-size:14px;text-align:center;margin-bottom:5px;display:none;}
+    .opportunity-num span{color:black;margin:0 3px;font-size:16px}
+
+    .mask .phone-box{position:absolute;padding:0 20px;left:0;top:200px;width:100%;}
+	.mask .phone-box .form-phone{position:relative; background-color:#fff;padding:25px;border-radius:8px;}
+	.mask .phone-box .form-phone h5{font-size:18px;color:#1CC3D4;text-align:center;margin-bottom:15px;}
+	.phone-box .form-phone .form-input{position:relative;border-bottom:1px solid #80DEE7;}
+	.phone-box .form-phone .form-input input{width:100%;border:none;height:30px;padding-left:30%;font-size:16px;outline:none;}
+	.phone-box .form-phone .form-input label{position:absolute;left:0;width:30%;line-height:30px;font-size:16px;}
+	.phone-box .form-phone .btn-phone{width:100%;height:40px;background-color:#01BBD0;color:#fff;border:none;border-radius:8px;font-size:16px;outline:none;}
+	.form-phone .btn-close{position:absolute;right:0;top:0;font-size:24px;width:30px;height:30px;text-align:center;line-height:30px;}
+    .phone-box .form-phone .showmessage{height:25px;line-height:25px;text-align:center;}
+</style>
+<div id="mcover" style="display:none" onclick="document.getElementById('mcover').style.display='';">
+    <img src="/images/guide.png" />
+
+</div>
+<div class="container">
+    <div class="containerInner">
+        <div style="line-height:30px">  <p class="opportunity-num">您还有<span class="oppnumber">0</span>次机会</p> 　</div>
+        <div class="gameTitle starGame clearfix">
+            <p class="borderline"></p>
+            <h3><span>开始游戏</span></h3>
+            <p class="borderline"></p>
+        </div>
+        <div class="monopolyGame clearfix">
+            <div class="prize fl prizeW prizebg prize0 active">
+                <div class="text">
+                    <h3></h3>
+                    <span></span>
+                </div>
+            </div>
+            <div class="prizePadd fl">
+                <div class="prize prizebg prize1">
+                    <div class="text">
+                        <h3></h3>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+            <div class="prizePadd fl">
+                <div class="prize prizebg prize2">
+                    <div class="text">
+                        <h3></h3>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+            <div class="prizePadd fl">
+                <div class="prize prizebg prize3">
+                    <div class="text">
+                        <h3></h3>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+            <div class="prize fl prizeW prizebg prize9">
+                <div class="text">
+                    <h3></h3>
+                    <span></span>
+                </div>
+            </div>
+            <div class="prizePadd fl">
+                <div class="prize prizemove" id="prizemove1">
+                    <img src="/images/shaizi-1.png" />
+                </div>
+            </div>
+            <div class="prizePadd fl">
+                <div class="prize prizemove" id="prizemove2">
+                    <img src="/images/shaizi-1.png" />
+                </div>
+            </div>
+            <div class="prizePadd fl">
+                <div class="prize prizebg prize4">
+                    <div class="text">
+                        <h3></h3>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+            <div class="prize fl prizeW prizebg prize8">
+                <div class="text">
+                    <h3></h3>
+                    <span></span>
+                </div>
+            </div>
+            <div class="prizePadd fl">
+                <div class="prize prizebg prize7">
+                    <div class="text">
+                        <h3></h3>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+            <div class="prizePadd fl">
+                <div class="prize prizebg prize6">
+                    <div class="text">
+                        <h3></h3>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+            <div class="prizePadd fl">
+                <div class="prize prizebg prize5">
+                    <div class="text">
+                        <h3></h3>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="gameTitle clearfix">
+            <p class="borderline"></p>
+            <h3><span>游戏规则</span></h3>
+            <p class="borderline"></p>
+        </div>
+        <div class="gameRules">
+            <div class="gameRulesInner">
+                <div class="borderTop"></div>
+                <div class="innerText">
+                    <h3 class="mb">1.点击骰子开始游戏</h3>
+                    <h3>2.活动时间：</h3>
+                    <p class="mb" id="gameTime"></p>
+                    <h3>3.游戏说明：</h3>
+                    <p id="dGameDescription"></p>
+                </div>
+                <div class="borderBottom"></div>
+            </div>
+        </div>
+        <div class="gameTitle clearfix">
+            <p class="borderline"></p>
+            <h3><span>游戏奖品</span></h3>
+            <p class="borderline"></p>
+        </div>
+        <table width="100%">
+            <tbody class="prizeCss">
+            </tbody>
+        </table>
+        <div class="gameTitle clearfix">
+            <p class="borderline"></p>
+            <h3>
+                <span>中奖名单</span>
+            </h3>
+            <p class="borderline"></p>
+        </div>
+        <div class="winningList">
+            <div class="nameListTop">
+                <ul>
+                    <li>昵称</li>
+                    <li>奖品</li>
+                    <li>等级</li>
+                    <li>中奖时间</li>
+                </ul>
+            </div>
+            <div class="nameList" id="userPrizeLists">
+            </div>
+        </div>
+        <div class="myWinning">
+            <a href="Vshop/MyPrizeList.aspx?ShowTab=0">点击查看我的奖品</a>
+        </div>
+    </div>
+</div>
+<div class="prizeImg">
+    <img src="/images/shaizi-1.png">
+    <img src="/images/shaizi-2.png">
+    <img src="/images/shaizi-3.png">
+    <img src="/images/shaizi-4.png">
+    <img src="/images/shaizi-5.png">
+    <img src="/images/shaizi-6.png">
+    <img src="/images/shaizi-m1.png">
+    <img src="/images/shaizi-m2.png">
+    <img src="/images/shaizi-m3.png">
+    <img src="/images/shaizi-m4.png">
+    <input type="hidden" id="hiddPrizeName" />
+</div>
+<script src="/script/vgame.js?201603"></script>
+<script type="text/javascript">
+    var arrPrize = [];
+    $(function () {
+        BindData();
+        var len = gameData.prizeLists.length;
+        for (var i = 0; i < len; i++) {
+            $("#prizeItem" + i).html(gameData.prizeLists[i].PrizeFullName);
+        }
+
+        function setElementH() {
+            $('.gameTitle h3').css({ height: $('.gameTitle h3').width() * 0.23 });
+            $('.gameTitle h3 span').css('border-radius', parseInt($('.gameTitle h3').width() * 0.23) / 2 + 'px')
+            $('.prizePadd .prize').width($('.prizeW').width());
+            $('.prize').height($('.prizeW').width());
+            $('.myWinning a').css({ height: $('.myWinning a').width() * 0.22 });
+            $('.gameRulesInner .borderTop,.gameRulesInner .borderBottom').height($('.gameRulesInner .borderTop').width() * 0.048 - 1);
+        };
+
+        setElementH();
+        $(window).resize(function () {
+            setElementH();
+        });
+        function getRandom(min, max) {
+            return Math.floor(Math.random() * (max - min) + min)
+        }
+
+        var oppNumber = GetOpportunity();
+        if (oppNumber == -1) {//没有限制次数
+            $(".opportunity-num").html("&nbsp;").show();
+        }
+        else {
+            $(".oppnumber").html(oppNumber);
+            $(".opportunity-num").show();
+        }
+
+        //电话号码的验证
+        CheckMemberPhone();
+
+        //保存手机号码
+        SavePhone();
+
+        //我知道了
+        $(document).on('click', '.iknow', function () {
+            $('.mask').fadeOut(500, function () {
+                $('.mask').remove();
+                $('.prizebg').removeClass('active');
+            });
+        });
+
+        //得瑟一下
+        $(document).on('click', '.showprize', function () {
+            $('.mask').fadeOut(500, function () {
+                $('.mask').remove();
+                $('.prizebg').removeClass('active');
+            });
+            //分享赋值
+            shareTimeline()
+        });
+
+        //分享活动
+        $(document).on('click', '.showaction', function () {
+            $('.mask').fadeOut(500, function () {
+                $('.mask').remove();
+                $('.prizebg').removeClass('active');
+            });
+            if (/MicroMessenger/i.test(navigator.userAgent)) {
+                $("#mcover").show();
+            }
+            else {
+                alert_h("当前客户端不是微信，不能分享到微信！");
+            }
+        });
+
+        //打筛子事件
+        var flag = true;
+        $('.prizemove').click(function () {
+            //获取奖项
+            var data = GetPrize();
+            if (data.status == "0") {
+                alert_h(data.Desciption);
+            }
+            else {
+                var result = data.prizeGrade;
+                var item = 0;
+                var dicePoints = []; //骰子点数
+                if (result == '谢谢参与' || result == 0) {
+                    var aIndexArr = [];
+                    for (var w = 0; w < arrPrize.length; w++) {
+                        if (arrPrize[w] == '谢谢参与') {
+                            aIndexArr.push(w);
+                        }
+                    }
+                    item = aIndexArr[getRandom(0, aIndexArr.length)] + 2;
+                    console.log(item + '未中奖')
+                } else {
+                    $("#hiddPrizeName").val(data.prize);
+                    item = arrPrize.indexOf(result) + 2;
+                    console.log(item + '中奖')
+                }
+
+                //生成两个筛子的点数
+                dicePoints[0] = getRandom(1, item);
+                if (dicePoints[0] > 6) dicePoints[0] = 6;
+                dicePoints[1] = item - dicePoints[0];
+                if (dicePoints[1] > 6) {
+                    dicePoints[1] = 6;
+                    dicePoints[0] = item - dicePoints[1];
+                }
+                console.log(item + '-' + dicePoints[0] + '-' + dicePoints[1])
+                if (flag) {
+                    flag = false;
+                    var stopDice = ['shaizi-1.png', 'shaizi-2.png', 'shaizi-3.png', 'shaizi-4.png', 'shaizi-5.png', 'shaizi-6.png'],
+                    moveDice = ['shaizi-m1.png', 'shaizi-m2.png', 'shaizi-m3.png', 'shaizi-m4.png'];
+                    var num = 0,
+                        time = null,
+                        _this = $(this);
+                    time = setInterval(function () {
+                        $('.prizemove').find('img').attr('src', '/images/' + moveDice[num] + '');
+                        num++;
+                        if (num > 3) {
+                            num = 0;
+                        }
+                    }, 100);
+                    setTimeout(function () {
+                        clearInterval(time);
+                        $('#prizemove1').find('img').attr('src', '/images/' + stopDice[dicePoints[0] - 1] + '');
+                        $('#prizemove2').find('img').attr('src', '/images/' + stopDice[dicePoints[1] - 1] + '');
+                        var index = 0;
+                        var time1 = null;
+                        time1 = setInterval(function () {
+                            ++index;
+                            $('.prizebg').removeClass('active');
+                            $('.prize' + index).addClass('active');
+                            if (index > item - 1) {
+                                clearInterval(time1);
+                                index = item - 1;
+                                $('.prizebg').removeClass('active');
+                                $('.prize' + index).addClass('active');
+                                if (data.prizeState == "ok") {//中奖效果
+                                    setTimeout(function () {
+                                        // $('body').append('<div class="mask"><div class="look-prize"><a href="Vshop/MyPrizeList.aspx?ShowTab=0">查看奖品</a></div><div class="fireworks"></div><div class="luck-result"><div class="text-title"><p>哇~ ' + data.prizeName + '！</p><p>喜中' + data.prize + '！</p></div><div class="result-btn"><a href="javascript:void(0)" class="showprize">得瑟一下</a><a class="iknow" href="javascript:void(0)">知道了</a></div></div></div> ');
+                                        $('body').append('<div class="mask"><div class="look-prize"><a href="Vshop/MyPrizeList.aspx?ShowTab=0">查看奖品</a></div><div class="fireworks"><div class="text-title"><h2>哇！' + data.prizeName + '！</h2><p>' + data.prize + '</p></div><div class="result-btn"><a href="javascript:void(0)" class="showprize">得瑟一下</a><a href="javascript:void(0)" class="iknow">知道了</a></div></div></div>')
+                                        $('.fireworks').height($('body').width() / 640 * 738);
+                                        $('.mask').fadeIn(300);
+                                    }, 500)
+                                } else {//未中奖效果
+                                    setTimeout(function () {
+                                        // $('body').append('<div class="mask"><div class="luck-result no-luck"><div class="text-title"><p>&nbsp;</p><p>谢谢参与！</p></div><div class="result-btn"><a href="javascript:void(0)" class="showaction">分享活动</a><a class="iknow" href="javascript:void(0)">知道了</a></div></div>');
+                                        $('body').append('<div class="mask"><div class="no-luck-prompt"><div class="no-luck-inner"><div class="no-luck-bg"></div><p class="thanks">' + data.prizeName + '</p><div class="result-btn"><a href="javascript:void(0)" class="showaction">分享活动</a><a href="javascript:void(0)" class="iknow">知道了</a></div></div></div></div>')
+                                        $('.mask').fadeIn(300);
+                                    }, 500)
+                                }
+                                var oppNumber = parseInt($(".oppnumber").html());
+                                $(".oppnumber").html(oppNumber - 1);
+                                flag = true;
+                            }
+                        }, 200);
+                    }, 1000);
+                }
+            }
+        });
+        //获取游戏奖品信息
+        GetPrizeTdHtml();
+
+      
+    })
+    
+    //把奖项数组打乱
+    function randArray(data) {
+        //获取数组长度
+        var arrlen = data.length;
+        //创建数组 存放下标数
+        var try1 = new Array();
+        for (var i = 0; i < arrlen; i++) {
+            try1[i] = i;
+        }
+        //创建数组 生成随机下标数
+        var try2 = new Array();
+        for (var i = 0; i < arrlen; i++) {
+            try2[i] = try1.splice(Math.floor(Math.random() * try1.length), 1);
+        }
+        //创建数组，生成对应随机下标数的数组
+        var try3 = new Array();
+        for (var i = 0; i < arrlen; i++) {
+            try3[i] = data[try2[i]];
+        }
+        return try3;
+    }
+
+    //绑定数据
+    function BindData() {
+        InitInfo();
+        $(".prize0 DIV h3 ").html("开始");
+        //绑定游戏信息
+        var prizeData = gameData.prizeLists;
+        var len = prizeData.length;
+        for (var i = 0; i < len; i++) {
+            arrPrize.push(prizeData[i].prizeType);
+        }
+        var num = 9 - len;
+        for (var j = 0; j < num; j++) {
+            arrPrize.push('谢谢参与');
+        }
+        arrPrize = randArray(arrPrize);
+        for (var t = 0; t < arrPrize.length; t++) {
+            $(".prize" + (t+1) + " DIV h3 ").html(arrPrize[t]);
+        }
+        $("#dGameDescription").html(gameData.Description);
+        $("#gameTime").html(gameData.BeginDate + " 至 " + gameData.EndDate);
+        UserPrizeLists();
+    }
+
+
+    function returnFn() {
+        $('.mask').animate({
+            opacity: 0
+        }, function () {
+            $('.mask').remove();
+        });
+    };
+
+    ///获取游戏奖品信息
+    function GetPrizeTdHtml() {
+        var prizeTdHtml = "";
+        var prizeLists = gameData.prizeLists;
+        for (var i = 0; i < prizeLists.length; i++) {
+            var item = prizeLists[i];
+            prizeTdHtml += "<tr><td width='25%'>" + item.prizeType + "：</td><td class=\"prize_Info\" id=\"prizeItem" + i + "\">" + item.prize + "</td></tr> ";
+        }
+        $(".prizeCss").append(prizeTdHtml);
+    }
+
+    function shareTimeline() {
+        title = wxinshare_title;
+        link = wxinshare_link;
+        prizeName = $("#hiddPrizeName").val();
+        Dec = '哇！我在' + fxShopName + '，中了' + prizeName + ',一起来参与吧';
+        imgUrl = wxinshare_imgurl;
+        if (/MicroMessenger/i.test(navigator.userAgent)) {
+            $("#mcover").show();
+            initWx();
+        }
+        else {
+            alert_h("当前客户端不是微信，不能分享到微信！");
+        }
+    }
+    function initWx() {
+
+        wx.onMenuShareTimeline({
+            title: title + "\r\n" + Dec, // 分享标题
+            link: link, // 分享链接,将当前登录用户转为puid,以便于发展下线
+            desc: Dec,
+            imgUrl: imgUrl, // 分享图标
+            success: function () {
+                // 用户确认分享后执行的回调函数
+                $("#mcover").hide();
+                alert_h('分享成功');
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+
+
+        wx.onMenuShareAppMessage({
+            title: title,
+            desc: Dec,
+            link: link,
+            imgUrl: imgUrl,
+            type: "",
+            dataUrl: "",
+            success: function () {
+                $("#mcover").hide();
+                alert_h('分享成功');
+            },
+            cancel: function () { }
+        });
+
+        wx.onMenuShareQQ({
+            title: title, // 分享标题
+            desc: Dec, // 分享描述
+            link: link, // 分享链接
+            imgUrl: imgUrl, // 分享图标
+            success: function () {
+                $("#mcover").hide();
+                alert_h('分享成功');
+                // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+
+
+    }
+
+</script>
+<hi:common_footer runat="server" />

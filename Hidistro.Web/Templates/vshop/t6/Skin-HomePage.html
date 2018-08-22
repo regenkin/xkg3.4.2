@@ -1,0 +1,154 @@
+﻿<%@ Control Language="C#" %>
+<%@ Register TagPrefix="Hi" Namespace="HiTemplate" Assembly="HiTemplate" %>
+        <div class="members_con">
+            <section class="members_search">
+                  <form action="/ProductList.aspx" method="get">
+                <input type="text" name="keyWord" id="keyWord" value="" placeholder="商品搜索：请输入商品关键字">
+                <button type="submit"></button>
+           </form>
+            </section>
+        </div>
+    
+        <div class="members_con" style="margin:0 auto">
+            
+            <section class="members_flash j-swipe" id="mySwipe">
+                <ul class="clearfix">
+                    
+                        
+                            <li>
+                                <a href="/default.aspx" title="VERO">
+                                    
+                                    
+                                    <img src="/Templates/vshop/t6/images/5@2x.png" width="100%" />
+                                    
+                                    
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="/default.aspx" title="VERO">
+                                    
+                                    
+                                    <img src="/Templates/vshop/t6/images/5@2x.png" width="100%" />
+                                    
+                                    
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="/default.aspx" title="VERO">
+                                    
+                                    
+                                    <img src="/Templates/vshop/t6/images/5@2x.png" width="100%" />
+                                    
+                                    
+                                </a>
+                            </li>
+                        
+                    
+                </ul>
+                <section class="members_flash_time">
+                    
+                    
+                    <span class="cur" ></span>
+                    
+                    <span  ></span>
+                    
+                    <span  ></span>
+                    
+                    
+                </section>
+            </section>
+            
+        </div>
+    
+        <div class="members_con">
+            <section class="members_nav1">
+                <ul class="clearfix">
+                    
+                    
+                    
+                    <li class="board3 big_board ">
+                        <span>
+                            <a href="#">
+                                
+                                <img src="/Templates/vshop/t6/images/6@2x.png">
+                                
+                            </a>
+                        </span>
+                    </li>
+                    
+                    
+                    
+                    <li class="board3  small_board">
+                        <span>
+                            <a href="#">
+                                
+                                <img src="/Templates/vshop/t6/images/7@2x.png">
+                                
+                            </a>
+                        </span>
+                    </li>
+                    
+                    
+                    
+                    <li class="board3  small_board">
+                        <span>
+                            <a href="#">
+                                
+                                <img src="/Templates/vshop/t6/images/8@2x.png">
+                                
+                            </a>
+                        </span>
+                    </li>
+                    
+                    
+                    
+                </ul>
+            </section>
+        </div>
+    
+        <div class="members_con" style="margin:0 auto">
+            
+            <section class="members_imgad">
+                <ul class="clearfix">
+                    
+                    
+                    <li style="margin-bottom:0px">
+                        <a href="/default.aspx" title="VERO">
+                            
+                            
+                            <img src="/Templates/vshop/t6/images/9@2x.png" width="100%" />
+                            
+                            
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+            </section>
+            
+        </div>
+    
+        <div class="members_con" style="margin:0 auto">
+            
+            <section class="members_imgad">
+                <ul class="clearfix">
+                    
+                    
+                    <li style="margin-bottom:0px">
+                        <a href="/default.aspx" title="VERO">
+                            
+                            
+                            <img src="/Templates/vshop/t6/images/10@2x.png" width="100%" />
+                            
+                            
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+            </section>
+            
+        </div>
+    <Hi:GoodsListModule runat="server"  Type="goodGroup" Layout="1" ShowName="True" ShowIco="True" ShowPrice="True" DataUrl="/api/Hi_Ajax_GoodsListGroup.ashx" ID="group_16fff53538aa4a93b7b8cd3e20a698d2" TemplateFile="/Admin/shop/Modules/GoodGroup1.cshtml"  GoodListSize="18" FirstPriority="2"  SecondPriority="3"    />

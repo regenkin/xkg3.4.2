@@ -1,0 +1,31 @@
+﻿<hi:common_header runat="server" />
+<hi:hiimage runat="server" id="imgUrl" class="img-responsive" width="100%" />
+<p class="text-center list-empty hide">
+    没有找到相关商品
+</p>
+<div class="goods-detail pbox bgColor-white">
+    详情
+   <asp:literal runat="server" id="litBrandDetail" />
+</div>
+<div class="pbox">
+    <hi:vshoptemplatedrepeater id="rptProducts" templatefile="/Tags/skin-Common_BrandProducts.ascx"
+        runat="server" />
+</div>
+<div id="pager"></div>
+<input type="hidden" value="" runat="server" clientidmode="static" id="txtTotal" />
+<script src="/Utility/pager.js" type="text/javascript"></script>
+<script type="text/javascript">
+    //隐藏右上角菜单
+    //document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+    //    WeixinJSBridge.call('hideOptionMenu');
+    //});
+    //隐藏底部菜单
+    document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+        WeixinJSBridge.call('hideToolbar');
+    });
+
+    $(function () {
+        vshopPager('pager', $('#txtTotal').val(), 1, 20);
+    });
+</script>
+<hi:common_footer runat="server" />

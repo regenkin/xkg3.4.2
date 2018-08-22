@@ -1,0 +1,54 @@
+﻿<hi:common_header runat="server" />
+<div class="pbox">
+    <div class="panel">
+        <ul id="myTab1" class="nav nav-tabs nav-justified">
+            <li><a href="javascript:;" id="unUsed" data-toggle="tab" style="margin-left: -1px;">未使用</a> </li>
+            <li><a href="javascript:;" id="used" data-toggle="tab">已使用</a> </li>
+            <li><a href="javascript:;" id="expired" data-toggle="tab">已过期</a> </li>
+        </ul>
+        <div id="myTabContent" class="tab-content">
+            <hi:vshoptemplatedrepeater id="rptCoupons" templatefile="/Tags/skin-Common_Coupons.ascx"
+                runat="server" />
+       </div>
+    </div>
+</div>
+<script>
+    //禁用右上角菜单
+    //document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+    //    WeixinJSBridge.call('hideOptionMenu');
+    //});
+</script>
+<script src="/Utility/common.js?2016" type="text/javascript"></script>
+<script type="text/javascript">
+
+    $(function () {
+        var usedType = getParam('usedType');
+        if (!usedType || usedType == 1) {
+            $('#unUsed').parent().addClass('active');
+        }
+        else if (usedType == 2) {
+            $('#used').parent().addClass('active');
+        }
+        else {
+            $('#expired').parent().addClass('active');
+        }
+
+    });
+
+
+    $('#used').click(function () {
+        location.replace('/vshop/memberCoupons.aspx?usedType=2');
+    });
+
+
+    $('#unUsed').click(function () {
+        location.replace('/vshop/memberCoupons.aspx?usedType=1');
+    });
+
+    $('#expired').click(function () {
+        location.replace('/vshop/memberCoupons.aspx?usedType=3');
+    });
+
+</script>
+<hi:common_footer runat="server" />
+

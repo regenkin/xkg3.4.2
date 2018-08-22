@@ -1,0 +1,43 @@
+﻿<hi:common_header runat="server" />
+
+<div class="pbox well twocode" id="divcode">
+    <!--<asp:Image ID="litimgorcode" runat="server" width="200" height="200" />-->
+    <img id="ifameQRcode" src='/API/GetQRCode.ashx?code=<asp:literal runat="server" id="liturl" />'     height="300"></img>
+
+</div>
+<p class="font-xs text-center text-muted">
+    <a id="urlQrcode" href='
+        <asp:literal runat="server" id="litgotourl" />'>
+
+        点击可访问店铺（<asp:literal id="litstorename"
+                             runat="server"></asp:literal>）
+    </a>
+</p>
+<span id="imageurl" style="display:none"><asp:literal id="litimage"
+             runat="server"></asp:literal></span>
+<span id="ItemParams" style="display:none">
+    <asp:literal id="litItemParams"
+                 runat="server"></asp:literal>
+</span>
+<script>
+    var Items = $("#ItemParams").text();
+    var title = $("title").text();
+    var link = $("#urlQrcode").attr("href");
+    var imgUrl = $("#imageurl").text();
+    var Dec = "零投入，轻松赚。";
+    if ($.trim(Items.split('|')[0])!="")
+    {
+        imgUrl = $.trim(Items.split('|')[0]);
+    }
+    if ($.trim(Items.split('|')[1]) != "") {
+        title = Items.split('|')[1];
+    }
+    if ($.trim(Items.split('|')[2]) != "") {
+        Dec = Items.split('|')[2];
+    }
+    wxinshare_title = title;
+    wxinshare_desc = Dec;
+    wxinshare_link = link;
+    wxinshare_imgurl = imgUrl;
+</script>
+<hi:common_footer runat="server" />

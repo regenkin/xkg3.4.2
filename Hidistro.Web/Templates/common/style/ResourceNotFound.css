@@ -1,0 +1,6 @@
+﻿html,body{height: 100%;}
+.container{max-width: 640px;height: 100%; padding: 0;}
+.errortext{padding: 83% 10px 0;}
+.errortext h2{font-size: 18px;text-align: center;margin-bottom: 20px;font-weight:normal;}
+.errortext a{display: block;height: 40px;line-height: 40px;text-align: center;font-size: 16px;margin-bottom: 10px; background-color: #fff;color: #000;}
+.errortext a.bg1{background-color: #E0001B;color: #fff;}

@@ -1,0 +1,40 @@
+﻿<Hi:Common_Header runat="server" />
+<section id="content2"> 
+<script src="/utility/bigwheel.js" type="application/javascript"> </script>
+<form runat="server">
+   <div class="wheel">
+      <img runat="server" src="/images/process/panpic.png" id="bgimg" style="visibility:hidden;position:absolute;"/>
+      <img src="/images/process/flag.png" id="flagimg" style="visibility:hidden;position:absolute;"/>
+      <div><canvas id="wheelcanvas" width="260" height="260"></canvas> </div>
+   </div>
+   
+   <div class="w_exp">
+       <div class="w_dashed">
+         <h2>活动说明:</h2>
+         <p><asp:Literal runat="server" ID="litActivityDesc" /></p>
+       </div>   
+   </div>
+   <div class="w_exp">
+       <div class="w_dashed">
+         <h2>活动时间:</h2>
+         <p><asp:Literal runat="server" ID="litStartDate" /></p>
+         <p><asp:Literal runat="server" ID="litEndDate" /></p>
+       </div>
+   </div>
+   <div class="w_exp">
+       <div class="w_dashed">
+         <h2>奖项设置:</h2>
+         <Hi:Common_PrizeNames runat="server" ID="litPrizeNames" />
+       </div>   
+   </div>
+    <div class="w_exp">
+       <div class="w_dashed">
+         <h2>中奖用户:</h2>
+           <Hi:Common_PrizeUsers runat="server" ID="litPrizeUsers" />
+       </div>   
+   </div>
+   </form>
+</section>
+
+<Hi:Common_Footer runat="server" />
+

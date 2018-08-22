@@ -1,0 +1,76 @@
+@media (min-width: 320px) and (max-width: 550px){
+	.containerInner .gameTitle h3 span,.gameRulesInner .innerText p,.monopolyGame .prize .text span{
+		font-size: 12px;
+	}
+	.gameRulesInner .innerText h3,.monopolyGame .prize .text h3{
+		font-size: 12px;
+	}
+	.gameRulesInner .innerText .mb{
+		margin-bottom: 2.6%;
+	}
+	.containerInner .gameTitle p.borderline{
+		height: 1px;
+	}
+	.userWinningList{
+		max-height: 240px;
+	}
+	.myWinning a{
+		font-size: 12px;
+	}
+}
+html,body{height: 100%;}
+/*大转盘抽奖*/
+.container{max-width: 640px; min-height: 100%; background: url(../images/body-bg.png) no-repeat #CB1200; background-size:100% auto;margin: 0 auto;}
+.banner{display:block;width:100%;margin-left:auto;margin-right:auto;margin-top: -100px;position: relative;padding:0 5%;}
+.banner .turnplate{display:block;width:100%;position:relative; margin: 100px auto 0;z-index: 999;}
+.banner .turnplate canvas.item{width:100%;}
+.banner .turnplate img.pointer{position:absolute;width:31.5%;height:42.5%;left:34.6%;top:23%;z-index:500;}
+.container.resetBg1{background: url(../images/bg1.png) no-repeat #FF2728;background-size: 100% auto;color: #FEFFFF;}
+.container.resetBg1 .containerInner{padding: 75% 4.6% 0;}
+.rotaryTitle{width: 38.1%;background: url(../images/title-bg.png) no-repeat;background-size: 100%;display: table; font-size: 26px;margin-bottom: 5%;}
+.rotaryTitle span{display: table-cell;vertical-align: middle;text-indent: 10%;color: #fff;}
+.containerInner .gift{font-size: 20px;margin-bottom: 1%;}
+.containerInner .gift .marr{margin-right:8%; }
+.textDescription{margin-bottom: 10%;}
+.textDescription table tr td { min-height:20px; text-align:left;vertical-align:top;}
+.textDescription.resetBottom{margin-bottom: 1%;}
+.rotary-box{padding-top: 15%;padding-bottom: 30%;margin-bottom: 8%; background: url(../images/rotary-boxbg.png) no-repeat left top;background-size: cover;position: relative;}
+.rotary-box .activityData{position: absolute;left: 4.6%;bottom: 2%;font-size: 16px; color: #FBAC04;-webkit-transform: rotate(-9deg);-webkit-transform-origin:left bottom;-moz-transform: rotate(-9deg);}
+.banner .shadow{position: absolute;width: 49.8%;left: 50%;margin-left: -25%;background: url(../images/shadow.png) no-repeat;background-size: cover;}
+.container .center{padding: 0 4.6%;}
+.center .winningList{margin-bottom: 10%;}
+.container.resetBg1 .myWinning a{background-color: #FEC552;color: #C00E07;box-shadow: 0 5px 1px #BC0001;}
+.container.resetBg1{padding-bottom: 5%;}
+.container.resetBg1 .winningList table tbody tr td{color: #fff;}
+.container.resetBg1 .winningList table thead tr th{color: #fff;background-color: #DD1B1B;}
+.container.resetBg1 .userWinningList table tbody tr:nth-child(2n){background-color: #EE2020;}
+.nameListTop ul li{height: 40px;width: 25%;float: left;line-height: 40px;text-align: center;font-weight: 700;font-size: 14px;background-color: #DD1B1B;}
+.nameList{max-height: 240px;overflow: auto;}
+.nameListTop ul:after,.nameList ul:after{content:"";clear:both;display:block;height:0;}
+.nameList ul,.nameListTop ul{margin-bottom:0;}
+.nameList ul li{float: left;width: 25%;height: 40px;text-align: center;line-height: 40px;font-size: 12px;}
+.nameList ul:nth-of-type(2n){background-color: #EE2020;}
+.myWinning{width: 54%;margin: 0 auto;display: table;}
+.myWinning a{display:table-cell;vertical-align: middle; background-color: #FAD294;color: #000;box-shadow: 0 5px 1px #9C1001;text-align: center;font-size: 14px;border-radius: 5px;}
+.comeAgain{position: fixed;top: 10%;padding:5px 10px; width: 44px; font-size: 12px; border-radius: 5px; background-color: rgba(255,255,255,0.8);}
+
+
+/*.mask{display:none; position: fixed;left: 0;top: 0; width: 100%;height: 100%;background-color:rgba(0,0,0,0.5); z-index: 99998; }
+.mask .maskimg{max-width: 640px;margin: 0 auto;height: 100%;background: url(../images/gift.gif) no-repeat left -120px;background-size: 100% auto;}
+.maskprizetext{position: absolute;left: 50%; bottom: 80px;width: 240px;padding: 15px;text-align: center;background-color: #E5CA7B;transform:translateX(-50%);-webkit-transform:translateX(-50%);-moz-transform:translateX(-50%);border-radius: 5px;color: #BC0303;}
+.maskprizetext h5{margin: 0;padding: 0;margin-bottom: 5px;}
+.mask .receivep{position: absolute;bottom: 20px; left: 50%;padding: 5px 0;width: 130px;background-color: #E5CA7B;text-align: center;color: #BC0303;transform:translateX(-50%);-webkit-transform:translateX(-50%);-moz-transform:translateX(-50%);border-radius: 5px;font-size: 18px;}*/
+
+
+ 
+
+
+@media (min-width: 320px) and (max-width: 550px){
+	.rotaryTitle{
+		font-size: 14px;
+	}
+	.containerInner .gift,.rotary-box .activityData{
+		font-size: 12px;
+	}
+}
+/*砸金蛋抽奖*/

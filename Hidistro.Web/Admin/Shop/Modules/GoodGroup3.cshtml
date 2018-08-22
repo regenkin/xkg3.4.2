@@ -1,0 +1,85 @@
+﻿@{string renminbi = "￥";}
+<div class="members_con">
+    <section class="members_goodspic">
+        <ul>
+            @if (@Model.goodslist.Count > 0)
+            {
+                for (int i = 0; i < @Model.goodslist.Count; i++)
+                {
+                   
+                    if (i % 3 == 0)
+                    {
+                        var goods = @Model.goodslist[i];
+                          <li class="biggoods">
+                                <a class="goodsimg" href="@goods.link"><img src="@goods.pic" width="100%"></a>
+                               @if(@Model.showName || @Model.showPrice)
+                                {
+                                <section class="members_goodsimg_name rename">
+                                    @if(@Model.showName)
+                                    {
+                                    <a href="@goods.link"> @goods.title </a>
+                                    }
+                                    <span>
+                                    @if(@Model.showIco)
+                                    {
+                                    <i><a href="@goods.link"></a></i>
+                                    }
+                                    @if(@Model.showPrice)
+                                    {
+                                     @renminbi;@goods.price;
+                                    <span class="original_price"><s>&yen;@goods.original_price</s></span>
+                                    }
+                                    </span>
+                                </section>
+                               }
+                              </li>
+                    }
+                    else if (i%3 == 1) 
+                    {
+                        var goods = @Model.goodslist[i];
+                         <li class="mingoods goods_odd">
+                                    <a href="@goods.link"><img src="@goods.pic" width="100%"></a>
+                                    @if(@Model.showIco || @Model.showPrice)
+                                    { 
+                                    <span class="replace">
+                                         @if(@Model.showIco)
+                                        { 
+                                        <i></i>
+                                         } 
+                                         @if(@Model.showPrice)
+                                        { 
+                                         @renminbi;@goods.price
+                                        <span class="original_price"><s>&yen; @goods.original_price</s></span>
+                                         } 
+                                    </span>
+                                     } 
+                                </li>
+                    
+                    }
+                    else if (i % 3 == 2) 
+                    {
+                        var goods = @Model.goodslist[i];
+                           <li class="mingoods goods_even">
+                                    <a href="@goods.link"><img src="@goods.pic" width="100%"></a>
+                                    @if(@Model.showIco || @Model.showPrice)
+                                    {
+                                    <span class="replace">
+                                        @if(@Model.showIco)
+                                        {
+                                        <i></i>
+                                        }
+                                        @if(@Model.showPrice)
+                                        {
+                                         @renminbi;@goods.price;
+                                        <span class="original_price"><s>&yen; @goods.original_price;</s></span>
+                                        }
+                                    </span>
+                                    }
+                                </li>
+                    }
+                }
+            }
+        </ul>
+    </section>
+
+</div>

@@ -1,0 +1,285 @@
+﻿<hi:common_header runat="server" />
+<link href="../templates/common/css/prizelist.css" rel="stylesheet" type="text/css">
+<script>
+
+</script>
+<style>
+    .container{margin-right:auto;margin-left:auto}
+</style>
+    <div class="container">
+        <header>
+            <ul class="clearfix prizeBtn" id="tabul">
+                <li onclick="TabSelect(0)" >我的奖品</li>
+                <li onclick="TabSelect(1)">历史奖品</li>
+            </ul>
+        </header>
+        <div class="content">
+            <div class="prizeList">
+                <ul>
+                    <Hi:VshopTemplatedRepeater ID="rptList" TemplateFile="/Tags/skin-Common_MyPrizeRepeat.ascx" runat="server" />
+
+                 </ul>
+            </div>
+
+            <div class="prizeList">
+               --
+            </div>
+        </div>
+    </div>
+<div id="pager"></div>
+
+   
+    <!--翻页相关-->
+    <input type="hidden" clientidmode="Static" value="" runat="server" id="txtTotal" /> 
+   <input type="hidden" runat="server" value="0" id="txtShowTabNum">
+<script src="/Utility/common.js?2016" type="text/javascript"></script>
+    <script src="/Utility/pager.js" type="text/javascript"></script>
+
+    <script>
+        vshopPager('pager', $('#txtTotal').val(), 1, 20);
+
+        //禁用右上角菜单
+        //document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+        //    WeixinJSBridge.call('hideOptionMenu');
+        //});
+    </script>
+    <script type="text/javascript">
+        var ShowTabNum = 0; //当前显示页
+
+        $(function () {
+            ShowTabNum = $("#vMyPrizeList_txtShowTabNum").val();
+
+            if (ShowTabNum == "")
+                ShowTabNum = 0;
+            $("#tabul").find("li").eq(ShowTabNum).addClass("active");
+            
+            $("div[Dstatus]").each(function () {
+
+                var status = $(this).attr("Dstatus");
+                var isLogistics = $(this).attr("IsLogistics");
+                var prizeType = $(this).attr("PrizeType");
+                var addbtn="";
+                if (status == "0") {
+                    if (prizeType == "2") {
+                        addbtn = '<button type="button" class="btn btn-primary btn-xs" onclick="ShowAddress(this)">领奖</button></div>';
+                    }
+                    else {
+                        if (isLogistics != "0") {
+                            addbtn = '<button type="button" class="btn btn-primary btn-xs" onclick="ShowAddress(this)">领奖</button></div>';
+                        }
+                    }
+                }
+                else if (status == "1") {
+                    addbtn = "<span>地址已确认，等待发货</span>";
+                }
+                else if(status=="2"){
+                    addbtn = '<button type="button" class="btn btn-success btn-xs" onclick="ConfirmDelievey(this)">收货</button></div>';
+                }
+
+                $(this).html(addbtn);
+
+            });
+
+
+            //修改其它奖品发放信息
+            $(".shopInfo").each(function () {
+                var prizetype = $(this).attr("PrizeType");
+                if (prizetype != "2") {
+                    $(this).removeAttr("onclick");
+                    $(this).addClass("noHeight");
+                    switch (prizetype) {
+                        case "0":
+                            $(this).html("奖励：" + $(this).attr("GivePoint") + "积分　" + $(this).attr("Prize") + "    " + $(this).attr("PrizeGrade") + "");
+                            break;
+                        case "1":
+                            $(this).html("奖励优惠券：" + $(this).attr("CouponInfo") + "　" + $(this).attr("Prize") + "    " + $(this).attr("PrizeGrade") + "");
+                            break;
+                        case "2":
+                            $(this).html("赠送商品：" + $(this).attr("Prize") + "   " + $(this).attr("PrizeGrade"));
+                            break;
+                        case "3":
+                            $(this).html($(this).attr("Prize") + "    " + $(this).attr("PrizeGrade"));
+                            break;
+                        default:
+                            // if (prizetype == "0") {
+                            //     $(this).html("奖励：" + $(this).attr("GivePoint") + "积分　" + $(this).attr("PrizeGrade") + "")
+                            //  } else {
+                            //     $(this).html("奖励优惠券：" + $(this).attr("CouponInfo") + "　" + $(this).attr("PrizeGrade") + "");
+                            // }
+                            $(this).parent().next().find(".prizeInfo p").eq(3).html("发放状态：自动发放"); //发放状态：自动发放
+                    }
+                }
+            });
+           
+
+
+            $("#ConfirmAddr").click(function () {
+
+
+                var shippingId = $("#selectShipTo").val();
+
+                $('#PayWeixin').modal("toggle");
+
+                $.ajax({
+                    url: "/API/VshopProcess.ashx",
+                    type: 'post', timeout: 10000,
+                    data: {
+                        action: "ConfirmPrizeAddr",
+                        id: confirmId,
+                        LogId: confirmLogId,
+                        ShipToDate:$('#selectShipToDate').val(),
+                        shippingId: shippingId
+                    },
+                    cache: false,
+                    success: function (resultData) {
+                        maskayer(1);
+                        if (resultData == "success") {
+
+                            alert_h("收货地址保存成功！", function () {
+                                // location.href = location.href; //重新加载
+                                location.reload();
+                            });
+
+                        } else {
+                            alert_h(resultData);
+                        }
+                    }
+                });
+
+            });
+
+            ///收货时间
+            $('.selectShipToDate li a').click(function () {
+                $('.selectShipToDate button').html($(this).html() + '<span class="caret"></span>');
+                $('#selectShipToDate').val($(this).attr('name'));
+            });
+
+           
+           
+        });
+
+
+        //tab数据切换，
+        function TabSelect(index) {
+            var lurl = window.location.href;
+            if (lurl.indexOf("?")>0) {
+                lurl = lurl.split("?")[0];
+            }
+            window.location.href = lurl + "?ShowTab=" + index;
+        }
+        var confirmLogId = 0;
+        var confirmId = 0;
+        function ShowAddress(obj) {
+       
+            $parent = $(obj).parent();
+            confirmLogId = $parent.attr("logid");
+            confirmId = $parent.attr("Pid");
+
+           // alert(confirmLogId);
+            // alert(confirmId);
+
+            if ($("#addressageul").find("li").length==2) {
+                window.location.href = $("#addressageul").find("li:last a").attr("href"); //如果没有地址，转到新增地址
+            }
+            else {
+                $('#PayWeixin').modal({ backdrop: 'static', keyboard: false, show: true });
+            }
+         
+
+           
+          
+        }
+
+     
+
+        function ConfirmDelievey(obj) {
+            myConfirm("收货确认", "您确定收到该礼品？", "确认", function () {
+
+                $parent = $(obj).parent();
+                $.ajax({
+                    url: "/API/VshopProcess.ashx",
+                    type: 'post', timeout: 10000,
+                    data: {
+                        action: "ConfirmPrizeArriver",
+                        pid: $parent.attr("pid"),
+                        LogId: $parent.attr("logid")
+                    },
+                    cache: false,
+                    success: function (resultData) {
+                        maskayer(1);
+                        if (resultData == "success") {
+
+                            alert_h("收货确认成功！", function () {
+                                location.href = location.href; //重新加载
+                            });
+
+                        } else {
+                            alert_h(resultData);
+                        }
+                    }
+                });
+               
+            }); 
+        }
+
+    </script>
+
+<!--地址弹出面板-->
+<div class="modal fade" id="PayWeixin">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="text-align: left" id="batchTitle">收货地址确认</h4>
+            </div>
+
+            <div id="addressinfo" style="display:block;padding:10px">
+                收货地址：
+                <div class="btn-group rptAddress">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        <asp:literal runat="server" id="litShipTo" />
+                        <asp:literal runat="server" id="litCellPhone" />
+                        <asp:literal runat="server" id="litAddress" />
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu " id="addressageul" role="menu">
+                        <hi:vshoptemplatedrepeater id="rptAddress" templatefile="/Tags/skin-Common_Addresses.ascx" runat="server" />
+                        <li class="divider"></li>
+                        <li><a<asp:literal runat="server" id="litAddAddress" />>新增收货地址</a></li>
+                    </ul>
+                    <input type="hidden" runat="server" clientidmode="Static" id="selectShipTo" />
+                    <input type="hidden" runat="server" clientidmode="Static" id="Shippingcity" />
+                </div>
+                收货时间：
+                <div class="btn-group selectShipToDate">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        时间不限<span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#" name="时间不限">时间不限</a></li>
+                        <li><a href="#" name="周一至周五">周一至周五</a></li>
+                        <li><a href="#" name="周六、周日及公众假期">周六、周日及公众假期</a></li>
+                    </ul>
+                    <input type="hidden" runat="server" clientidmode="Static" id="selectShipToDate" value="时间不限" />
+                </div>
+
+            </div>
+
+            <div style="clear: both">
+            </div>
+
+            <div class="modal-footer">
+                <a type="button" class="btn btn-default" data-dismiss="modal">取消</a>
+                <a class="btn btn-danger" id="ConfirmAddr">确定地址</a>
+            </div>
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+<!-- /.modal -->
+
+    <hi:common_footer runat="server" />

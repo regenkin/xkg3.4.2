@@ -1,0 +1,72 @@
+﻿*{box-sizing: border-box;font-family: "微软雅黑";}
+html,body{height: 100%;}
+.container{max-width: 640px; min-height: 100%; background: url(../images/body-bg.png) no-repeat #CB1200; background-size:100% auto;margin: 0 auto;}
+.containerInner{padding: 85% 4.6% 10%;}
+.containerInner .gameTitle{height: 10%;margin-bottom: 5%;}
+.containerInner .gameTitle p.borderline{width: 32%;height: 2px;  background-color: #9C1003;float: left;margin-top: 3.8%;}
+.containerInner .gameTitle h3{float: left;width: 36%;padding: 0 4px;display: table;margin:0;font-weight:normal;}
+.containerInner .gameTitle h3 span{display: table-cell;vertical-align: middle; height: 100%; text-align: center;border-radius: 12px; color: #FAD193;background-color: #9C1003;font-size: 26px;}
+.gameRulesInner .innerText{background:url(../images/dafuwenh3.png) repeat-y;background-size:100%;padding:0 5%;}
+.gameRulesInner .innerText h3{margin:0;font-weight:normal;font-size:16px;}
+.gameRulesInner .innerText .mb{margin-bottom:3%;}
+.gameRulesInner .borderTop{width:100%;background:url(../images/dafuwenh2.png) no-repeat;background-size:100%;}
+.gameRulesInner .borderBottom{width:100%;background:url(../images/dafuwenh1.png) no-repeat;background-size:100%;}
+.containerInner .gameRules{margin-bottom:10%;}
+.monopolyGame{margin-bottom: 5%;}
+.monopolyGame .prizePadd{padding-left: 3.39%;}
+.monopolyGame .prizeW,.monopolyGame .prizePadd{margin-bottom: 3.5%;}
+.monopolyGame .prizebg{background:url(../images/prizebg.png) no-repeat;background-size: cover; }
+.monopolyGame .prizebg.active{background:url(../images/prizebgactive.png) no-repeat;background-size: cover;}
+.monopolyGame .prize{width: 22.4%;display: table;}
+.monopolyGame .prize img{max-width: 100%;display: block;}
+.monopolyGame .prize .text{display: table-cell;vertical-align: middle;text-align: center;}
+.monopolyGame .prize .text h3{font-size: 16px;letter-spacing: 2px;margin:0;font-weight:normal;}
+.monopolyGame .prize .text span{font-size: 16px;}
+.monopolyGame .fl{float: left;}
+.prizeImg{display: none;}  
+.winningList{margin-bottom:10%;}
+.nameListTop ul li{height: 40px;width: 25%;float: left;line-height: 40px;text-align: center;font-weight: 700;font-size: 14px;background-color: #E2724A;}
+.nameList{max-height: 240px;overflow: auto;}
+.nameListTop ul:after,.nameList ul:after{content:"";clear:both;display:block;height:0;}
+.nameList ul,.nameListTop ul{margin-bottom:0;}
+.nameList ul li{float: left;width: 25%;height: 40px;text-align: center;line-height: 40px;font-size: 12px;}
+.nameList ul:nth-of-type(2n){background-color: #D4391D;}
+.myWinning{width: 54%;margin: 0 auto;display: table;}
+.myWinning a{display:table-cell;vertical-align: middle; background-color: #FAD294;color: #000;box-shadow: 0 5px 1px #9C1001;text-align: center;font-size: 14px;border-radius: 5px;}
+.comeAgain{position: fixed;top: 10%;padding:5px 10px; width: 44px; font-size: 12px; border-radius: 5px; background-color: rgba(255,255,255,0.8); cursor:pointer; }
+.gameRulesInner p { font-size:0.8em;}
+@media (min-width: 320px) and (max-width: 550px){
+	.containerInner .gameTitle h3 span,.monopolyGame .prize .text span{
+		font-size: 1em;
+	}
+
+    .monopolyGame .prize .text span{
+        font-size:0.8em;
+    }
+	.gameRulesInner .innerText h3,.monopolyGame .prize .text h3{
+		font-size: 12px;
+	}
+	.gameRulesInner .innerText .mb{
+		margin-bottom: 2.6%;
+	}
+	.containerInner .gameTitle p.borderline{
+		height: 1px;
+	}
+	.winningList table thead tr th{
+		font-size: 14px;
+		height: 40px;
+	}
+	.userWinningList table tbody tr td{
+		font-size: 12px;
+		height: 40px;
+	}
+	.userWinningList{
+		max-height: 240px;
+	}
+	.myWinning a{
+		font-size: 12px;
+	}
+}
+
+
+ 

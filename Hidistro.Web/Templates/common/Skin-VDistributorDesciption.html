@@ -1,0 +1,37 @@
+﻿<hi:common_header runat="server" />
+<div class="pbox well">
+    <div class="description">
+        <asp:literal id="litApplicationDescription" runat="server"></asp:literal>
+    </div>
+</div>
+<input type="hidden" id="litIsEnable" runat="server">
+<input type="hidden" id="litRMsg" runat="server">
+<div class="pbox">
+    <a  id="ReadBack"  type="button" class="btn btn-danger btn-block btn-apply" href="/Vshop/DistributorValid.aspx?read=true">我已阅读说明</a>
+</div>
+<script>
+
+    var IsEnable = ''; 
+    var RMsg = '';
+
+    $(function () {
+
+        IsEnable = $("#DistributorRequest_litIsEnable").val();
+        RMsg = $("#DistributorRequest_litRMsg").val();
+
+        if (IsEnable == "0" || IsEnable == "") {
+            alert_h(RMsg, function () {
+                location.href = "/Vshop/MemberCenter.aspx"; //未达到条件的会员
+            });
+        }
+
+        if (IsEnable == "1") { 
+            $("#ReadBack").prop("href", "/Vshop/DistributorCenter.aspx"); //已注册的
+        }
+       
+
+    });
+
+</script>
+
+<hi:common_footer runat="server" />

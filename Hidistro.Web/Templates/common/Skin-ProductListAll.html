@@ -1,0 +1,360 @@
+﻿<hi:common_header runat="server" />
+<link href="../templates/common/css/myproducts.css" rel="stylesheet" type="text/css">
+<style>
+    input[type=checkbox] {
+        vertical-align: middle;
+        margin: 0px;
+    }
+
+    .content-right {
+        margin: 1px;
+        padding: 0px;
+    }
+
+    #mcover {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        display: none;
+        z-index: 20000;
+    }
+
+        #mcover .img {
+            position: fixed;
+            right: 18px;
+            top: 5px;
+            width: 260px !important;
+            height: 180px !important;
+            z-index: 20001;
+        }
+
+    #infoid {
+        color: #999;
+    }
+
+    #shareid {
+        float: right;
+        margin-top: 10px;
+        width: 45%;
+    }
+
+    #sharetitle {
+        margin-top: 10px;
+        border: 1px solid #ccc;
+    }
+
+    #shareSina {
+        float: left;
+        margin-top: 10px;
+        width: 49%;
+    }
+
+    .dropdown input {
+        width: 100% !important;
+        padding-left: 45px !important;
+    }
+
+    .search_img {
+        float: none;
+        padding: 0px 2px 0px 5px;
+        position: absolute;
+        top: 9px;
+        left: 0px;
+        background: #DA4453;
+        border-bottom-left-radius: 4px;
+        border-top-left-radius: 4px;
+    }
+
+    .pbox {
+        padding-top: 0px;
+        margin-top: -5px;
+        margin-bottom: -5px;
+    }
+
+    .glyphicon {
+        color: #fff;
+        padding: 6px 4px 6px 4px;
+    }
+
+    .shoplist ul li .shopinfo p.intro {
+        max-height: 30px;
+        overflow: hidden;
+    }
+
+    #mcover #sharectx {
+        max-width: 500px;
+        border-radius: 5px;
+        background: #fff;
+        padding: 10px;
+        line-height: 30px;
+        border: 1px solid #fff;
+        margin-top: 200px;
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
+<ul class="clearfix orders-title title_bg">
+    <li><a href="MyProducts.aspx">已上架商品<asp:Literal ID="litProtuctSelNum" runat="server"></asp:Literal></a></li>
+    <li class="activenum"><a>未上架商品<asp:Literal ID="litProtuctNoSelNum" runat="server"></asp:Literal></a></li>
+</ul>
+
+<div class="pbox clearfix">
+    <div class="clearfix class_goods">
+        <div class="dropdown">
+            <div class="dropdown-toggle search_img" id="dropdownMenu1" data-toggle="dropdown">
+                <span class="glyphicon glyphicon-th" style="font-size:20px"></span>
+            </div>
+            <div class="search_input">
+                <input type="text" class="text" runat="server" id="keywords" placeholder="">
+                <span class="glyphicon glyphicon-search" style="top:-1px" onclick="Searchkeys()">
+                </span>
+            </div>
+            <ul class="dropdown-menu submenu" role="menu" aria-labelledby="dropdownMenu1">
+                <hi:vshoptemplatedrepeater id="rpCategorys" templatefile="/Tags/skin-Common_SubCategory.ascx"
+                                           runat="server" />
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="occupying">
+        <div class="shelvesshop clearfix">
+            <div class="selectall">
+                <a href="javascript:void(0)"><em></em></a>全选
+            </div>
+            <div class="shelvesshopbtn clearfix">
+                <a href="javascript:SaveDistributorProducts()">上架已选商品</a>
+                <a href="javascript:AddAll()">上架全部商品</a>
+            </div>
+        </div>
+    </div>
+    <div class="shoplist">
+        <div id="empty" style="text-align: center;">
+            <img src="/Utility/pics/nonestore.gif" />
+        </div>
+        <ul id="shops">
+            <hi:vshoptemplatedrepeater id="rpChooseProducts" templatefile="/Tags/skin-Common_DistributorProducts.ascx"
+                                       runat="server" />
+        </ul>
+    </div>
+    <div class="loadingmore">
+        <a href="javascript:readmore()" id="nextPager">点击加载更多</a>
+    </div>
+</div>
+
+
+<script>
+
+    var categoryId = "";
+    var keyWord = ""
+    var pgSize = "20";
+    var pgIndex = 2;
+    var isEnd = false;
+
+    var nurl = window.location.href;
+
+    var cids = nurl.match(/categoryId=[0-9]*/);
+    if (cids) {
+        categoryId = cids[0].replace("categoryId=", ""); //获取分类ID
+    }
+
+    function readmore() {
+
+        if (isEnd) {
+            $("#nextPager").html("全部数据已加载完");
+            $("#nextPager").attr("disabled", "disabled");
+            return;
+        }
+
+        var serachkey = $("#VProductListAll_keywords").val().replace(/\s/g, "");
+        keyWord = escape(serachkey);
+
+        $.ajax({
+            url: "ProductListAll.aspx",
+            type: 'POST', timeout: 10000,
+            data: { task: "next", categoryId: categoryId, keyWord: keyWord, pgSize: pgSize, pgIndex: pgIndex },
+            async: false,
+            success: function (resultData) {
+
+                pgIndex++;
+
+                try {
+
+                    var data = eval("(" + resultData + ")");
+                    if (data.length < pgSize * 1) {
+                        isEnd = true;
+                        $("#nextPager").html("全部数据已加载完");
+                        $("#nextPager").attr("disabled", "disabled");
+                    }
+                    if (data.length == 0) {
+                        return;
+                    }
+
+
+
+
+                    var addHtml = "";
+                    for (var i = 0; i < data.length; i++) {
+
+                        var imgurl = data[i]["ThumbnailUrl310"];
+                        if (imgurl == null) {
+                            imgurl = "/utility/pics/none.gif";
+                        }
+
+                        addHtml += "<li><div class='shopimg'>";
+                        addHtml += "<img src='" + imgurl + "' class='_pimg' style='border-width:1px;border-style:Solid;height:80px;width:80px;' />";
+                        addHtml += "</div><div  class='shopinfo'>";
+                        addHtml += "<p class='intro'><a class='Plink'  href='/ProductDetails.aspx?ProductId=" + data[i]["ProductId"] + "'>" + data[i]["ProductName"] + "</a></p>";
+                        addHtml += "<p class='Price'>￥" + data[i]["SalePrice"] + "</p>";
+                        addHtml += "<p class='saleshare clearfix'><span class='sale'>已售" + data[i]["SaleCounts"] + "件</span>";
+                        addHtml += "</p>";
+                        addHtml += "</div><div class='checkbox' id='CheckGroup" + data[i]["ProductId"] + "' key='" + data[i]["ProductId"] + "'><span></span></div></li>";
+                    }
+
+                    var $add = $(addHtml);
+                    $("#shops").html("");
+                    $("#shops").append($add);
+
+                } catch (e) {
+                    alert_h("读取数据失败!");
+                }
+
+
+            }
+        });
+
+
+    }
+
+    $(function () {
+
+        //全选
+        $('.selectall').click(function () {
+            if ($(this).hasClass('select')) {
+                $(this).removeClass('select');
+                $('.shoplist .checkbox').removeClass('select');
+            } else {
+                $(this).addClass('select');
+                $('.shoplist .checkbox').addClass('select');
+            }
+        });
+
+        $('#shops').on("click", ".checkbox", function () {
+            if ($(this).hasClass('select')) {
+                $(this).removeClass('select');
+            } else {
+                $(this).addClass('select');
+            }
+        });
+
+
+        $(".btn-share").hide(); //隐藏分享按钮
+
+        $(".sharediv label").each(function () {
+            $(this).text($(this).text().trim());
+        });
+
+        if (!$.trim($('#shops').html())) {
+            $('#empty').css('display', '');
+            isEnd = true;
+            $("#nextPager").hide();
+        }
+        else {
+            $('#empty').css('display', 'none');
+        }
+
+
+        /////滚动到底部触发事件
+        //$(document).scroll(function () {
+        //    var scrollTop = $(document).scrollTop();
+
+        //    if (scrollTop >= $(document).height() - $(window).height() - 100) {
+        //        if ($("#nextPager").css("display") == "none") {
+        //            $("#nextPager").show(100);
+        //        };
+        //    } else {
+
+        //        if ($("#nextPager").css("display") != "none") {
+        //            $("#nextPager").hide();
+        //        };
+        //    }
+        //})
+
+    });
+    function Searchkeys() {
+        var serachkey = $("#VProductListAll_keywords").val().replace(/\s/g, "");
+        location.href = "?keyWord=" + escape(serachkey);
+    }
+
+    var selectProdcut = "";
+
+    function SaveDistributorProducts() {
+
+        selectProdcut = "{";
+
+
+        $(".shoplist .checkbox").each(function () {
+            if ($(this).hasClass('select')) {
+                selectProdcut += '"' + $(this).attr("id") + '":"' + $(this).attr("key") + '",'
+            }
+        });
+
+
+        selectProdcut += "}";
+
+        if (selectProdcut == "{}") {
+            alert_h('请先选择要上架的商品！');
+            return false;
+        }
+
+
+        $.ajax({
+            url: "/API/VshopProcess.ashx",
+            type: 'POST', dataType: 'json', timeout: 10000,
+            data: { action: "AddDistributorProducts", Params: selectProdcut },
+            async: false,
+            success: function (resultData) {
+
+                window.location.href = "MyProducts.aspx";
+                $.cookie("SelectProcutId", null);
+
+            },
+            error: function () {
+                location.href = location.href;
+            }
+        });
+    }
+
+
+    function AddAll() {
+
+        if (!$.trim($('#shops').html())) {
+            alert_h("目前店铺没有商品可以上架！");
+            return;
+        }
+
+        myConfirm("上架全部商品", "确认上架全部商品?", "确定上架", function () {
+
+            $.ajax({
+                url: "/API/VshopProcess.ashx",
+                type: 'POST', dataType: 'json', timeout: 10000,
+                data: { action: "OperateAllDistributorProducts", deleteAll: "false" },
+                async: false,
+                success: function (resultData) {
+                    $.cookie("DeleteProcutId", null);
+                    alert_h('全部商品上架成功', function () { document.location.reload(); });
+                }
+            });
+
+        });
+    }
+
+
+</script>
+<div style="line-height:50px">　　</div>
+<hi:common_footer runat="server" />

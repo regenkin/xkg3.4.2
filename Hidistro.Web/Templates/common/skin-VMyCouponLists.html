@@ -1,0 +1,121 @@
+﻿<hi:common_header runat="server" />
+<link href="../templates/common/css/prizelist.css" rel="stylesheet" type="text/css">
+<script>
+
+</script>
+<style>
+    .container {
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    html, body {
+        height: 100%;
+        font-size: 12px;
+        font-family: "微软雅黑";
+    }
+    .pright {
+        padding-left: 35%;
+        padding-top: 8%;
+    }
+        .pright h5 {
+            font-size: 16px;
+            margin-bottom: 5%;
+            font-weight: 700;
+        }
+   
+        .nonelist{text-align:center;line-height:200px;width:100%;color:#999}
+</style>
+<div class="container">
+
+    <div class="content">
+        <div class="prizeList">
+            <ul id="clist">
+                <Hi:VshopTemplatedRepeater ID="rptActivity" TemplateFile="/Tags/skin-Common_MyCouponRepeat.ascx" runat="server" />    
+            </ul>
+
+            
+        </div>
+
+        <div class="prizeList">
+            --
+        </div>
+    </div>
+</div>
+<div id="pager"></div>
+
+
+<!--翻页相关-->
+<input type="hidden" clientidmode="Static" value="" runat="server" id="txtTotal" />
+<input type="hidden" runat="server" clientidmode="Static" value="0" id="txtShowTabNum">
+<script src="/Utility/common.js?2016" type="text/javascript"></script>
+<script src="/Utility/pager.js" type="text/javascript"></script>
+
+
+<script>
+    vshopPager('pager', $('#txtTotal').val(), 1, 20);
+
+    //禁用右上角菜单
+    //document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+    //    WeixinJSBridge.call('hideOptionMenu');
+    //});
+</script>
+<script type="text/javascript">
+    var ShowTabNum = 0; //当前显示页
+
+    $(function () {
+        ShowTabNum = $("#txtShowTabNum").val();
+
+        if ($("#clist").text().trim() == "") {
+            $("#clist").html("<li class='nonelist'>暂无可用优惠券</li>");
+            return;
+        }
+
+        if (ShowTabNum == "")
+            ShowTabNum = 0;
+    
+        $(".rollCollar").click(function () {
+
+            var CouponId = $(this).attr("CouponId");
+            var IsAllProduct = $(this).attr("IsAllProduct"); //1适应所有商品
+
+
+            if( ShowTabNum*1==0){
+               
+                if (IsAllProduct == "1") {
+                    alert_h("此优惠券适合所有商品");
+                    return;
+                }
+
+                $.ajax({
+                    url: "/API/VshopProcess.ashx",
+                    type: 'post', dataType: 'json', timeout: 10000,
+                    data: { action: "CheckCoupon", CouponId:CouponId},
+                    cache: false,
+                    success: function (resultData) {
+                        if (resultData.status == "Y") {
+                            if (resultData.tips == "") {
+                                //alert_h("优惠券匹配的商品已下架！");<%//这里无法判断是否适合所有商品，所以先转到商品列表页%>
+                                window.location.href = "/ProductList.aspx";
+                            } else {
+                                window.location.href = "/ProductList.aspx?pIds=" + resultData.tips; //转到商品页 
+                            }
+                        } else {
+                            alert_h("此优惠券适合所有商品");
+                        }
+                    },
+                    error: function (data, status, e) {
+                       // alert_h(data.readyState);
+                    }
+                });
+
+            } else {
+                window.location.href = "/VShop/CouponDetails.aspx?CouponId=" + CouponId; //转到活动页
+            }
+        });
+
+    });
+
+   
+</script>
+<hi:common_footer runat="server" />

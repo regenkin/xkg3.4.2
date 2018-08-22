@@ -1,0 +1,245 @@
+﻿<hi:common_header runat="server" />
+<link href="../templates/common/css/public.css" rel="stylesheet" type="text/css">
+<style>
+    html, body { min-height: 100%; max-width: 100%; font-family: "微软雅黑"; background-color: #F8F8F8; }
+    .container { max-width: 640px; min-height: 100%; padding: 0; }
+        .container header { height: 40px; padding-top: 5px; border-bottom: 1px solid #B8B8B8; margin-bottom: 10px; }
+            .container header ul li { float: left; height: 35px; line-height: 35px; width: 33.33333%; text-align: center; font-size: 14px; background-color: #fff; }
+                .container header ul li a { color: #2C2B30; }
+                .container header ul li.active { border-bottom: 2px solid #D61716; }
+                    .container header ul li.active a { color: #D94444; }
+    .luckdrawinlist { margin-bottom: 10px; }
+        .luckdrawinlist ul li { padding: 0 10px; background-color: #fff; border-bottom: 1px solid #E4E4E4; }
+            .luckdrawinlist ul li .luckdrawinfo { position: relative; padding: 10px 0; border-bottom: 1px solid #E4E4E4; min-height: 100px; }
+                .luckdrawinlist ul li .luckdrawinfo .img { position: absolute; width: 80px; height: 80px; left: 0; top: 10px; overflow: hidden; }
+                .luckdrawinlist ul li .luckdrawinfo .drawinfo { margin-left: 90px; width: 66%; text-align: justify; }
+                .luckdrawinlist ul li .luckdrawinfo .img img { width: 100%; height: 100%; }
+                .luckdrawinfo .drawinfo h3 { font-size: 12px; margin-bottom: 5px; line-height: 16px; }
+    .luckdrawinfo .drawinfo .color { color: #999999; }
+    .luckdrawinfo .drawinfo .no { margin-bottom: 2px; }
+    .loading { text-align: center; height: 20px; line-height: 20px; margin-bottom: 5px; }
+        .loading span { display: inline-block; text-indent: 25px; height: 20px; line-height: 20px; background: url(images/iconfont-jiazaizhong.gif) no-repeat; background-size: 20px; }
+    .luckdrawinlist ul li .lookmyinfo { height: 35px; line-height: 35px; }
+        .luckdrawinlist ul li .lookmyinfo p span { color: #DA4453; }
+        .luckdrawinlist ul li .lookmyinfo a { color: #337AB7; }
+    .winningresults { background-color: #FEB84D; padding: 5px; }
+        .winningresults .colorb { color: #009DDA; }
+        .winningresults .colorr { color: #FF2B00; }
+    .RedCss {margin-left:80px;padding-left:10px; background: #DA4453;color:#fff;line-height:30px;margin-bottom:3px }
+</style>
+
+<div class="container">
+    <header>
+        <ul class="clearfix">
+            <li><a href="MyOneTao.aspx" >进行中</a></li>
+            <li class="active"><a href="javascript:void(0)">已揭晓</a></li>
+            <li><a href="MyOneTaoSuccess.aspx">中奖记录</a></li>
+        </ul>
+    </header>
+    <div class="luckdrawinlist">
+        <ul id="Vlist">
+            
+
+        </ul>
+    </div>
+    <div class="loading">
+        <span>正在加载中····</span>
+    </div>
+</div>
+
+
+<script>
+    var ajaxflag = false;
+    var PostData = { action: "nextPage", pageIndex: 1, ActivityId: getParam("vaid") };
+
+    //var tempJson = [{ "Pid": "B151209193956249", "UserId": 3, "BuyTime": "2015-12-09 19:39:56", "BuyNum": 1, "IsPay": true, "ActivityId": "A151209192830654", "SkuId": "5_0", "SkuIdStr": "/", "ProductPrice": 25.0, "PayTime": "2015-12-09 19:40:07", "PayWay": "alipay", "PayNum": "2015120900001000290065647478", "Remark": "退款成功", "TotalPrice": 0.1000, "IsRefund": true, "RefundNum": "201512094146978", "RefundTime": "2015-12-09 19:59:41", "Name": "普通会员", "UserName": "starnew", "IsOn": false, "Title": "这是测试", "StartTime": "2015-12-08 05:25:00", "EndTime": "2015-12-23 14:25:00", "HeadImgage": "/Storage/master/OneTao/203026e893fe4d029248dd7920ef97a4.jpg", "ReachType": 3, "ActivityDec": "分享出去吧，就这个样子的", "IsEnd": true, "FinishedNum": 1, "UserHead": "http://wx.qlogo.cn/mmopen/vAJXEXyKV2b6DJjsBicCmDdibkfMxtEWQLZaLt7XvMUVWiawo38JmfBP0lwRujILLcG9dzzqDBZD5hIMzANap88XATicpwa7URTD/0", "ProductImg": "/Storage/master/product/thumbs60/60_4f96436264ba423f8211fbb7e1ee25cf.jpg", "ProductTitle": "赣州脐橙", "PrizeNumber": 1, "IsWin": false, "WinIds": null, "WinTime": null, "PrizeTime": null, "CellPhone": "18620360879", "HasCalculate": true, "IsSuccess": false, "RefundErr": false, "RowNumber": 1, "LuckNumList": "[]", "AState": "待退款" }];
+
+    $(function () {
+
+       // ajaxData(); //读取第1页
+
+       // addMore(tempJson);
+        ajaxData();
+
+        $(document).on('scroll', function (evt) {
+            var elementT = $('.loading').offset().top;
+            if ($(document).scrollTop() + $(window).height() >= elementT) {
+                if (!ajaxflag) {
+                    ajaxData();
+                
+                }
+            }
+        });
+
+    });
+
+
+
+
+    function ajaxData() {
+        ajaxflag = true;
+        //这里写ajax发送  发送成功记得把flag变量设置成false
+        //alert(1234);
+        $.ajax({
+            url: window.location.href,
+            type: "post",
+            data: PostData,
+            datatype: "json",
+            cache: false,
+            success: function (jsonData) {
+                //
+                PostData.pageIndex++; //翻页成功！
+                if (jsonData.state == true) {
+                   
+
+                    addMore(jsonData.Data);//读取JSON数据
+
+                    if (jsonData.Data.length == 10) {
+                        ajaxflag = false;
+                    }
+                    else {
+                        $('.loading').remove(); //移除
+                    }
+
+                }
+                else {
+                    if (jsonData.msg) {
+                        alert_h(jsonData.msg);
+                        ajaxflag = false;
+                    }
+                    else {
+                        window.location.reload();
+                    }
+                }
+            },
+            error: function () {
+                //
+            }
+        });
+
+    }
+
+
+    function addMore(jsondata) {
+
+        if (jsondata.length == 0)
+            return;
+        var addhtml = '';
+
+       
+        for (var i = 0; i < jsondata.length; i++) {
+            var item = jsondata[i];
+
+            var btn = '<a class="btn btn-danger btn-xs  button" href="ViewOneTao.aspx?vaid=' + item.ActivityId + '">追加</a>';
+            var vhtml = '<a href="MyluckNum.aspx?vaid=' + item.ActivityId + '">查看我的号码</a>';
+
+            if (!item.IsPay) {
+                btn = '<a class="btn btn-success btn-xs button" href="OneTaoPayView.aspx?Pid=' + item.Pid + '">去支付</a>';
+                vhtml = '<a href="javascript:void(0)" style="color:red">未支付</a>';
+            }
+          
+            var aState = item.AState;
+       
+            var kaijianHtml = Kaijiang(item.PrizeTime, item.IsRefund, item.ReachType, item.PrizeNumber, item.FinishedNum, item.IsPay, item.HasCalculate, item.IsSuccess, item.LuckNumList);
+     
+            addhtml += '<li>' +
+ '               <div class="luckdrawinfo">' +
+  '                  <div class="img">' +
+   '                     <img src="' + item.ProductImg + '">' +
+    '                </div>' +
+     '               <div class="drawinfo">' +
+      '                  <h3>' + item.ProductTitle + '</h3>' +
+       '                 <p class="no color">活动状态：' + aState + '</p>' +
+        '                <div class="clearfix color">' +
+         '                   <p>总需' + item.ReachNum + '份，参与' + item.FinishedNum + '份</p>' +
+          '              </div>' +
+           '         </div>' +
+            '    </div>' +
+'                <div class="lookmyinfo clearfix">' +
+ '                   <p class="fl">您选购的份数：<span>' + item.BuyNum + '</span>份</p>' +
+  '                  <p class="fr">' + vhtml + '</p>'+                    
+   '             </div>' +
+                  kaijianHtml +
+                '  </li>';
+        }
+
+
+        $("#Vlist").append(addhtml);
+
+    }
+
+
+    function Kaijiang(PrizeTime, IsRefund, ReachType, PrizeNumber, FinishedNum, IsPay, HasCalculate, IsSuccess, LuckNumList) {
+        var s = "<div class='RedCss'>您未成功参与该活动！</div>";
+        var rs = "";
+        var Html = "";
+
+       
+
+        if (!HasCalculate)
+        {
+            //未计算开奖时
+            rs = "正在计算开奖！";
+        }
+        else if (HasCalculate)
+        {
+            if (IsSuccess && IsPay) {
+                //成功开奖
+
+               
+                try {
+                    var WinJson = JSON.parse(LuckNumList); //LuckNumList
+
+                  //  alert(WinJson.length);
+
+                    for (var i = 0; i < WinJson.length; i++) {
+                        var WinItem = WinJson[i];
+                        WinItem.PrizeNums = WinItem.PrizeNums.substring(0, WinItem.PrizeNums.length - 1);
+                        Html += '            <div class="winningresults">' +
+        '               <p>获奖会员：<span class="colorb">' + WinItem.UserName + '</span></p>' +
+         '              <p>购买份数：<span class="colorr">' + WinItem.BuyNum + '</span>人次</p>' +
+          '             <p>中奖号码：<span class="colorr">' + WinItem.PrizeNums + '</span></p>' +
+           '            <p>开奖时间：' + PrizeTime + '</p>' +
+            '       </div>';
+
+                    }
+
+                    
+                }
+                catch (e)
+                {
+                    rs = "解析中奖用户信息失败！";
+                }
+
+            }
+            else
+            {
+                if (IsPay && IsRefund) {
+                    rs = "不足开奖条件，已退款！";
+                }
+                else if (IsPay) {
+                    rs = "不足开奖条件，等待退款！";
+                }
+                else {
+                    rs = "您未成功参与该活动！";
+                }
+            }
+
+        }
+
+
+        if (rs != "") {
+            s = "<div class='RedCss'>" + rs + "</div>";
+        }
+        else if (Html != "") {
+            s = Html;
+        }
+
+        return s;
+    }
+
+
+   
+
+</script>
+<hi:common_footer runat="server" />

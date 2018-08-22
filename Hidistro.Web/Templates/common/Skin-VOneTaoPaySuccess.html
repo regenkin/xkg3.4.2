@@ -1,0 +1,22 @@
+﻿<hi:common_header runat="server" />
+<style>
+    .duobaodiv{text-align:center;margin-top:30px}
+    .duobaodiv p a{width:40%;margin:10px;display:inline-block;margin-top:40px}
+        .duobaodiv .success { line-height: 50px; } 
+        .duobaodiv .success img { margin-right: 10px;  }
+        .duobaodiv .center { text-align: center; }
+</style>
+<div class="duobaodiv">
+    <p ><div class ="success"><img src="../images/success.png" /><asp:literal runat="server" id="litSuccess" Text="支付成功，请等待开奖！" /></div></p>
+    <p><asp:literal runat="server" id="litProduct" Text="　　　您成功支付一个商品！" /></p>
+    <p class="center"> <a class="btn btn-success" href="MyOneTao.aspx">查看我的夺宝</a><a class="btn btn-danger" href="OneyuanList.aspx">继续夺宝</a></p>
+</div>
+
+
+
+
+<script>
+
+
+</script>
+<hi:common_footer runat="server" />

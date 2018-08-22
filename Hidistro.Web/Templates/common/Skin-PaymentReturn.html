@@ -1,0 +1,21 @@
+﻿<hi:common_header runat="server" />
+    <div class="pbox">
+        <div class="well text-center orderMsg">
+            <div class="font-xl">
+                <span class="glyphicon glyphicon-ok"></span>
+                恭喜，订单支付成功！
+            </div>
+            <div class=""><%<asp:Literal ID="litMessage" runat="server"></asp:Literal>%></div>
+            <div class="btns">
+  <a href="/Vshop/MemberCenter.aspx" class="btn btn-success" role="button">查看该订单</a>
+                <a href="/Default.aspx" class="btn btn-default" role="button">继续逛逛</a>
+            </div>
+        </div>
+    </div>
+<script>
+    //禁用右上角菜单
+    //document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+    //    WeixinJSBridge.call('hideOptionMenu');
+    //});
+</script>
+<hi:common_footer runat="server" />

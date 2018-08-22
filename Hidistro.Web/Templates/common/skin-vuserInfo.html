@@ -1,0 +1,189 @@
+﻿<hi:common_header runat="server" />
+<div class="pbox fill_info well">
+    <div>
+        <form id="ImageForm" method="post" enctype="multipart/form-data">
+            <div class="upFile clearfix">
+                <div class="bgImg"><img id="imglogo" runat="server" clientidmode="Static" src="/Utility/pics/imgnopic.jpg" width="100" height="100" /></div>
+                <div class="adds"><input id="idFile" name="idFile" type="file" /></div>
+                <p class="font-s text-muted" style="padding-top: 30px;" id="Nickname" runat="server" clientidmode="Static"></p>
+                <p class="font-s text-muted" style="line-height:26px">
+                    支持.jpg、.gif、.png格式，保存后生效！<br />
+                    <input type="button" id="WeixinHead" style="color: #009DDC" runat="server" clientidmode="Static" class="btn btn-default btn-xs" value="从微信上获取头像" />
+                </p>
+            </div>
+        </form>
+    </div>
+     <form id="form" role="form" class="clearfix apply">
+    <label for="txtUserName">
+        帐户信息</label>
+     <div style="position:relative;line-height:30px;margin:10px 0px; border-bottom: 1px solid #ccc; border-top: 1px solid #ccc">
+         <span id="BtxtUserName"><asp:Literal runat="server" id="txtUserBindName"></asp:Literal></span><span id="userTopRight"  class="glyphicon glyphicon-menu-right" style="float:right;top:10px"></span><a id="blink" href="/BindUserMessage.aspx?returnUrl=/Vshop/UserInfo.aspx" style="float:right;margin-right:5px;color:#ff0000">非常重要！！！<em style="color:#29a52f">去绑定</em></a></div>
+         <input id="txtUserName" type="hidden" runat="server" clientidmode="Static" />
+         <label for="txtRealName">
+                姓名</label>
+    <input id="txtRealName" type="text" runat="server" clientidmode="Static" class="form-control"
+        placeholder="请填写您的姓名">
+    <label for="txtPhone">
+        手机</label>
+    <input id="txtPhone" type="text" runat="server" clientidmode="Static" class="form-control"
+        placeholder="请填写您的手机号">
+    <label for="txtEmail">
+        QQ</label>
+    <input id="txtEmail" type="text" runat="server" clientidmode="Static" class="form-control"
+        placeholder="请填写您的QQ号码">
+         <label for="txtCardID">
+             身份证号码
+         </label>
+         <input id="txtCardID" type="text" runat="server" clientidmode="Static" class="form-control"
+                placeholder="请填写您的身份证号码">
+    </form>
+</div>
+<div class="pbox"><button id="btnSetUserName" type="button"  style="width:100%" class="btn btn-danger btn-block">保存用户信息</button></div>
+<a href="ModifyPassWord.aspx" style="display:block;position:relative;line-height:30px;margin: 10px; border-bottom: 1px solid #ccc; border-top: 1px solid #ccc">密码<span class="glyphicon glyphicon-menu-right" style="float:right;top:10px"></span><span style="float:right;margin-right:5px;color:#ff0000">修改</span></a>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnSetUserName").bind("click", function () { SetUserName(); }); //设置新昵称
+        var UserName = $("#BtxtUserName").text().trim();
+        if (UserName != "用户名未绑定" && UserName !="") {
+            $("#BtxtUserName").text("用户名：" + UserName);
+            $("#blink").hide();
+            $("#userTopRight").hide();
+        } else {
+            $("#BtxtUserName").text("用户名未绑定");
+            $("#blink").show();
+        }
+
+        $("#idFile").uploadPreview({ Img: "imglogo", Width: 100, Height: 100 }); //预览
+
+        $("#WeixinHead").click(function () {
+
+            var flag = $(this).attr("noOpenId");
+            if (flag=="true") {
+                alert_h("当前用户未绑定微信用户帐号，无法获取微信头像！");
+                return;
+            };
+
+
+            $.ajax({
+                url: "/API/VshopProcess.ashx",
+                type: 'post', dataType: 'json', timeout: 10000,
+                data: {action: "GetWinXinInfo"},
+                success: function (result) {
+                    
+                   
+                    if (result != null && result.success != null) {
+                        alert_h(result.message);
+                    } else if (result.headimgurl!=null)
+                    {
+                     
+                       
+                        alert_h("微信头像获取成功！");
+                        $("#imglogo").attr("src", result.headimgurl); //显示获取的用户头像
+
+                    } else if (result.errcode != null || result.subscribe==0) {
+                       
+                        myConfirm("操作提示", "您尚未关注公众号，需授权才能获取用户头像！获取成功后直接更新信息！", "立即授权",
+                            function () {
+                                window.location.href = "GetWinXinInfo.aspx?return_url=UserInfo.aspx";
+                            })
+
+                    }
+                    else {
+                        alert_h("获取异常");
+                    }
+
+                }
+            });
+
+        });
+
+    });
+
+
+    function upLoadFile() {
+
+
+        if ($("#idFile").val().trim() == "") { showResponse("3");  return; }
+
+        var options = {
+            type: "POST",
+            url: '/API/Files.ashx?action=MemberLogoUpload&dlogo=true',
+            success: showResponse
+        };
+        // 将options传给ajaxForm
+        $('#ImageForm').ajaxSubmit(options);
+    }
+
+    function showResponse(data) {
+        if (data == "0") {
+            alert_h("会员Logo上传图片失败!");
+            return;
+        } else if (data == "2") {
+            alert_h("会员Logo上传的文件格式不正确！上传格式有(.gif、.jpg、.png、.bmp)!");
+            return;
+
+        } else if (data == "3") {
+            data = $("#imglogo").attr("src"); //为空值
+        }
+
+
+        $.ajax({
+            url: "/API/VshopProcess.ashx",
+            type: 'post', dataType: 'json', timeout: 10000,
+            data: { userHead: data, action: "SetUserName", userName: $("#txtUserName").val(), RealName: $("#txtRealName").val(), CellPhone: $("#txtPhone").val(), QQ: $("#txtEmail").val(), CardID: $("#txtCardID").val() },
+            success: function (resultData) {
+                if (resultData.Status == "OK") {
+                    alert_h("修改用户信息成功", function () {
+                        var returnURL = window.location.search.substr(window.location.search.indexOf("returnUrl=") + 10);
+                        if (window.location.search.indexOf("returnUrl=") != -1) {
+                            location.href = decodeURIComponent(returnURL);
+                        } else {
+                            location.href = "/Vshop/MemberCenter.aspx";
+                        }
+
+                    });
+
+                }
+                else {
+                    alert_h("修改用户信息失败, 请重试");
+                }
+            }
+        });
+
+    }
+
+    function SetUserName() {
+        //验证手机号码
+        var phone = $("#txtPhone").val();
+        var cardid = $("#txtCardID").val();
+        var phoneReg = /^0?1[3|4|5|6|7|8|9][0-9]\d{8}$/;
+        var cardidReg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+        if (phone != "" && !phoneReg.test(phone)) {
+            alert_h("手机号码格式不正确");
+            $("#txtPhone").focus();
+            return;
+        }
+        //验证身份证
+        if (cardid != "" && !cardidReg.test(cardid)) {
+            alert_h("身份证输入不合法");
+            $("#txtCardID").focus();
+            return;
+        }
+
+
+        upLoadFile();
+
+
+
+       
+    }
+</script>
+<script>
+
+    //禁用右上角菜单
+    //document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+    //    WeixinJSBridge.call('hideOptionMenu');
+    //});
+
+</script>
+<hi:common_footer runat="server" />

@@ -1,0 +1,33 @@
+﻿body{padding-bottom: 0;}
+.container{padding: 87% 4.6% 5%;max-width: 640px;margin: 0 auto;background: url(../images/fantop.png) no-repeat;background-size: 100%;color: #000;box-shadow: 0 0 5px #000;}
+.container .innerbox{padding: 6% 3% 1%;background-color: #E2DAD7;border-radius: 10px;margin-bottom: 7%;}
+.titileImage{width: 48.34%;background: url(../images/guiz.png) no-repeat;background-size: 100%; margin: 0 auto;margin-bottom: 5%;}
+.titileImage.startGame{background: url(../images/kaishi.png) no-repeat;background-size: 100%;}
+.titileImage.prize{width: 45.3%; background: url(../images/zhongjaing.png) no-repeat;background-size: 100%;}
+.innerList{margin-bottom: 4%;}
+.innerList h3{float: left;padding: 5px 10px;margin: 0 0 2% 0; border-radius: 10px; background-color: #fff; font-weight: normal;font-family: "微软雅黑";font-size: 14px;}
+.innerList .clear{clear: both;line-height: 20px;}
+.innerList table tr td{text-align: left;min-height: 20px;vertical-align: top;}
+.prizeList li{position: relative; width: 29.4%;-webkit-perspective: 600px; -moz-perspective: 600px;perspective: 600px;float: left;margin-right: 5.8%;margin-bottom: 5.8%;}
+.prizeList li:nth-of-type(3n){margin-right: 0;}
+.prizeList li .pic1 img{max-width: 100%;}
+.prizeList li .pic1{    -webkit-transform: rotateX(0deg) rotateY(0deg);-webkit-transform-style: preserve-3d;-webkit-backface-visibility: hidden;-moz-transform: rotateX(0deg) rotateY(0deg);-moz-transform-style: preserve-3d;-moz-backface-visibility: hidden;-o-transition: all .5s ease-in-out;-ms-transition: all .5s ease-in-out;-moz-transition: all .5s ease-in-out;-webkit-transition: all .5s ease-in-out;transition: all .5s ease-in-out;}
+.prizeList li.click .pic1{-webkit-transform:rotateY(180deg);}
+.prizeList li .pic2{position: absolute;left: 0;top: 0; width: 100%;height: 100%; background-color: #Fff;border-radius: 10px; display: table;vertical-align: middle;    -webkit-transform: rotateY(-180deg);-webkit-transform-style: preserve-3d;-webkit-backface-visibility: hidden;-moz-transform: rotateY(-180deg);-moz-transform-style: preserve-3d;-moz-backface-visibility: hidden;-o-transition: all .5s ease-in-out;-ms-transition: all .5s ease-in-out;-moz-transition: all .5s ease-in-out;-webkit-transition: all .5s ease-in-out;transition: all .5s ease-in-out;}
+.prizeList li .pic2 p{position: absolute;bottom: 20%;text-align: center;width:100%;}
+.prizeList li.click .pic2{ -webkit-transform:rotateY(0deg);}
+.container .innerbox.nobg{background: none;padding: 0;}
+.nameListTop ul li{height: 40px;width: 25%;float: left;line-height: 40px;text-align: center;font-weight: 700;font-size: 14px;background-color: #CEC1BB;}
+.nameList{max-height: 240px;overflow: auto;}
+.nameListTop ul:after,.nameList ul:after{content:"";clear:both;display:block;height:0;}
+.nameList ul li{float: left;width: 25%;height: 40px;text-align: center;line-height: 40px;font-size: 12px;}
+.nameList ul:nth-of-type(2n){background-color: #EBE6E3;}
+.myWinning{width: 54%;margin: 0 auto;display: table;}
+.myWinning a{display:table-cell;vertical-align: middle; background-color: #fccf00;border: 2px solid #000; color: #000;text-align: center;font-size: 14px;border-radius: 5px;}
+.comeAgain{position: fixed;top: 10%;padding:5px 10px; width: 44px; font-size: 12px; border-radius: 5px; background-color: rgba(255,255,255,0.8); cursor:pointer;z-index:100; }
+
+
+
+  
+
+ 

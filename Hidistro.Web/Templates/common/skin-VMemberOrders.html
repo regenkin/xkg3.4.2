@@ -1,0 +1,235 @@
+﻿<hi:common_header runat="server" />
+<link href="/style/memberorder.css?v3.2" rel="stylesheet" type="text/css">
+
+
+<div class="container" style="padding-bottom: 0;">
+    <header>
+        <ul class="clearfix orderul title_bg">
+            <li class=""><a href="?status=0">全部订单</a></li>
+            <li><a href="?status=1">待付款</a></li>
+            <li><a href="?status=2">待发货</a></li>
+            <li><a href="?status=3">待收货</a></li></ul>
+    </header>
+
+    <div class="orderbox" id="divorderlist">
+        <div style="margin:2px 8px;" class="batchoperator"><label class="fwnormal"><input type="checkbox" id="cbSelectAll" /> 全选</label><span style=" display:inline-block;float:right"><input id="btnCombine" type="button" value="合并付款" class="btn btn-primary btn-xs" /> <input id="btnCancel" type="button" value="批量取消订单" class="btn btn-default btn-xs" /></span> </div>
+        <hi:vshoptemplatedrepeater id="rptOrders" templatefile="/Tags/skin-Common_MemberCenterOrders.ascx"
+                                   runat="server" />
+    </div>
+        <p id="divEmpty" class="text-center list-empty hide">
+            <span class="glyphicon glyphicon-list-alt" style="margin-left: -3px;"></span><em>订单列表为空</em>
+        </p>
+    </div>
+<div id="pager"></div>
+<input type="hidden" clientidmode="Static" value="" runat="server" id="txtTotal" />
+<input type="hidden" runat="server" clientidmode="Static" value="0" id="txtShowTabNum">
+<script src="/Utility/common.js?2016" type="text/javascript"></script>
+<script src="/Utility/pager.js" type="text/javascript"></script>
+<script>
+    vshopPager('pager', $('#txtTotal').val(), 1, 10);
+    //禁用右上角菜单
+    //document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+    //    WeixinJSBridge.call('hideOptionMenu');
+    //});
+</script>
+
+    <script type="text/javascript">
+        function urllink(id, orderid, type) {
+            if (type == 1) {
+                alert_h("积分兑换的商品不能退款！");
+            } else {
+                location.href = "RequestReturn.aspx?orderId=" + orderid + "&id=" + id + "";
+            }
+        }
+
+        function showErr(obj) {
+            var mks = $(obj).attr("mks").trim();
+            if (mks != "") {
+                alert_h(mks);
+            }
+           
+        }
+
+        function FinishOrder(orderId) {
+            var data = {};
+            data.orderId = orderId;
+            myConfirm('询问', '您确定已经收到货物了吗？', '确定收货', function () {
+                $.post("/api/VshopProcess.ashx?action=FinishOrder", data, function (json) {
+                    if (json.success === true) {
+                        if (json.isapply == 0) {
+                            alert_h('确认收货成功！', function () {
+                                location.reload();
+                            });
+                        }
+                        else {
+                            myConfirm1('咨询', '确认收货成功,您的消费达到成为分销商要求,是否申请？', '取消', '确认', function (result) {
+                                if (result) {
+                                    location.href = "/Vshop/DistributorRegCheck.aspx";
+                                } else {
+                                    location.reload();
+                                }
+                            });
+                        }
+                    }
+                    else {
+                        alert_h(json.msg);
+                    }
+                });
+            });
+        }
+
+        function CancelOrder(orderId) {
+            var data = {};
+            data.orderId = orderId;
+            myConfirm('询问', '您确定要取消订单吗？', '确定', function () {
+                $.post("/api/VshopProcess.ashx?action=CancelOrder", data, function (json) {
+                    if (json.success === true) {
+                        alert_h('取消订单成功！', function () {
+                            location.reload();
+                        });
+                    }
+                    else {
+                        alert_h(json.msg);
+                    }
+                });
+            });
+        }
+        $(function () {
+            $("button[typeid='1']").hide();
+
+            if (!$.trim($("#divorderlist").html())) {
+                $("#divorderlist").hide();
+                $("#divEmpty").removeClass('hide');
+            }
+
+            $(".waittochangestatus").each(function () {
+                var obj = this;
+                var orderid = $(this).attr("orderid");
+                var skuid = $(this).attr("skuid");
+                var orderitemid = $(this).attr("orderitemid");
+                $.ajax({
+                    url: "/api/VshopProcess.ashx",
+                    type: "post",
+                    data: "action=GetOrderItemStatus&orderitemid=" + orderitemid + "&orderid=" + orderid + "&skuid=" + skuid,
+                    datatype: "json",
+                    success: function (json) {
+                        if (json.Status == "1") {
+                            if (json.HandleStatus == 8) {
+                                $(obj).removeAttr("onclick").html("拒绝退款").addClass("btn-danger").removeClass("btn-default").click(function () { alert_h(json.Reason) });
+                            };
+                        } else {
+                            //alert(json.Tips);
+                        }
+                    }
+                })
+            })
+
+
+            var list_h = (document.documentElement.clientHeight - 49 - $('.list-empty').height()) * .5 + 'px';
+            $('.list-empty').css('margin-top', list_h);
+            var status = getParam('status');
+             switch (status)
+            {
+                case "1":
+                case "2":
+                case "3":
+                    $(".title_bg li").removeClass("active").eq(status).addClass("active");
+                    break;
+                default:
+                    $(".title_bg li").removeClass("active").eq(0).addClass("active");
+                    break;
+            }
+
+             if (status != "2" &&status != "3") {
+                 /*隐藏订单取消操作*/                 
+                 $(".batchoperator").show();
+             }
+        })
+    </script>
+<script type="text/javascript">
+    $(function () {
+        var skuInputs = $('.specification input');
+        $.each(skuInputs, function (j, input) {
+            var text = '';
+            var sku = $(input).val().split(';');
+            var changsku = '';
+            for (var i = sku.length - 2; i >= 0; i--) {
+                changsku += sku[i] + ';';
+            }
+            $.each(changsku.split(';'), function (i, sku) {
+                if ($.trim(sku))
+                    text += '<span class="property">' + sku.split('：')[1] + '</span>';
+            });
+            $(input).parent().html(text);
+        });
+
+
+        $("#cbSelectAll").click(function () {
+            if ($(this).prop("checked")) {
+                $('input[type="checkbox"].alignSub').prop('checked', true);
+            } else {
+                $('input[type="checkbox"].alignSub').prop('checked', false);
+            }
+        })
+        $("#btnCancel").click(function () {
+            var orderIds = "";
+            $("input:checked[name='cbox']").each(function () {
+                orderIds += $(this).val() + ",";
+            });
+            if (orderIds == "") {
+                alert_h("请先选择取消订单的项目");
+            }
+            else {
+                var data = {};
+                data.orderId = orderIds;
+                myConfirm('询问', '您确定要取消所选择的订单吗？', '确定', function () {
+                    $.post("/api/VshopProcess.ashx?action=CancelOrder", data, function (json) {
+                        if (json.success === true) {
+                            alert_h('成功取消了'+json.icount+'个订单！', function () {
+                                location.reload();
+                            });
+                        }
+                        else {
+                            alert_h(json.msg);
+                        }
+                    });
+                });
+
+            }
+
+
+
+            
+
+        })
+        $("#btnCombine").click(function () {
+            var orderIds = "";
+            $("input:checked[name='cbox']").each(function () {
+                orderIds += $(this).val() + ",";
+            });
+            if (orderIds == "") {
+                alert_h("请先选择要合并付款的订单");
+            }
+            else {
+                $.ajax({
+                    url: "/api/VshopProcess.ashx",
+                    type: "post",
+                    data: "action=CombineOrders&orderidlist=" + orderIds,
+                    datatype: "json",
+                    success: function (json) {
+                        if (json.type == "1") {
+                            location.href = "/Vshop/FinishOrder.aspx?PaymentType=1&OrderId=" + json.tips;
+                        } else {
+                            alert(json.tips);
+                        }
+                    }
+                })
+            }
+        })
+    });
+</script>
+
+
+
+
+    <hi:common_footer runat="server" />

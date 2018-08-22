@@ -1,0 +1,107 @@
+﻿<hi:common_mybaseheader runat="server" />
+<link href="/style/mycss.css" rel="stylesheet" />
+<style type="text/css">    .explain img {
+    max-width:100%;}
+</style>
+    <div class="container">
+        <header style="background-color:#fff;">
+            <hi:HiImage ID="imgVoteItem" runat="server" style="margin:0 auto;" />
+        </header>
+        <div class="content">
+            <div class="vote">
+                <h2><hi:HiLiteral runat="server" ID="lVoteTitle" /></h2>
+                <small class="datatime"><hi:HiLiteral runat="server" id="lVoteDate" /></small>
+                <div class="explain"><hi:HiLiteral runat="server" ID="lVoteDescription" /></div>
+                <p class="votingNumber"><hi:HiLiteral runat="server" ID="lVoteType" />投票，共有<span><hi:HiLiteral runat="server" ID="lVoteCount" /></span>人参与投票</p>
+                <div class="startVote">
+                    <ul>
+                        <hi:vshoptemplatedrepeater id="rptVoteItem" runat="server" />
+                    </ul>
+                    <div class="subbtn">
+                        <button type="button" class="btn btn-success btn-sm" id="btnvote">投票</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+       
+    </div>
+    <hi:common_footer runat="server" />
+    <script type="text/javascript">
+        $(function () {
+            $("#btnvote").click(function () {
+                var selectItems = $("[name=VoteItem]:checked");
+                var length = selectItems.length;
+                if (length <= 0) {
+                    alert_h("请必须选投一项投票！");
+                    return;
+                }
+                var items = '';
+                for (var i = 0; i < length; i++) {
+                    items = items + $(selectItems[i]).val();
+                    if (i != length - 1) {
+                        items = items + ',';
+                    }
+                }             
+                if (CheckCanVote())
+                {
+                    Vote(items);
+                }
+               
+             
+            });
+        })
+
+        function GetFristId() {
+            var firstId = window.location.search.substr(window.location.search.indexOf("=") + 1);
+            if (firstId.indexOf("&") > 0)
+                firstId = firstId.substr(0, firstId.indexOf("&"));
+            return firstId;
+        }
+
+        function CheckCanVote() {
+            var result = false;
+            var voteId = GetFristId();
+            $.ajax({
+                url: '/API/Hi_Ajax_Game.ashx',
+                type: 'post',
+                dataType: 'json',
+                data: { "action": "checkcanvote", "voteId": voteId },
+                async: false,
+                success: function (data) {
+                    if (data.status == "1") {
+                        result= true;
+                    } else {
+                        alert_h(data.Desciption);
+                        result= false;
+                    }
+                },
+                error: function ()
+                {
+                    result= false;
+                }
+            });
+            return result;
+        }
+
+        function Vote(voteItems) {
+            var voteId = GetFristId();
+            $.ajax({
+                url: '/API/Hi_Ajax_Game.ashx',
+                type: 'post',
+                dataType: 'json',
+                data: { "action": "uservote", "voteId": voteId, "voteItem": voteItems },
+                async: false,
+                success: function (data) {
+                    if (data.status == "1") {
+                        alert_h("投票成功！", function () {
+                            location.reload();
+                        });
+                    } else {
+                        alert_h(data.Desciption);
+                    }
+                }
+            });
+        }
+
+    </script>

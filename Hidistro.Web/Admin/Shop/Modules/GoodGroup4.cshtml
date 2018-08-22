@@ -1,0 +1,22 @@
+﻿@{string renminbi = "￥";}
+<div class="members_con">
+    <section class="members_goodslist">
+        <ul>
+            @if (@Model.goodslist.Count > 0)
+            {
+                for (int i = 0; i < @Model.goodslist.Count; i++)
+                {
+                    var goods = @Model.goodslist[i];
+                    <li class="g-box por rebox">
+                        <section><a href="@goods.link"><img src="@goods.pic" width="88" height="88"></a></section>
+                        <section class="g-flex">
+                            <a href="@goods.link"> @goods.title</a>
+                            <p>@renminbi @goods.price </p>
+                        </section>
+                        <i class="icon_buy"><a href="@goods.link " title="">购买</a></i>
+                    </li>
+                }
+            }
+        </ul>
+    </section>
+</div>

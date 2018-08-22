@@ -1,0 +1,142 @@
+﻿<hi:common_header runat="server" />
+    <link href="/Utility/bootflat/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/script/jquery-1.11.0.min.js"></script>
+    <script src="/Utility/bootflat/js/bootstrap.min.js"></script>
+    <link href="/Templates/common/css/public.css" rel="stylesheet" type="text/css">
+    <style type="text/css">
+        html,body{min-height: 100%;font-family:"微软雅黑";background-color: #F8F8F8;max-width:100%}
+        .container{max-width: 640px;min-height: 100%; padding: 0;}
+        .container header{height: 40px;padding-top: 5px;border-bottom: 1px solid #B8B8B8;margin-bottom: 10px;}
+        .container header ul li{float: left;height: 35px;line-height: 35px;width: 50%;text-align: center;font-size: 14px;background-color: #fff;}
+        .container header ul li a{color: #2C2B30;}
+        .container header ul li.active{border-bottom: 2px solid #D61716;}
+        .container header ul li.active a{color: #D94444;}
+        .luckdrawinlist{margin-bottom: 10px;}
+        .luckdrawinlist ul li{padding: 0 10px;background-color: #fff;border-bottom: 1px solid #E4E4E4;}
+        .luckdrawinlist ul li .luckdrawinfo{position: relative; padding: 10px 0;border-bottom: 1px solid #E4E4E4;min-height: 100px;}
+        .luckdrawinlist ul li .luckdrawinfo .img{position: absolute;width: 80px;height: 80px;left: 0;top: 10px;overflow: hidden;}
+        .luckdrawinlist ul li .luckdrawinfo .drawinfo{margin-left: 90px;    text-align: justify;}
+        .luckdrawinfo .drawinfo h3{font-size: 12px;margin-bottom: 5px;line-height: 16px;min-height:32px;}
+        .luckdrawinfo .drawinfo .progress{height: 6px;margin-bottom: 2px;background-color: #CCCCCC;}
+        .luckdrawinfo .drawinfo .color{color: #999999;}
+        .luckdrawinfo .drawinfo .no{margin-bottom: 2px;}
+        .luckdrawinfo .drawinfo button{position: absolute;right: 0;top: 30px;}
+        .luckdrawinlist ul li .lookmyinfo{height: 35px;line-height: 35px;}
+        .luckdrawinlist ul li .lookmyinfo p span{color: #DA4453;}
+        .luckdrawinlist ul li .lookmyinfo a{color: #337AB7;}
+        .loading{text-align: center;height: 20px;line-height: 20px;margin-bottom: 5px;}
+        .loading span{display: inline-block;text-indent: 25px; height: 20px;line-height: 20px;background: url(../images/iconfont-jiazaizhong.gif) no-repeat;background-size: 20px;}
+        .clearfix:after{content:"";clear:both;display:block;height:0;}
+        .clearfix{zoom:1;}
+        .fl{float: left;}
+        .fr{float: right;}
+        .noneActivity { text-align: center; line-height: 100px; border: 0px solid #ccc; margin: 10px; color: #999; border-radius: 6px; }
+    </style>
+    <script type="text/javascript">
+        $(function () {
+            var flag = false;
+            var index = $("#vMyBargains_hiddTotal").val();
+            $(document).on('scroll', function (evt) {
+                var elementT = $('.loading').offset().top;
+                if ($(document).scrollTop() + $(window).height() >= elementT) {
+                    if (!flag) {
+                        flag = true;
+                        $.ajax({
+                            url: "/api/VshopProcess.ashx",
+                            type: "post",
+                            data: "action=GetBargainList&pageIndex=" + index + "&status=" + getUrlParam('status'),
+                            datatype: "json",
+                            success: function (json) {
+                                if (json.success) {
+                                    var rowtoatl = parseInt(json.rowtotal);
+                                    if (rowtoatl == 10) {
+                                        flag = false;
+                                    } else {
+                                        $('.loading').html('');
+                                    }
+                                    $("#ulBargainList").append(json.lihtml);
+                                    $("#vMyBargains_hiddPageIndex").val(parseInt(index) + 1);
+                                } else {
+
+                                }
+                            }
+                        })
+                    }
+                }
+            })
+
+            var total = parseInt($("#vMyBargains_hiddTotal").val());
+            if (total < 10) {
+                flag = true;
+                $('.loading').html('');
+            }
+        })
+    </script>
+    <script type="text/javascript">
+        //获取url中的参数
+        function getUrlParam(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+            var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+            if (r != null) return unescape(r[2]); return null; //返回参数值
+        }
+
+        $(function () {
+            var status = getUrlParam('status');
+            $(".clearfix li").removeClass("active").eq(status).addClass("active");
+
+            $("#ulBargainList img").on("click", function () {
+                var url = $(this).parent().parent().find("a").attr("href");
+                if (url != undefined) {
+                    location.href = url;
+                }
+            });
+
+            //空数据模板
+            var liCount = $(".luckdrawinlist li").length;
+            if (liCount == 0) {
+                $(".noneActivity").attr("style", "display:");
+            }
+
+            $("#luckdrawinlist li").each(function () {
+                
+            });
+
+            $("#ulBargainList li").on("click", function () {
+                var status = getUrlParam("status");
+                var url = "";
+                if (status != null && status != "") {
+                    var bargainId = $(this).attr("val");
+                    var bargainDetialId = $(this).attr("detial");
+                    url = "/HelpBargainDetial.aspx?bargainId=" + bargainId + "&bargainDetialId=" + bargainDetialId;
+                }
+                else {
+                    var bargainId = $(this).attr("val");
+                    url = "/BargainDetial.aspx?id=" + bargainId;
+                }
+                window.location.href = url;
+            });
+            
+        })
+    </script>
+    <input type="hidden" runat="server" value="0" id="hiddTotal" />
+    <input type="hidden" runat="server" value="1" id="hiddPageIndex" />
+    <div class="container">
+    <header style="background:#fff;">
+        <ul class="clearfix">
+            <li class=""><a href="MyBargains.aspx">发起中</a></li>
+            <li><a href="MyBargains.aspx?status=1">已帮砍</a></li>
+        </ul>
+    </header>
+        <div class="luckdrawinlist">
+            <ul id="ulBargainList">
+                <hi:vshoptemplatedrepeater id="rpMyBargainList" templatefile="/Tags/Skin-Common-MyBargains.ascx" runat="server" />
+            </ul>
+            <div class="noneActivity" style="display:none">
+                没有数据
+            </div>
+        </div>
+    <div class="loading">
+        <span>正在加载中····</span>
+    </div>
+</div>
+<hi:common_footer runat="server" isshownav="1" />   

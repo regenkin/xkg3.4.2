@@ -1,0 +1,43 @@
+﻿<p style="display: none">
+    <hi:cnzzshow runat="server" />
+</p>
+<script type="text/j-template" id="menu">
+    <div class="menuNav" id="menuNav">
+      <ul id="ul">
+                <# _.each(menuList,function(item){ #>
+                <li>
+                   
+                      <# if(item.SubMenus.length > 0){ #>
+                        <div class="navcontent" data="1">
+                        <# if(item.ShopMenuPic.length > 0){ #>
+                            <img src="<#= item.ShopMenuPic#>" style="width :20px;height:20px;" />
+                        <# } #>
+                         <#= item.Name #>
+                        
+    	                <div class="childNav">
+                        <ul>
+                             <# _.each(item.SubMenus,function(chlitem){ #>
+                                <li><a href="<#= chlitem.Content #>"><#= chlitem.Name #></a></li>
+                             <# }) #>
+                       </ul>
+                       </div>
+                
+                    <# } else{ #>
+                           <div class="navcontent" data="0">
+                             <a href="<#= item.Content #>">
+                           <# if(item.ShopMenuPic.length > 0){ #>
+                            <img src="<#= item.ShopMenuPic#>" style="width :20px;height:20px;" />
+                            <# } #>
+                           <#= item.Name #></a>
+                     <# } #>
+                    </div>
+                </li>
+                <# }) #>
+        </ul>
+</div>
+</script>
+<asp:Literal ID="litJs" runat="server"></asp:Literal>
+<hi:MeiQiaSet ID="MeiQiaSet" runat="server"></hi:MeiQiaSet>
+</body>
+
+ </html> 

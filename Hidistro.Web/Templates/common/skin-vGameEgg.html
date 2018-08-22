@@ -1,0 +1,344 @@
+﻿<hi:common_mybaseheader runat="server" />
+<asp:Literal ID="litJs" runat="server"></asp:Literal>
+<link href="/style/egg.css?20151028" rel="stylesheet" />
+<link href="/style/gamecommon.css?20151028" rel="stylesheet" type="text/css">
+<style>
+    .prizeCss tr { border-bottom: 1px solid #fb5555; }
+    .prizeCss td { padding: 8px; color: #eee; }
+    .prize_Info { color: #fff !important; }
+    .opportunity-num{font-size:14px;text-align:center;margin-bottom:5px;display:none;}
+    .opportunity-num span{color:black;margin:0 3px;font-size:16px}
+
+    .mask .phone-box{position:absolute;padding:0 20px;left:0;top:80px;width:100%;}
+	.mask .phone-box .form-phone{position:relative; background-color:#fff;padding:25px;border-radius:8px;}
+	.mask .phone-box .form-phone h5{font-size:18px;color:#1CC3D4;text-align:center;margin-bottom:15px;}
+	.phone-box .form-phone .form-input{position:relative;border-bottom:1px solid #80DEE7;}
+	.phone-box .form-phone .form-input input{width:100%;border:none;height:30px;padding-left:30%;font-size:16px;outline:none;}
+	.phone-box .form-phone .form-input label{position:absolute;left:0;width:30%;line-height:30px;font-size:16px;}
+	.phone-box .form-phone .btn-phone{width:100%;height:40px;background-color:#01BBD0;color:#fff;border:none;border-radius:8px;font-size:16px;outline:none;}
+	.form-phone .btn-close{position:absolute;right:0;top:0;font-size:24px;width:30px;height:30px;text-align:center;line-height:30px;}
+    .phone-box .form-phone .showmessage{height:25px;line-height:25px;text-align:center;}
+</style>
+<script src="/script/vgame.js?201603"></script>
+<div id="mcover" style="display:none" onclick="document.getElementById('mcover').style.display='';">
+    <img src="/images/guide.png" />
+</div>
+<div class="container" style="margin:0px;">
+    <div class="gameInt" style=" padding-bottom: 4.6%;">
+        <div class="inttext">
+            <div class="startGame">
+                <p class="opportunity-num">您还有<span class="oppnumber">0</span>次机会</p>
+                <div class="egg">
+                    <ul class="eggList">
+                        <p class="hammer" id="hammer" style="left: 584px;">锤子</p>
+                        <li><span>1</span><sup></sup><p class="resultTip" id="resultTip"><b id="result"></b></p></li>
+                        <li><span>2</span><sup></sup><p class="resultTip" id="resultTip"><b id="result"></b></p></li>
+                        <li><span>3</span><sup></sup><p class="resultTip" id="resultTip"><b id="result"></b></p></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="inttextList">
+                <div class="prizeTitle"><h3><span>游戏奖品</span></h3></div>
+                <div class="prizeList">
+                    <table width="100%">
+                        <tbody class="prizeCss">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="inttextList">
+                <div class="prizeTitle"><h3><span>游戏说明</span></h3></div>
+                <p id="gameDescription"></p>
+            </div>
+            <div class="inttextList">
+                <div class="prizeTitle"><h3><span>活动时间</span></h3></div>
+                <p id="gameDateTime"></p>
+            </div>
+            <div class="inttextList">
+                <div class="prizeTitle"><h3><span>中奖名单</span></h3></div>
+                <div class="winningList">
+                    <div class="nameListTop">
+                        <ul>
+                            <li>昵称</li>
+                            <li>奖品</li>
+                            <li>等级</li>
+                            <li>中奖时间</li>
+                        </ul>
+                    </div>
+                    <div class="nameList" id="userPrizeLists">
+                    </div>
+                </div>
+                <div class="myWinning">
+                    <a href="Vshop/MyPrizeList.aspx?ShowTab=0">点击查看我的奖品</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="display:none">
+    <input type="hidden" id="hiddPrizeName" />
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var flag = true;
+        function setHeight() {
+            $('.prizeTitle h3').height($('.prizeTitle h3').width() * 0.303);
+            $('.startGame').height($('.startGame').width() * 0.696);
+            $('.eggList li').height($('.eggList li').width() * 1.183);
+            $('.eggList li sup').height($('.eggList li').width() * 1.183 * 0.725);
+            $('.hammer').height($('.hammer').width() * 1.175);
+            $('.myWinning a').height($('.myWinning a').width() * 0.22);
+        }
+        BindData();
+        //我知道了
+        $(document).on('click', '.iknow', function () {
+            $('.mask').fadeOut(500, function () {
+                $('.mask').remove();
+            });
+            if (IsCanPlay()) {
+                flag = true;
+            }
+            else {
+                $("#hammer").hide();
+            }
+            ReLoadEgg();
+        })
+       
+        var oppNumber = GetOpportunity();
+        if (oppNumber == -1) { //没有限制次数
+            $(".opportunity-num").html("&nbsp;").show();
+        }
+        else {
+            $(".oppnumber").html(oppNumber);
+            $(".opportunity-num").show();
+        }
+
+        
+        $('body').on('keydown', '.form-phone input', function () {
+            $(".showmessage").html("");
+        })
+
+
+        //得瑟一下
+        $(document).on('click', '.showprize', function () {
+            $('.mask').fadeOut(500, function () {
+                $('.mask').remove();
+            });
+            //ReLoadEgg();
+
+
+            if (IsCanPlay()) {
+                flag = true;
+            }
+            else {
+                $("#hammer").hide();
+            }
+            ReLoadEgg();
+
+
+            shareTimeline();
+        });
+        //分享活动
+        $(document).on('click', '.showaction', function () {
+            $('.mask').fadeOut(500, function () {
+                $('.mask').remove();
+            });
+            //ReLoadEgg(); 
+            if (/MicroMessenger/i.test(navigator.userAgent)) {
+                $("#mcover").show();
+            }
+            else {
+                    alert_h("当前客户端不是微信，不能分享到微信！");
+            }
+
+            if (IsCanPlay()) {
+                flag = true;
+            }
+            else {
+                $("#hammer").hide();
+            }
+            ReLoadEgg();
+        });
+
+        setHeight();
+        $(window).resize(function () {
+            setHeight();
+        });
+        
+        
+        //蛋碎效果
+        function eggClick(obj, prize) {
+            var _this = obj;
+            $(".hammer").css({ "top": _this.position().top - 55, "left": _this.position().left + 185 });
+            $(".hammer").animate({
+                "top": _this.position().top - 25,
+                "left": _this.position().left + 125
+            }, 30, function () {
+                _this.addClass("curr"); //蛋碎效果
+                $(".hammer").hide();
+            });
+        }
+
+        ///砸蛋效果
+        $(".eggList li").click(function () {
+            if (flag) {
+                var showMsg = "";
+                var message = GetPrize();
+                if (message.status == "0") {
+                    alert_h(message.Desciption);
+                }
+                else {
+                    var fl = false;
+                    if (message.prizeState == "ok") {
+                        fl = true;
+                        showMsg =  message.prize;
+                        $("#hiddPrizeName").val(message.prize);
+                    }
+                    else {
+                        fl = false;
+                        showMsg = message.prizeName;
+                        console.log(message.prizeName);
+                    }
+                    $(this).children("span").hide();
+                    if (fl) {
+                        setTimeout(function () {
+                           // $('body').append('<div class="mask"><div class="look-prize"><a href="Vshop/MyPrizeList.aspx?ShowTab=0">查看奖品</a></div><div class="fireworks"></div><div class="luck-result"><div class="text-title"><p>哇~ ' + message.prizeName + '！</p><p>' + showMsg + '</p></div><div class="result-btn"><a href="javascript:void(0)" class="showprize">得瑟一下</a><a class="iknow" href="javascript:void(0)">知道了</a></div></div></div> ');
+                            $('body').append('<div class="mask"><div class="look-prize"><a href="Vshop/MyPrizeList.aspx?ShowTab=0">查看奖品</a></div><div class="fireworks"><div class="text-title"><h2>哇！' + message.prizeName + '！</h2><p>' + message.prize + '</p></div><div class="result-btn"><a href="javascript:void(0)" class="showprize">得瑟一下</a><a href="javascript:void(0)" class="iknow">知道了</a></div></div></div>')
+                            $('.mask').fadeIn(300);
+                            $('.fireworks').height($('body').width() / 640 * 738);
+                        }, 500)
+                    } else {
+                        setTimeout(function () {
+                           // $('body').append('<div class="mask"><div class="luck-result no-luck"><div class="text-title"><p>&nbsp;</p><p>谢谢参与！</p></div><div class="result-btn"><a href="javascript:void(0)" class="showaction">分享活动</a><a class="iknow" href="javascript:void(0)">知道了</a></div></div>');
+                            $('body').append('<div class="mask"><div class="no-luck-prompt"><div class="no-luck-inner"><div class="no-luck-bg"></div><p class="thanks">' + message.prizeName + '</p><div class="result-btn"><a href="javascript:void(0)" class="showaction">分享活动</a><a href="javascript:void(0)" class="iknow">知道了</a></div></div></div></div>')
+                            $('.mask').fadeIn(300);
+                        }, 500)
+                    }
+                    eggClick($(this), showMsg);
+                    //机会减1
+                    var oppNumber = parseInt($(".oppnumber").html());
+                    $(".oppnumber").html(oppNumber - 1);
+                    flag = false;
+                }
+            }
+        });
+        $(".eggList li").hover(function () {
+            var posL = $(this).position().left + $(this).width();
+            $("#hammer").show().css('left', posL);
+        })
+
+        ///获取游戏奖品信息
+        GetPrizeTdHtml();
+
+        //保存手机号码
+        SavePhone();
+
+        //电话号码的验证
+        CheckMemberPhone();
+    })
+
+    ///获取游戏奖品信息
+    function GetPrizeTdHtml() {
+        var prizeTdHtml = "";
+        var prizeLists = gameData.prizeLists;
+        for (var i = 0; i < prizeLists.length; i++) {
+            var item = prizeLists[i];
+            prizeTdHtml += "<tr><td width='25%'>" + item.prizeType + "：</td><td class=\"prize_Info\" id=\"prizeItem" + i + "\">" + item.prize + "</td></tr> ";
+        }
+        $(".prizeCss").append(prizeTdHtml);
+    }
+
+    function returnFn() {
+        $('.mask').animate({
+            opacity: 0
+        }, function () {
+            $('.mask').remove();
+        });
+    };
+    function ReLoadEgg()
+    {
+        $('.eggList li').removeClass('curr');
+        $('.resultTip').removeAttr('style');
+        $(".eggList li").children("span").show();
+    }
+
+    function BindData() {
+        InitInfo();
+        //绑定游戏奖品信息
+        var len = gameData.prizeLists.length;
+        for (var i = 0; i < len; i++) {
+            if (gameData.prizeLists[i].prizeCount > 0) {
+                $("#prizeItem" + i).html(gameData.prizeLists[i].prize);
+            }
+        }
+        $("#gameDescription").html(gameData.Description);
+        $("#gameDateTime").html(gameData.BeginDate + " 至 " + gameData.EndDate);
+        UserPrizeLists();
+    }
+
+    function shareTimeline() {
+        title = wxinshare_title;
+        link = wxinshare_link;
+        prizeName = $("#hiddPrizeName").val();
+        Dec = '哇！我在' + fxShopName + '，中了' + prizeName + ',一起来参与吧';
+        imgUrl = wxinshare_imgurl;
+        if (/MicroMessenger/i.test(navigator.userAgent)) {
+            $("#mcover").show();
+            initWx();
+        }
+        else {
+            alert_h("当前客户端不是微信，不能分享到微信！");
+        }
+    }
+    function initWx() {
+
+        wx.onMenuShareTimeline({
+            title: title + "\r\n" + Dec, // 分享标题
+            link: link, // 分享链接,将当前登录用户转为puid,以便于发展下线
+            desc: Dec,
+            imgUrl: imgUrl, // 分享图标
+            success: function () {
+                // 用户确认分享后执行的回调函数
+                $("#mcover").hide();
+                alert_h('分享成功');
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+
+
+        wx.onMenuShareAppMessage({
+            title: title,
+            desc: Dec,
+            link: link,
+            imgUrl: imgUrl,
+            type: "",
+            dataUrl: "",
+            success: function () {
+                $("#mcover").hide();
+                alert_h('分享成功');
+            },
+            cancel: function () { }
+        });
+
+        wx.onMenuShareQQ({
+            title: title, // 分享标题
+            desc: Dec, // 分享描述
+            link: link, // 分享链接
+            imgUrl: imgUrl, // 分享图标
+            success: function () {
+                $("#mcover").hide();
+                alert_h('分享成功');
+                // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+
+
+    }
+</script>
+<hi:common_footer runat="server" />

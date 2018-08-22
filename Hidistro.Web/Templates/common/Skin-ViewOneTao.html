@@ -1,0 +1,454 @@
+﻿<hi:common_header runat="server" />
+<asp:Literal ID="litJs" runat="server"></asp:Literal>
+<style type="text/css">
+    html, body { min-height: 100%; font-family: "微软雅黑"; background-color: #E6E6E6; }
+    .container { max-width: 640px; min-height: 100%; padding: 0; }
+    .header img { width: 100%; }
+    .container .shopinfobox { padding: 10px; margin-bottom: 10px; background-color: #fff; }
+        .container .shopinfobox h2 { font-size: 12px; line-height: 18px; }
+            .container .shopinfobox h2 span { padding: 1px 10px; border: 1px solid #DA4453; border-radius: 3px; color: #DA4453; }
+    .shopinfobox strong.str { font-weight: normal; word-bread: break-all; color: #FF0000; }
+    .shopinfobox .setbottom { margin-bottom: 5px; }
+    .shopinfobox .colorc { color: #999999; }
+    .shopinfobox .progress { height: 10px; background-color: #CCCCCC; margin-bottom: 2px; }
+    .shopinfobox .lotteryCase { position: relative; color: #999999; }
+        .shopinfobox .lotteryCase .lotteryCaseinfo { position: absolute; left: 50%; transform: translateX(-50%); -webkit-transform: translateX(-42%); }
+        .shopinfobox .lotteryCase .colorr { color: #DA4453; }
+        .shopinfobox .lotteryCase .colorl { color: #009DE1; }
+    .shopinfobox .awards { margin-bottom: 10px; margin-top: 10px; }
+        .shopinfobox .awards .left, .shopinfobox .reset .left { width: 60px; text-align: right; }
+    .shopinfobox .reset { line-height: 25px; font-size: 12px; }
+        .shopinfobox .reset .resetnumber span { display: block; width: 25px; height: 25px; line-height: 25px; text-align: center; background-color: #DA4453; font-size: 18px; color: #fff; float: left; }
+        .shopinfobox .reset .resetnumber input { width: 40px; height: 25px; text-align: center; float: left; border: none; border-top: 1px solid #CCCCCC; border-bottom: 1px solid #CCCCCC; }
+    .shopinfotable { background-color: #fff; }
+        .shopinfotable ul li { border-left: 1px solid #ddd; background-color: #EEEEEE; width: 33.3333%; float: left; height: 32px; line-height: 32px; text-align: center; }
+        .shopinfotable ul .active { background-color: #fff; }
+        .shopinfotable .textinfo { padding: 5px 10px; }
+            .shopinfotable .textinfo p { line-height: 18px; }
+    .container .fixed { position: fixed; left: 0; bottom: 0; padding: 5px; background-color: rgba(0,0,0,0.5); text-align: center; width: 100%; }
+    .fl{float:left}
+    .fr{float:right}
+    .colorl, di { color: #009DE1; }
+    .blue{color:#145bbe}
+    .red { color: #ee570b; }
+    .small{margin-top:15px;color:#fff;margin-left:10px;display:inline-block;font-size:12px}
+    .bold { margin-top: 5px; color: #fff; font-size: 18px; display: inline-block; }
+    #LuckList { border-radius: 6px; border: 1px solid #ccc; margin: 10px 0px; background: #fff; padding: 10px; }
+        #LuckList img { margin-right: 10px; margin-left: 10px; width: 60px; height: 60px; float: left; border-radius: 30px }
+    .DetailLink { float: right; border-radius: 4px; margin: 5px; color: #fff; border: 1px solid #fff; padding: 3px 10px; }
+    .PrizeBtn { clear: both; border-radius: 4px; background: #ff9900; margin-top: 10px; }
+    .moreDetail{border-top:1px solid #ccc;padding:10px;text-align:right}
+        .moreDetail a {; color: #009DE1; cursor:pointer}
+    .listLuck { display: none; }
+    #NomachMember {line-height:20px;overflow:hidden;display:block;color:#fb6f05}
+</style>
+<div class="container">
+    <div style="overflow:hidden;position:relative;">
+        <asp:literal runat="server" id="litProdcutTag" />
+        <div id="slides">
+            <hi:vshoptemplatedrepeater id="rptProductImages" templatefile="/Tags/skin-Common_Slide.ascx"
+                                       runat="server" />
+        </div>
+    </div>
+    <div class="shopinfobox">
+        <h2>
+            <span id="litStateSp"><asp:literal runat="server" id="litState" /></span>
+            <asp:literal runat="server" id="litProdcutName" />
+        </h2>
+        <p class="setbottom" style="margin-top:5px"><strong class="str"><asp:literal runat="server" id="litShortDescription" /></strong></p>
+        <p class="setbottom colorc">商品价值：¥<span class="spSalaPrice"><asp:literal runat="server" id="litSalePrice" /></span></p>
+        <p class="setbottom colorc">奖品发放：<asp:literal runat="server" id="litActivityId" /></p>
+        <p class="setbottom colorc" id="NomachMember" runat="server" ClientIDMode="Static"></p>
+        <div class="progress">
+            <div class="progress-bar progress-bar-warning" id="Prizeprogress" runat="server" clientidmode="Static" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">
+                <span class="sr-only">60% Complete (warning)</span>
+            </div>
+        </div>
+        <div class="clearfix lotteryCase">
+            <p class="fl">已参与<span class="colorr"><asp:literal runat="server" id="litFinished" /></span></p>
+            <p class="lotteryCaseinfo">总需<asp:literal runat="server" id="litPrizeNum" />人次</p>
+            <p class="fr">剩余<span class="colorl"><asp:literal runat="server" id="litMinNum" /></span>份</p>
+        </div>
+       
+        <div style="margin:10px 0px">
+            <a class="btn btn-danger" id="PrizeTime" runat="server" clientidmode="Static" style="width:100%">开奖时间：正在计算...</a>
+
+        </div>
+
+        <hi:common_skuselector id="skuSelector" runat="server" />
+
+        <div class="clearfix reset">
+            <p class="fl left">购买份数：</p>
+            <div class="fl clearfix resetnumber">
+                <span class="addNum" key="0">-</span>
+                <input type="text" value="1" runat="server" clientidmode="Static" max="1" id="buyNum">
+                <span class="addNum" key="1">+</span>
+            </div>
+        </div>
+        <p style="margin-top:10px"><asp:literal runat="server" id="litBuytxt" Text="　当前说明" /></p>
+    </div>
+    <div id="MaxBuyId" runat="server" ClientIDMode="Static" style="margin:3px 3px 10px 3px;padding:10px;line-height:20px;border:1px solid #ccc;border-radius:4px;background:#fff;color:red">
+        <a class="btn btn-danger btn-xs" style="float:right;margin-left:10px" href="MyOneTao.aspx">查看我的夺宝</a>
+        <a class="btn btn-success btn-xs" style="float:right" href="OneyuanList.aspx">返回活动列表</a>
+        <asp:literal runat="server" id="litMaxtxt" Text="　当前说明" />
+    
+      
+    </div>
+    <div  id="LuckList">
+     
+    </div>
+    <div class="shopinfotable">
+        <ul class="clearfix">
+            <li class="Atbli active">
+                成功参与记录
+            </li>
+            <li class="Atbli">商品详情</li>
+            <li >
+                <a id="ViewtReview" style="display:none" runat="server" clientidmode="Static">商品评论</a>
+            </li>
+        </ul>
+        <div class="textinfo" style="display:none">
+
+            <div class="goods-detail bgColor-white btns-fixed-padding">
+                <div class="panel panel-default" style="display:none">
+                    <div class="panel-heading">
+                        属性
+                    </div>
+                    <table class="table" id="attrtable">
+                        <tbody>
+                            <hi:common_expandattributes id="ExpandAttributes" runat="server" />
+                        </tbody>
+                    </table>
+                </div>
+                <asp:literal runat="server" id="litDescription" />
+            </div>
+        </div>
+        <div class="textinfo" style="height:300px;border:1px solid #ccc;border-radius:6px;">
+            <iframe id="partIframe" src="" style="width:100%;height:100%;border:none"></iframe>
+        </div>
+        </div>
+    <div class="fixed" id="SaveBtn" runat="server" clientidmode="Static">
+        <button class="btn btn-danger btn-sm" id="SaveBtnOneTao" >立即参与夺宝</button>
+    </div>
+</div>
+
+
+
+<script>
+    <asp:Literal ID="LitDataJson" runat="server"></asp:Literal>; ///后台传到前端的JSON对象
+
+    var ActivityState = $("#litStateSp").text();
+
+    $(function () {
+
+      
+        if($("#NomachMember").attr("CanBuy")=="false"){
+            alert_h("活动"+$("#NomachMember").text().replace(/　/g,""));
+        }else{
+            if( $("#buyNum").attr("max")*1>0){
+                $("#buyNum").change(function () {
+           
+                    if (/^\d+$/.test($(this).val()) && $(this).val()>"0")
+                    {
+                        if ($(this).val() * 1 > $(this).attr("max") * 1) {
+                            $(this).val($(this).attr("max"));
+                            alert_h("您最大可购" + $(this).attr("max") + "份数");
+                        }
+
+                    }else{
+                        $(this).val(1);
+                    }
+                });
+            }
+            else{
+
+
+            }
+        }
+
+        
+
+        
+
+        if (ActivityState == "已开奖")
+        {
+            $("#LuckList").show();
+            var lhtml="";
+            if(LitDataJson!=null && LitDataJson.length>0){
+
+                for(var i=0;i<LitDataJson.length;i++)
+                {
+                    var WinItem=LitDataJson[i];
+                    lhtml +='<div class="listLuck"><img src="'+WinItem.UserHead+'" /> '+
+                    '<p style="line-height:20px;color:#777">'+
+                    '中奖会员：<span class="blue">'+WinItem.UserName+'</span><br />'+
+                    '购买份数：<span class="red">'+WinItem.BuyNum+'</span><br />'+
+                    '       开奖时间：'+WinItem.BuyTime+'<br />'+
+                    '</p>'+
+                    '<div class="PrizeBtn">'+
+                    '<a href="/vshop/OneyuanTaoResult.aspx?vaid='+getParam("vaid")+'" class="DetailLink" >计算详情</a>'+
+                    '<span class="small">中奖号码：</span><span class="bold">'+WinItem.PrizeNums.substring(0,WinItem.PrizeNums.length-1)+'</span>'+
+                    '<div style="clear:both"></div>'+
+                    '</div></div>';
+                }
+
+
+            }
+
+            if(LitDataJson.length>1){
+                lhtml +="<div class='moreDetail'><a  id='showMore'>更多获奖会员信息</a><div>";
+           }
+
+          
+            $("#LuckList").html(lhtml);
+            $(".listLuck").eq(0).show();
+
+            if($('#showMore').length>0){
+                
+                $('#showMore').click(function(){
+                    $(".listLuck").toggle();
+                    $(".listLuck").eq(0).show();
+                    $(this).hide();
+                });
+            }
+
+          
+        }
+        else{
+            $("#LuckList").hide();
+        }
+
+
+        if (ActivityState == "进行中" && $("#buyNum").attr("max") * 1>0)
+        {
+            //只有活动中的，可以添加份数
+            $(".addNum").click(function () {
+                var t = $(this).attr("key");
+                if (t == "0") {
+                    $("#buyNum").val($("#buyNum").val() * 1 - 1);
+                }
+                else {
+                    $("#buyNum").val($("#buyNum").val() * 1 + 1);
+                }
+                $("#buyNum").trigger("change");
+            });
+
+        }
+        
+
+        var slidesImg = $('#slides img');
+        var width = 650, height = 650;
+        if (slidesImg.length > 1) {
+            $('#slides').slidesjs({
+                width: width,
+                height: height,
+                play: {
+                    active: true,
+                    auto: true,
+                    interval: 4000,
+                    swap: true
+                }
+            });
+            $(".slidesjs-play, .slidesjs-stop, .slidesjs-previous, .slidesjs-next").remove();
+            $(".slidesjs-pagination li").css("width", function(){return 100/slidesImg.length+"%"});
+        }
+        else {
+
+            $('#slides').css('display','block').html('<div style="width:100%;"><a href="javascript:;"></a></div>');
+            $('#slides div a').append(slidesImg);
+        }
+        if (ActivityState == "进行中")
+        {
+            ///计时器
+            setInterval(function () {
+                var endTime = $("#PrizeTime").attr("PrizeTime");
+                var endstr = CountEndtime(endTime);
+                if (endstr.indexOf("已结束") > -1) {
+                    $("#PrizeTime").text(endstr);
+                }
+                else {
+                    $("#PrizeTime").text("离活动结束还有：" + endstr);
+                }
+
+            }, 1000);
+
+            //参加活动提交信息
+            $("#SaveBtnOneTao").click(function () {
+
+
+                //如果规格值都被选择
+                if (IsallSelected()) {
+
+                    var selectedOptions = "";
+                    $.each($("input[type='hidden'][name='skuCountname']"), function () {
+                        selectedOptions += $(this).attr("value") + ",";
+                    });
+                    selectedOptions = selectedOptions.substring(0, selectedOptions.length - 1);
+                   
+                    var postData = { action: "AddParticipant", buyNum: $("#buyNum").val(), ActivityId: getParam("vaid"), SkuId: $("#hiddenSkuId").val(), Options: selectedOptions }
+                  
+                    $.ajax({
+                        url: "/API/VshopProcess.ashx",
+                        type: 'post', dataType: 'json', timeout: 10000,
+                        data: postData,
+                        success: function (resultData) {
+                            if (resultData.Status==true) {
+                                alert_h(resultData.Msg, function () {
+
+                                    window.location.href = "OneTaoPayView.aspx?Pid=" + resultData.Aid; //转到支付页面
+
+                                });
+                            }
+                            else
+                            {
+                                alert_h(resultData.Msg);
+                            }
+
+                        },
+                        error: function () {
+                            alert_h("系统错误！");
+                        }
+                    });
+
+
+                }
+                else {
+                    alert_h("商品规格没有选择！");
+                    return;
+                }
+
+            });
+
+            
+
+
+
+        }
+        else
+        {
+            $("#PrizeTime").text("当前活动" + ActivityState + "，不能参与！");
+        }
+       
+
+
+        //如果存在多规格
+        if ($(".SKUValueClass").length > 0) {
+            disableShoppingBtn(true);
+            $.each($(".SKUValueClass"), function () {
+                $(this).bind("click", function () { SelectSkus(this); });
+            });
+        };
+
+
+        var vaid=getParam("vaid");
+        $("#partIframe").attr("src","ViewPartInlist.aspx?vaid="+vaid);
+        $(".Atbli").click(function(){
+            var row = $(this).index();
+            if(row<2){
+                $(".Atbli").removeClass("active");
+                $(this).addClass("active");
+                $(".textinfo").hide();
+                $(".textinfo").eq(1-row).show();
+                //alert(row)
+                if(row==0 && $("#partIframe").attr("src")==""){
+                    var vaid=getParam("vaid");
+                    $("#partIframe").attr("src","ViewPartInlist.aspx?vaid="+vaid);
+                }
+            }
+           
+        });
+
+        
+    });
+
+
+
+    function SelectSkus(clt) {
+        //禁用购买和加入购物车按钮
+        disableShoppingBtn(true);
+
+        // 保存当前选择的规格
+        var AttributeId = $(clt).attr("AttributeId");
+        var ValueId = $(clt).attr("ValueId");
+        $("#skuContent_" + AttributeId).val(AttributeId + ":" + ValueId);
+        // 重置样式
+        ResetSkuRowClass("skuRow_" + AttributeId, "skuValueId_" + AttributeId + "_" + ValueId);
+        // 如果全选，则重置SKU
+        var allSelected = IsallSelected();
+        var selectedOptions = "";
+        if (allSelected) {
+            $.each($("input[type='hidden'][name='skuCountname']"), function () {
+                selectedOptions += $(this).attr("value") + ",";
+            });
+            selectedOptions = selectedOptions.substring(0, selectedOptions.length - 1);
+
+           
+
+            $.ajax({
+                url: "/API/VshopProcess.ashx",
+                type: 'post', dataType: 'json', timeout: 10000,
+                data: { action: "GetSkuByOptions", productId: $("#hiddenProductId").val(), options: selectedOptions },
+                success: function (resultData) {
+                    if (resultData.Status == "OK") {
+                        ResetCurrentSku(resultData.SkuId, resultData.SKU, resultData.Weight, resultData.Stock, resultData.SalePrice);
+                    }
+                    else {
+                        ResetCurrentSku("", "", "", "", "0"); //带服务端返回的结果，函数里可以根据这个结果来显示不同的信息
+                    }
+                    disableShoppingBtn(false); //启用购买和加入购物车按钮
+                },
+                error: function () {
+                    disableShoppingBtn(false); //启用购买和加入购物车按钮
+                }
+            });
+        }
+    }
+
+
+    function ResetCurrentSku(skuId, sku, weight, stock, salePrice) {
+        $("#hiddenSkuId").val(skuId);
+       // alert(skuId +"|"+ sku);
+        if (!isNaN(parseInt(stock))) {
+           $(".spSalaPrice").html(salePrice + "　库存：" + stock + "件");
+        }
+        else {
+            // $("#spStock").html("0");
+            $(".spSalaPrice").html(salePrice + "　库存：0件");
+            alert_h("该规格的产品没有库存，请选择其它的规格！");
+        }
+    }
+
+    function disableShoppingBtn(disabled) {//禁用(启用)购买和加入购物车按钮
+
+        var btns = $('#SaveBtnOneTao');
+        if (disabled)
+            btns.addClass('disabled');
+        else
+            btns.removeClass('disabled');
+    }
+
+    // 重置规格值的样式
+    function ResetSkuRowClass(skuRowId, skuSelectId) {
+        var pvid = skuSelectId.split("_");
+
+        $.each($("#" + skuRowId + " div"), function () {
+            $(this).removeClass('active');
+        });
+
+        $("#" + skuSelectId).addClass('active');
+    }
+
+
+    // 是否所有规格都已选
+    function IsallSelected() {
+        var allSelected = true;
+        $.each($("input[type='hidden'][name='skuCountname']"), function () {
+            if ($(this).val().length == 0) {
+                allSelected = false;
+            }
+        });
+        return allSelected;
+    }
+
+</script>
+<script>WinXinShareMessage(wxinshare_title, wxinshare_desc, wxinshare_link, wxinshare_imgurl);</script>

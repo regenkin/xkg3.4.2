@@ -1,0 +1,130 @@
+﻿<hi:common_header runat="server" />
+<div class="pbox">
+    <input type="hidden" id="hdNumberID" value='<asp:literal runat="server" id="litNumberID" />' />
+    <input type="hidden" id="hdHasNewKey" value='<asp:literal runat="server" id="litHasNewKey" />' />
+    <input type="hidden" id="hdExpressUrl" value='<asp:literal runat="server" id="litExpressUrl" />' />
+    <input type="hidden" id="hdCompanyCode" value='<asp:literal runat="server" id="litCompanyCode" />' />
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                运单信息<input type="hidden" id="hdOrderID" value='<asp:literal runat="server" id="litOrderID" />' /> </h3>
+        </div>
+        <div class="panel-body offline-help">
+            <div>
+                物流公司：<asp:literal runat="server" id="litCompanyName" /></div>
+            <div>
+                运单号码：<asp:literal runat="server" id="litLogisticsNumber" /></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    //隐藏右上角菜单
+    //document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+    //    WeixinJSBridge.call('hideOptionMenu');
+    //});
+
+    //隐藏底部菜单
+    document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+        WeixinJSBridge.call('hideToolbar');
+    });
+</script>
+<script type="text/javascript">
+    $(function () {
+        //var OrderId = window.location.search;
+        var OrderId = $("#hdOrderID").val();// OrderId.substring(OrderId.indexOf("=") + 1);
+        var numberId = $("#hdNumberID").val();
+        var url = '/api/VshopProcess.ashx';
+        $.getJSON(url, { action: 'Logistic', orderId: OrderId }, function (resultData) {
+            if (resultData.message == "ok") {
+                Logstics(resultData);
+            }
+            else {
+                var expressHtml = "";
+                var expressUrl = $("#hdExpressUrl").val();
+                var companyCode = $("#hdCompanyCode").val();
+                expressUrl = expressUrl.replace("{numberId}", numberId).replace("{companyCode}", companyCode);
+                expressHtml = "<div class=\"alert alert-warning alert-dismissable\"><div class=\"time font-s\"></div><div class=\"info\"><a href=\"" + expressUrl + "\" target=\"_blank\">查看物流</a></div></div>";
+                $(".pbox").append(expressHtml);
+            }
+        });
+    });
+
+    function Logstics(express) {
+        var perday = "";
+        var hasNewKey = $("#hdHasNewKey").val();
+        var numberId = $("#hdNumberID").val();
+        var companyCode = $("#hdCompanyCode").val();
+        var expressUrl = $("#hdExpressUrl").val();
+        var dataList = express;
+        var url = encodeURIComponent(window.location.href);
+        if (hasNewKey == "1") {//付费接口通过订阅获取本地信息
+            var result = express.type;
+            if (result == "1") {//区分类型是为了两个接口返回的json数据结构不一样
+                var data = express.content.lastResult.data;
+                for (var i = 0; i < data.length; i++) {
+                    if (perday != data[i].time.substr(0, 10)) {
+                        perday = data[i].time.substr(0, 10);
+                        var newdatediv = $("<p class=\"text-center\"><span class=\"label\"></span></p>");
+                        $(newdatediv).find("span").html(perday);
+                        $(".pbox").append($(newdatediv));
+                    }
+                    var addr = $("<div class=\"well active\"><div class=\"time font-s\"></div><div class=\"info\"></div></div>");
+                    $(addr).find("div").eq(0).html(data[i].time);
+                    $(addr).find("div").eq(1).html(data[i].context);
+                    $(".pbox").append($(addr));
+                }
+            }
+            else {//付费接口通过api获取信息
+                var message = express.content.message;
+                if (message == "ok") {
+                    var data = express.content.data;
+                    for (var i = 0; i < data.length; i++) {
+                        if (perday != data[i].time.substr(0, 10)) {
+                            perday = data[i].time.substr(0, 10);
+                            var newdatediv = $("<p class=\"text-center\"><span class=\"label\"></span></p>");
+                            $(newdatediv).find("span").html(perday);
+                            $(".pbox").append($(newdatediv));
+                        }
+                        var addr = $("<div class=\"well active\"><div class=\"time font-s\"></div><div class=\"info\"></div></div>");
+                        $(addr).find("div").eq(0).html(data[i].time);
+                        $(addr).find("div").eq(1).html(data[i].context);
+                        $(".pbox").append($(addr));
+                    }
+                }
+                else {
+                    expressUrl = expressUrl.replace("{numberId}", numberId).replace("{companyCode}", companyCode).replace("{callbackurl}", url);
+                    var addr = $("<div class=\"well active\"><div class=\"time font-s\"></div><div class=\"info\"></div></div>");
+                    $(addr).find("div").eq(0).html("<a href=\"" + expressUrl + "\" target=\"_blank\">查看物流</a>");
+                    $(".pbox").append($(addr));
+                }
+            }
+        }
+        else {//免费接口
+            var message = express.content.message;
+            if (message == "ok") {
+                var data = express.content.data;
+                for (var i = 0; i < data.length; i++) {
+                    if (perday != data[i].time.substr(0, 10)) {
+                        perday = data[i].time.substr(0, 10);
+                        var newdatediv = $("<p class=\"text-center\"><span class=\"label\"></span></p>");
+                        $(newdatediv).find("span").html(perday);
+                        $(".pbox").append($(newdatediv));
+                    }
+                    var addr = $("<div class=\"well active\"><div class=\"time font-s\"></div><div class=\"info\"></div></div>");
+                    $(addr).find("div").eq(0).html(data[i].time);
+                    $(addr).find("div").eq(1).html(data[i].context);
+                    $(".pbox").append($(addr));
+                }
+            }
+            else {
+                expressUrl = expressUrl.replace("{numberId}", numberId).replace("{companyCode}", companyCode).replace("{callbackurl}", url);
+                var addr = $("<div class=\"well active\"><div class=\"time font-s\"></div><div class=\"info\"></div></div>");
+                $(addr).find("div").eq(0).html("<a href=\"" + expressUrl + "\" target=\"_blank\">查看物流</a>");
+                $(".pbox").append($(addr));
+            }
+        }
+        $(".well:first").attr("class", "alert alert-warning alert-dismissable");
+    }
+</script>
+<hi:common_footer runat="server" />

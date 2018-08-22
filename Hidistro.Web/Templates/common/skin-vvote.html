@@ -1,0 +1,72 @@
+﻿<Hi:Common_Header runat="server" />
+<section id="content" style="background:url(/images/process/m_b.jpg) repeat; margin:0">
+    <div class="vote">
+       <h2><asp:Literal runat="server" ID="litVoteName" /></h2>
+       <asp:Literal runat="server" ID="litVoteNum" />
+       <input type="hidden" id="hidCheckNum" runat="server" />
+       <ul id="ulVoteItem">
+           <Hi:VshopTemplatedRepeater ID="rptVoteItems" TemplateFile="/Tags/skin-Common_VoteItems.ascx" runat="server" />          
+       </ul>
+        <div id="divVoteOk" runat="server" class="qb_mb10 qb_mb10 qb_mt20" >
+           <a id="aVoteOk" class="mod_btn btn_strong  btn_block">确认投票</a>  
+        </div>
+    </div>        
+</section>
+<Hi:Common_Footer runat="server" />  
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#ulVoteItem li").bind("click", function () { checkVote(this); });
+        $("#aVoteOk").bind("click", function () { voteOk(); });
+
+        if ($("#aVoteOk").html() == null) {
+            $.each($("#ulVoteItem li"), function () {
+                $(this).find("i").hide();
+            });
+        }
+    });
+
+    function checkVote(clt) {
+        if ($("#aVoteOk").html() != null) {
+            if ($(clt).attr("class") == "hover")
+                $(clt).attr({ "class": "" });
+            else
+                $(clt).attr({ "class": "hover" });
+        }
+    }
+
+    function voteOk() {
+        var voteNum = 0;
+        var itemIds = "";
+        $.each($(".hover"), function () {
+            itemIds += $(this).attr("item") + ",";
+            voteNum++;
+        });
+
+        if (voteNum == 0) {
+            alert_h("请选择一项投票");
+            return false;
+        }
+
+        if (voteNum > Number($("#vVote_hidCheckNum").val())) {
+            alert_h("你最多只能投" + $("#vVote_hidCheckNum").val() + "票");
+            return false;
+        }
+
+        var voteId = window.location.search.substr(window.location.search.indexOf("=") + 1);
+        if (voteId.indexOf("&") > 0)
+            voteId = voteId.substr(0, voteId.indexOf("&"));
+        $.ajax({
+            url: "/API/VshopProcess.ashx",
+            type: 'post', dataType: 'json', timeout: 10000,
+            data: { action: "Vote", "voteId": voteId, "itemIds": itemIds },
+            async: false,
+            success: function (resultData) {
+                if (resultData.Status == "OK")
+                    location.href = "/Vshop/Vote.aspx?voteId=" + voteId;
+                else
+                    alert_h("未到投票时间或投票已结束");
+            }
+        });
+    }
+</script>
+

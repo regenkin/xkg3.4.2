@@ -1,0 +1,312 @@
+﻿<hi:common_header runat="server" />
+<link href="/Templates/common/css/public.css" rel="stylesheet" type="text/css">
+<link href="/Templates/common/css/bargain.css" rel="stylesheet" type="text/css">
+
+
+<script type="text/javascript">
+    //商品评论
+    function gotoProductReview() {
+        var productId = $("#vInviteBargainDetial_hiddProductId").val();
+        window.location.href = '/Vshop/ProductReview.aspx?ProductId=' + productId;
+    }
+
+    //商品咨询
+    function gotoProductConsultation() {
+        var productId = $("#vInviteBargainDetial_hiddProductId").val();
+        window.location.href = '/ProductConsultations.aspx?ProductId=' + productId + "&ReferralId=" + getParam('ReferralId');
+    }
+
+    //收藏
+    function AddFavorite() {
+        var productId = $("#vInviteBargainDetial_hiddProductId").val();
+        var data = {};
+        data.ProductId = productId;
+
+        $.post("/api/VshopProcess.ashx?action=AddFavorite", data, function (json) {
+            if (json.success === true) {
+                $('#addF').addClass('hide');
+                $('#addedF').removeClass('hide');
+                alert_h('收藏成功！');
+            }
+            else {
+                alert_h('您当前还没有登录！', function () {
+                    var url = window.location.href;
+                    location.href = "/UserLogining.aspx?returnUrl=" + encodeURIComponent(url) + "";
+                });
+            }
+        });
+    }
+
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+        if (r != null) return unescape(r[2]); return null; //返回参数值
+    }
+</script>
+
+<script language="javascript">
+    //倒计时
+    function getEndTime() {
+        var date = $('#vInviteBargainDetial_hiddEndDate').val();
+        var dateArr = date.split(':');
+        var endTime = new Date(dateArr[0], dateArr[1], dateArr[2], dateArr[3], dateArr[4]);
+        var now = new Date();
+        var nowTime = new Date(now.getFullYear(), now.getMonth() + 1, now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds());
+        var nMS = endTime.getTime() - nowTime.getTime();
+        if (nowTime < endTime) {
+            var nD = Math.floor(nMS / (1000 * 60 * 60 * 24)) % 30 - 1;
+            var nH = Math.floor(nMS / (1000 * 60 * 60)) % 24;
+            var nM = Math.floor(nMS / (1000 * 60)) % 60;
+            var nS = Math.floor(nMS / 1000) % 60;
+            $("#divtimer").html("还剩： " + nD + "天 " + nH + "小时 " + nM + "分钟 " + nS + "秒");
+            setTimeout("getEndTime()", 1000);
+        }
+        else {
+            $("#divtimer").html("活动已结束");
+        }
+    }
+    window.onload = getEndTime;
+
+
+</script>
+<input type="hidden" runat="server" id="hiddPurchaseNumber" />
+<input type="hidden" runat="server" id="hiddHasCollected" />
+<input type="hidden" runat="server" id="hiddEndDate" />
+<input type="hidden" runat="server" id="hiddProductId">
+<input type="hidden" runat="server" id="hiddBargainDetialId">
+<input type="hidden" runat="server" id="hideTitle">
+<input type="hidden" runat="server" id="hideImgUrl">
+<input type="hidden" runat="server" id="hideDesc">
+<div id="mcover" onclick="document.getElementById('mcover').style.display='';" >
+    <img src="/images/guide.png" />
+</div>
+<div class="container" style="padding-bottom:50px;">
+    <div class="header">
+        <div id="slides">
+            <hi:vshoptemplatedrepeater id="rptProductImages" templatefile="/Tags/skin-Common_Slide.ascx"
+                                       runat="server" />
+        </div>
+        <div class="shopmaskinfo">
+            <p id="divtimer"></p>
+            <p class="addnumber">参与：<strong><asp:literal runat="server" id="litParticipantNumber" /></strong>人</p>
+        </div>
+    </div>
+    <div class="shopinfobox">
+        <h2 id="htitle"><asp:literal runat="server" id="litProdcutName" /></h2>
+        <p class="setbottom"><strong class="str" id="desc"><asp:literal runat="server" id="litShortDescription" /></strong></p>
+        <div class="progress" id="divProgress" style="display:none">
+            <div class="progress-bar progress-bar-warning" id="divProgressvalue" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+            </div>
+        </div>
+        <div class="clearfix lotteryCase" style="display:none" id="divBargainInfo">
+            <p class="fl"><span class="colorr">当前价格￥ <label id="lbPrice" runat="server"></label></span></p>
+            <p class="fr"><span class="colorlu">活动底价￥<asp:literal runat="server" id="litFloorPrice1" /></span></p>
+        </div>
+        <div class="awards colorc clearfix" id="divPrice">
+            <p class="fl left">商城价格：</p>
+            <p class="fl">￥<asp:literal runat="server" id="litSalePrice" /></p>
+        </div>
+        <div class="awards colorlu clearfix" id="divFloorPrice">
+            <p class="fl left">活动底价：</p>
+            <p class="fl">￥<asp:literal runat="server" id="litFloorPrice" /></p>
+        </div>
+        <div class="awards clearfix">
+            <p class="fl left">剩余数量：</p>
+            <p class="fl maxValue"><asp:literal runat="server" id="litPurchaseNumber" /></p>
+        </div>
+        <div class="sp clearfix">
+            <p class="fl specifications">
+                <hi:common_skuselector id="skuSelector" runat="server" />
+            </p>
+        </div>
+        <div class="clearfix reset">
+            <p class="fl left">购买数量：</p>
+            <div class="fl clearfix resetnumber">
+                <span id="spSub">-</span>
+                <input type="tel" value="1" maxlength="2" id="buyNum">
+                <span id="spAdd">+</span>
+                <div class="info font-s text-muted fl">
+                    &nbsp;&nbsp;限购：<span id="spStock" style="background: none;float: none;display: inline-block;width: auto;color: #000;font-size: 12px"><asp:literal runat="server" id="litStock" /></span>件
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="good-bargain-list" id="divHelpBargainList" style="display:none">
+    </div>
+    <div class="shopinfotable">
+        <ul class="clearfix">
+            <li>商品详情</li>
+            <li>
+                <a href="javascript:void(0)" onclick="gotoProductConsultation();">商品咨询(<asp:literal runat="server" id="litProductConsultationTotal" />)</a>
+            </li>
+            <li>
+                <a href="javascript:void(0)" onclick="gotoProductReview();">商品评论(<asp:literal runat="server" id="litProductCommentTotal" />)</a>
+            </li>
+        </ul>
+        <div class="textinfo">
+            <div><asp:literal runat="server" id="litProductDesc" /></div>
+        </div>
+    </div>
+    <div class="fixednav">
+        <ul class="clearfix">
+            <li>
+                <div class="navinner">
+                    <a href="/Default.aspx">
+                        <img src="/images/iconfont-dianpu.png">
+                        <p>
+                            店铺
+                        </p>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div class="navinner">
+                    <a id="addF" class="y-collection" href="javascript:void(0);" onclick="AddFavorite()"><img src="/images/iconfont-shoucang.png"><p>收藏</p></a>
+                    <a id="addedF" class="y-collection active hide" href="javascript:void(0);"><img src="/images/iconfont-shoucang.png"><p>已收藏</p></a>
+                </div>
+            </li>
+            <li>
+                <button class="wait" id="btnHelpBargain">邀请好友帮砍</button>
+            </li>
+            <li>
+                <button id="btnBuyNow" type="shoppingBtn" class="buy">立刻购买</button>
+            </li>
+        </ul>
+    </div>
+</div>
+<script src="/utility/vproduct.helper.js?201603" type="application/javascript"> </script>
+<script src="/script/swipe.js"></script>
+<script type="text/javascript">
+
+    function LoadMore() {
+        var bargainDetialId = $("#vInviteBargainDetial_hiddBargainDetialId").val();
+        var data = {};
+        data.BargainDetialId = bargainDetialId;
+        $.post("/api/VshopProcess.ashx?action=LoadMoreHelpBargainDetial", data, function (json) {
+            $("#divHelpBargainList").html("");
+            $("#divHelpBargainList").html(json.msg);
+        });
+    }
+    //分享标题设置
+    wxinshare_title = $("#vInviteBargainDetial_hideTitle").val();
+    wxinshare_link = location.href;
+    wxinshare_desc = $("#htitle").html();
+    wxinshare_imgurl = $("#vInviteBargainDetial_hideImgUrl").val();
+
+    $(function () {
+        $('.fixednav').width($('.container').width());
+        $(window).resize(function () {
+            $('.fixednav').width($('.container').width());
+        })
+
+        if ($('#vInviteBargainDetial_hiddHasCollected').val() == "1") {
+            $('#addF').addClass('hide');
+            $('#addedF').removeClass('hide');
+        }
+
+        var slidesImg = $('#slides img');
+        var width = 650, height = 650;
+        if (slidesImg.length > 1) {
+            $('#slides').slidesjs({
+                width: width,
+                height: height,
+                play: {
+                    active: true,
+                    auto: true,
+                    interval: 4000,
+                    swap: true
+                }
+            });
+            $(".slidesjs-play, .slidesjs-stop, .slidesjs-previous, .slidesjs-next").remove();
+            $(".slidesjs-pagination li").css("width", function () { return 100 / slidesImg.length + "%" });
+        }
+        else {
+
+            $('#slides').css('display', 'block').html('<div style="width:100%;"><a href="javascript:;"></a></div>');
+            $('#slides div a').append(slidesImg);
+        }
+        //查看是否已经存在砍价活动
+        var data = {};
+        data.BargainId = getUrlParam("bargainId");
+        $.post("/api/VshopProcess.ashx?action=ExistsBargainDetial", data, function (json) {
+            if (json.success == "1") {
+                //显示进度条
+                $("#divPrice").addClass('hide');
+                $("#divFloorPrice").addClass('hide');
+                $("#divProgress").attr("style", "");
+                $("#divBargainInfo").attr("style", "");
+                $("#vInviteBargainDetial_lbPrice").html(json.Price);
+                $("#divProgressvalue").attr("style", "width:" + json.progress + "%");
+                $("#vInviteBargainDetial_hiddBargainDetialId").val(json.BargainDetialId);
+                $("#buyNum").val(json.Number);
+                if (json.Sku != "") {
+                    $("#hiddenSkuId").val(json.Sku);
+                    $("#hiddProductId").val(json.ProductId);
+                }
+               
+                if (json.status == "order") { //下订单
+                    $("#btnHelpBargain").html("已经参与该活动").attr("class", "com").attr("style", "").unbind("click");
+                    $("#btnBuyNow").html("查看订单").unbind("click").on("click", function ()
+                    {
+                        window.location.href = "/Vshop/MemberOrders.aspx";
+                    });
+                }
+                if (json.status== "end")//活动已经结束
+                {
+                    $("#btnHelpBargain").html("活动已经结束").attr("class", "com").attr("style", "").unbind("click");
+                    $("#btnBuyNow").attr("class", "com").attr("style", "").unbind("click");
+                }
+                //商品状态
+                if (json.SaleStatus != "OnSale")//1：出售
+                {
+                    $("#btnHelpBargain").html("已下架").attr("class", "com").attr("style", "").unbind("click");
+                    $("#btnBuyNow").attr("class", "com").attr("style", "").unbind("click");
+                }
+                //加载帮忙砍价信息
+                $("#divHelpBargainList").attr("style", "display:");
+                $("#divHelpBargainList").html(json.BargainDetialHtml);
+            }
+        });
+
+        
+
+        $('#btnBuyNow').click(function () {
+            var buyAmount = $("#buyNum").val();
+            var purchaseNumber = $(".maxValue").html();
+            var actStock = $(".spStock").html();
+            if (parseInt(buyAmount) > parseInt(purchaseNumber))
+            {
+                alert_h("购买数量不能大于剩余数量！");
+                return;
+            }
+            if (parseInt(buyAmount) > parseInt(actStock))
+            {
+                alert_h("购买数量不能大于活动库存！");
+                return;
+            }
+            var price = $("#vInviteBargainDetial_lbPrice").html();
+            var bargainDetialId = getUrlParam("bargainDetialId");
+            location.href = "/Vshop/SubmmitOrder.aspx?buyAmount=" + $("#buyNum").val() + "&productSku=" + $("#hiddenSkuId").val() + "&from=signBuy&ReferralId=" + getParam("ReferralId") + "&price=" + price + "&bargainDetialId=" + bargainDetialId;
+        });
+
+        //添加购买数量
+        $('#spAdd').click(function () {
+            var buyNum = parseInt($("#buyNum").val());
+            var purchaseNumber = parseInt($("#vInviteBargainDetial_hiddPurchaseNumber").val());
+            if (buyNum >= purchaseNumber) {
+                $("#buyNum").val(purchaseNumber);
+            }
+        });
+
+        //邀请好友帮砍
+        $('#btnHelpBargain').click(function () {
+             if (/MicroMessenger/i.test(navigator.userAgent)) {
+                $("#mcover").show();
+            }
+            else {
+                alert_h("当前客户端不是微信，不能邀请好友帮砍！");
+             }
+        });
+    })
+</script>
+<hi:common_footer runat="server" />

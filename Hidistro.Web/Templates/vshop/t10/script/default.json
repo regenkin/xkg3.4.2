@@ -1,0 +1,178 @@
+﻿<!-- 头部 -->
+<script type="text/j-template" id="tpl_diy_con_typeHeader_style12">
+<header class="members_head">	
+	<section class="mobile12_headertop">
+		<img src="<#= content.bg #>">
+		<b id ="StoreName">店铺主页</b>
+	</section>
+	<section class="mobile12_headerbot">
+		<section class="mobile12_headerbot_le"><img id="imglogo" src="<#= content.photo #>" width="66" height="66"></section>
+		<section class="mobile12_headerbot_ri">
+			<ul>
+				<li>
+					<span ><img src="/admin/shop/PublicMob/images/all@2x.png" width="18" height="18"></span>
+					<a href="/ProductList.aspx">全部商品</a>
+				</li>
+				<li>
+					<span><img src="/admin/shop/PublicMob/images/huoodng@2x.png" width="18" height="18"></span>
+					<a href="/activities.aspx">店铺活动</a>
+				</li>
+				<li>
+						<span><img src="/admin/shop/PublicMob/images/5@2x.png" width="18" height="18"></span>
+				<a href="/Vshop/MemberOrders.aspx">我的订单</a>
+				</li>
+				<li>
+					<span><img src="/admin/shop/PublicMob/images/6@2x.png" width="18" height="18"></span>
+				<a href="/Vshop/MemberCenter.aspx">会员签到</a>
+				</li>
+			</ul>
+		</section>
+	</section>
+</header>
+</script>
+
+<script type="text/j-template" id="tpl_diy_ctrl_typeHeader_style12">
+	<div class="formitems">  
+		<label class="fi-name">背景图片：</label>
+		<div class="form-controls">
+			<div class="homepage-header-bg">
+				<img src="<#= content.bg #>">
+				<a href="javascript:;" class="btn btn-primary btn-mini j-modify-bg">修改</a>
+			</div>
+			<span class="fi-help-text mgt5">最佳尺寸：640 x 200 像素。</span>
+			<p class="colorGray">尺寸不匹配时，图片将被压缩或拉伸以铺满画面。</p>
+		</div>
+	</div>
+	<div class="formitems">  
+		<label class="fi-name">店铺头像：</label>
+		<div class="form-controls">
+			<div class="homepage-header-photo">
+				<img src="<#= content.photo #>">
+				<a href="javascript:;" class="btn btn-primary btn-mini j-modify-photo">修改</a>
+			</div>
+			<span class="fi-help-text mgt5">建议尺寸：200 x 200 像素</span>
+		</div>
+	</div>
+</script>
+
+
+
+<!-- 导航 -->
+<script type="text/j-template" id="tpl_diy_con_typeHeader_style12_nav">
+	<section class="mobile12_content">
+		<# if(content.dataset.length){#>
+		<section class="mobile12_contentnav">
+			<ul>
+				<# _.each(content.dataset,function(item){ #>	
+				<li class="colblue" style="background-color:<#= item.bgColor #>">
+					<a href="<#= item.link #>">
+						<img src="<#= item.pic #>" width="50" height="50">
+						<b style="color:<#= item.fotColor #>"><#= item.showtitle #></b>
+					</a>
+				</li>
+				<# }) #>
+			</ul>
+		</section>
+		<# } #>	
+	</section>
+</script>
+
+<script type="text/j-template" id="tpl_diy_ctrl_typeHeader_style12_nav">
+  
+
+  <ul class="ctrl-item-list mgt10 ml30">
+
+    <# _.each(content.dataset,function(item){ #>
+    <li class="ctrl-item-list-li">
+      <div class="formitems">
+        <label class="fi-name">标题：</label>
+        <div class="form-controls">
+          <input type="text" name="navtitle" class="input xlarge" value="<#= item.showtitle #>" maxlength="100">
+            <span class="fi-help-text"></span>
+          </div>
+      </div>
+      <div class="formitems">
+        <label class="fi-name">链接：</label>
+        <div class="form-controls">
+          <a href="<#= item.link #>" target="_blank" class="badge badge-success" title="<#= item.title #>">
+            <span><#= item.title #></span>
+            <em class="badge-link ovfEps"></em>
+          </a>
+          <div class="droplist j-navDplist">
+            <a href="javascript:;" class="droplist-title j-droplist-toggle">
+              <# if(item.linkType==0){ #>
+              <span>请选择</span>
+              <#}else{#>
+               <span>修改</span>
+              <#}#>
+              <i class="gicon-chevron-down mgl5"></i>
+            </a>
+            <ul class="droplist-menu">
+				 <li data-val="1"><a href="javascript:;"><#= HiShop.linkType[1] #></a></li>
+                                <li data-val="2"><a href="javascript:;"><#= HiShop.linkType[2] #></a></li>
+                                <li data-val="3"><a href="javascript:;"><#= HiShop.linkType[3] #></a></li>
+                                <li data-val="18"><a href="javascript:;"><#= HiShop.linkType[18] #></a></li>
+                                <li data-val="4"><a href="javascript:;"><#= HiShop.linkType[4] #></a></li>
+                                <li data-val="5"><a href="javascript:;"><#= HiShop.linkType[5] #></a></li>
+                                <li data-val="21"><a href="javascript:;"><#= HiShop.linkType[21] #></a></li>
+                                <li data-val="22"><a href="javascript:;"><#= HiShop.linkType[22] #></a></li>
+                                <li data-val="6"><a href="javascript:;"><#= HiShop.linkType[6] #></a></li>
+                                <li data-val="17"><a href="javascript:;"><#= HiShop.linkType[17] #></a></li>
+                                <li data-val="7"><a href="javascript:;"><#= HiShop.linkType[7] #></a></li>
+                                <li data-val="8"><a href="javascript:;"><#= HiShop.linkType[8] #></a></li>
+                                <li data-val="16"><a href="javascript:;"><#= HiShop.linkType[16] #></a></li>
+                                <li data-val="10"><a href="javascript:;"><#= HiShop.linkType[10] #></a></li>
+                                <li data-val="9"><a href="javascript:;"><#= HiShop.linkType[9] #></a></li>
+                                <li data-val="12"><a href="javascript:;"><#= HiShop.linkType[12] #></a></li>
+                                <li data-val="11"><a href="javascript:;"><#= HiShop.linkType[11] #></a></li>
+                                <li data-val="13"><a href="javascript:;"><#= HiShop.linkType[13] #></a></li>
+                                <li data-val="14"><a href="javascript:;"><#= HiShop.linkType[14] #></a></li>
+                                <li data-val="15"><a href="javascript:;"><#= HiShop.linkType[15] #></a></li>
+                                <li data-val="19"><a href="javascript:;"><#= HiShop.linkType[19] #></a></li>
+            </ul>
+          </div>
+          <input type="hidden" class="j-verify" name="item_id" value="">
+            <span class="fi-help-text j-verify-linkType"></span>
+          </div>
+      </div>
+    
+      <div class="formitems">
+        <label class="fi-name">图标：</label>
+        <div class="form-controls clearfix ">
+            <img class="fillicon-img" src="<#= item.pic #>">
+            <button class="imgicon-btn j-navModifyIcon">上传</button>
+            <span class="color9 mt3">（建议上传尺寸：60x60像素）</span>
+            <span class="fi-help-text"></span>
+          </div>
+      </div>
+      <div class="formitems">
+        <label class="fi-name">背景颜色：</label>
+        <div class="form-controls clearfix">
+			      <select name="navbgColor" class="select mini" style="background-color:<#= item.bgColor #>"> 
+						  <option value="#01afda" <# if(item.bgColor=="#01afda"){#>selected<#}#> style="background-color:#01afda">蓝色</option>
+						  <option value="#ffde00" <# if(item.bgColor=="#ffde00"){#>selected<#}#> style="background-color:#ffde00">黄色</option>
+						  <option value="#fcb05f" <# if(item.bgColor=="#fcb05f"){#>selected<#}#> style="background-color:#fcb05f">橙色</option>
+						  <option value="#a4cf3e" <# if(item.bgColor=="#a4cf3e"){#>selected<#}#> style="background-color:#a4cf3e">绿色</option>
+					  </select>
+					<span class="fi-help-text"></span>
+        </div>
+      </div>
+      <div class="formitems">
+        <label class="fi-name">文字颜色：</label>
+        <div class="form-controls clearfix">
+          <div class="colorPicker fl" id="#j_clp_col_<#= item.cloPicker #>" data-name="col_<#= item.cloPicker #>" data-color="<#= item.fotColor #>" style="background-color:<#= item.fotColor #>">颜色选择</div>
+          
+          <span class="fi-help-text"></span>
+        </div>
+      </div>
+      <div class="ctrl-item-list-actions">
+        <a class="iconfont icon-iconfontcolor84 colorl j-moveup" href="javascript:void(0)"></a>
+        <a class="iconfont icon-iconfontcolor83 colorl j-movedown" href="javascript:void(0)"></a>
+        <a class="iconfont icon-guanbi colorr fr pt2 ml3 mr10 j-del" href="javascript:void(0)"></a>
+      </div>
+    </li>
+    <# }) #>
+    
+  </ul>
+</script>
+<!-- Header_style12 tpl end-->

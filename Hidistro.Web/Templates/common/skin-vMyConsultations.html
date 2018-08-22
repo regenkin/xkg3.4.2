@@ -1,0 +1,60 @@
+﻿<hi:common_header runat="server" />
+<style>
+    .y-myadvice-list ul li{padding: 15px;background-color: #FFFFFF;margin-top: 12px;border-radius: 5px;box-shadow:0 0 2px #F0F0F0;}
+	.y-position{position: relative;}
+	.y-position .y-title{position: absolute;left: 0;top: 0;}
+	.y-position .y-textin{margin-left: 65px;}
+	.y-myadvice .y-position time{color: #999999;}
+	.y-myadvice ul li h3.y-position{margin-bottom: 15px;}
+	.y-myadvice ul li h3.y-position .y-textin a{color: #009DDA;}
+	.y-myadvice ul li div.y-position.y-bottom{margin-bottom: 5px;}
+	.y-businessreply{color: #DA4453;margin-top:5px;}
+</style>
+<p class="text-center list-empty hide" id="empty">
+    <span class="glyphicon glyphicon-bell"></span>
+           <em>咨询为空</em>
+</p>
+<div class="pbox y-myadvice">
+    <ul id="consulationsList">
+        <hi:vshoptemplatedrepeater id="rptProducts" templatefile="/Tags/skin-Common_MyConsultations.ascx"
+                                   runat="server" />
+    </ul>
+    <div id="pager">
+    </div>
+</div>
+<input type="hidden" clientidmode="Static" value="" runat="server" id="txtTotal" />
+<script src="/Utility/common.js?2016" type="text/javascript"></script>
+<script src="/Utility/pager.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+    vshopPager('pager', $('#txtTotal').val(), 1, 20);
+    $(function () {
+        if (!$.trim($('#consulationsList').html())) {
+            $('.pbox').hide();
+            $('#empty').removeClass('hide');
+        }
+
+        var answerDetails = $('.detailtime');
+        $.each(answerDetails, function (i, answerDetail) {
+            if (!$.trim($(answerDetail).html()))
+                $(answerDetail).parent().parent().hide();
+        });
+        
+       var list_h = (document.documentElement.clientHeight - 49 - $('.list-empty').height())*.5 + 'px';
+       $('.list-empty').css('margin-top',list_h);
+       
+    });
+
+</script>
+<script>
+    //禁用右上角菜单
+    //document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+    //    WeixinJSBridge.call('hideOptionMenu');
+    //});
+
+
+
+
+
+</script>
+<hi:common_footer runat="server" />

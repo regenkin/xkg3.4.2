@@ -1,0 +1,384 @@
+﻿<hi:common_header runat="server" />
+<!--<%<hi:ServiceSet id="ServiceSet" runat="server"></hi:ServiceSet>%>-->
+<link href="../templates/common/css/mycss.css" rel="stylesheet" type="text/css">
+<link href="../templates/common/css/public.css" rel="stylesheet" type="text/css">
+<style>
+    .signOut {
+        width: 98%;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+
+    .container {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .navlist a {
+        color: #ccc;
+    }
+
+    body {
+        max-width: 100%;
+    }
+
+    /*.usernameimginfo .my-message {
+        display: block;
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        right: 15px;
+        top: 10px;
+        background: url(images/iconfont-xinxi.png) no-repeat;
+    }*/
+
+    .usernameimginfo .my-message i {
+        display: block;
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        top: 2px;
+        right: 0px;
+        background-color: #00FC55;
+        border-radius: 50%;
+    }
+    /*公告消息*/
+    .new_message {
+        position: relative;
+        height: 35px;
+        background-color: #FFFFCC;
+        overflow: hidden;
+    }
+
+        .new_message ul {
+            position: absolute;
+            left: 0;
+            top: 0;
+            padding-right: 10px;
+            overflow: hidden;
+            width: 100%;
+        }
+
+            .new_message ul li {
+                height: 35px;
+                line-height: 35px;
+                overflow: hidden;
+            }
+
+                .new_message ul li a {
+                    display: block;
+                    color: #999999;
+                    padding-left: 20px;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                }
+
+                    .new_message ul li a:hover, .new_message ul li a:link {
+                        color: #999;
+                    }
+
+    .navgtionList em {
+        color: #f37205;
+        float: right;
+        margin-right: 40px;
+    }
+
+    .upclass span {
+        color: #ffd800;
+    }
+
+    .username {
+        font-size: 12px;
+    }
+    
+    .navgtionList ul li a span img {
+    max-width:100%;}
+    .navlist ul li a span img{
+        max-width:100%;
+    }
+    .navlist ul li a span {
+    width: 25px;
+    height: 25px;
+}
+</style>
+<div class="container">
+    <header>
+        <div class="usernameimginfo">
+
+            <div class="usernameimg" onclick="window.location.href = '/vshop/UserInfo.aspx'">
+                <asp:image runat="server" width="60" height="60" ImageUrl="/images/user.png"
+                           id="image"></asp:image>
+            </div>
+
+            <div class="usernameinfo">
+                <div class="usernamecontent">
+
+                    <p class="username"><asp:literal runat="server" id="litUserName" />　【<asp:literal runat="server" id="litrGradeName" />】</p>
+                    <p class="integralsign">
+                        积分：<span class='integral' id="pointAdd"><asp:literal runat="server" id="litPoints" /></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span class="sign" id="signDay">会员签到</span>
+                    </p>
+                    <p class="integralsign" style="margin-top:3px">
+                        消费：<span class='integral'><asp:literal runat="server" id="litExpenditure" /></span>&nbsp;&nbsp;&nbsp;
+                    </p>
+                    <p class="integralsign upclass" style="margin-top:3px;color:#ccc;overflow:hidden" id="UpClassInfo"
+                       runat="server"></p>
+                    <input type="hidden" id="IsSign" value="0" runat="server" />
+                </div>
+            </div>
+            <a class="my-message" href="notice.aspx"></a>
+        </div>
+        <nav>
+            <ul class="clearfix" id="tabMenu">
+                <li class="active"><a href="javascript:void(0)">会员中心</a></li>
+                <li style="display:none;"><a href="DistributorCenter.aspx">分销中心</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="navlist">
+        <nav>
+            <ul class="clearfix">
+                <li>
+                    <a href="/Vshop/MemberOrders.aspx?status=1">
+                        <span class="waitspan">
+                            <img src="/images/dingdan.png?201601">
+                        </span>
+                        <p>待付款</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Vshop/MemberOrders.aspx?status=2">
+                        <span class="waitspan"><img src="/images/iconfont-daifukuan.png?201601"></span>
+                        <p>待发货</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Vshop/MemberOrders.aspx?status=3">
+                        <span class="waitspan"><img src="/images/iconfont-daifahuo.png?201601"></span>
+                        <p>待收货</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Vshop/MemberComment.aspx">
+                        <span class="waitspan"><img src="/images/iconfont-wodedingdan13.png?201601"></span>
+                        <p>待评价</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/ProgressCheck.aspx">
+                        <span class="waitspan"><img src="/images/iconfont-untitled5.png?201601"></span>
+                        <p>退换货</p>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div> 
+    <div class="new_message">
+        <ul>
+            <!--  <li><a href="javascript:void(0)">1【最新消息】最新一期最激流勇进的分销商奖励名单下来啦！</a></li>
+              <li><a href="javascript:void(0)">2【最新消息】最新一期最激流勇进的分销商奖励名单下来啦！</a></li>-->
+        </ul>
+    </div>
+    <div class="navgtionList">
+        <ul>
+            <li>
+                <a href="/Vshop/MemberOrders.aspx">
+                    <span><img src="/images/iconfont-wodeqianbao.png?201601"></span>
+                    <strong>我的订单</strong>
+                </a>
+                <span class="glyphicon glyphicon-menu-right"></span>
+            </li>
+        </ul>
+        <ul>
+            <li
+                <asp:literal runat="server" id="litBindUser" />>
+                <a href="/BindUserMessage.aspx?returnUrl=/Vshop/MemberCenter.aspx">
+                    <span><img src="/images/iconfont-lianjie.png?201601"></span>
+                    <strong style="color: #f37205">绑定用户名</strong><em>非常重要！！！</em>
+                </a>
+                <span class="glyphicon glyphicon-menu-right"></span>
+            </li>
+            <li>
+                <a href="/Vshop/MyFavorites.aspx">
+                    <span><img src="/images/iconfont-xin.png?201601"></span>
+                    <strong>我的收藏</strong>
+                </a>
+                <span class="glyphicon glyphicon-menu-right"></span>
+            </li>
+            <li>
+                <a href="/Vshop/MyConsultations.aspx">
+                    <span><img src="/images/iconfont-consult.png?201601"></span>
+                    <strong>我的咨询</strong>
+                </a>
+                <span class="glyphicon glyphicon-menu-right"></span>
+            </li>
+
+        </ul>
+        <ul>
+            <li>
+                <a href="/Vshop/MyCouponLists.aspx">
+                    <span><img src="/images/iconfont-youhuiquan.png?201601"></span>
+                    <strong>我的优惠</strong>
+                </a>
+                <span class="glyphicon glyphicon-menu-right"></span>
+            </li>
+            <li>
+                <a>
+                    <!--href="/Vshop/MyPrizeList.aspx"-->
+                    <span><img src="/images/iconfont-myprize.png?201601"></span>
+                    <strong>我的奖品</strong>
+                </a>
+                <!--<span class="glyphicon glyphicon-menu-right"></span>-->
+            </li>
+            <li>
+                <a href="/Vshop/MyOneTao.aspx">
+                    <span></span>
+                    <strong>一元夺宝奖品</strong>
+                </a>
+                <span class="glyphicon glyphicon-menu-right"></span>
+            </li>
+            <li>
+                <a href="/Vshop/MyPrizeList.aspx">
+                    <span></span>
+                    <strong>抽奖活动奖品</strong>
+                </a>
+                <span class="glyphicon glyphicon-menu-right"></span>
+            </li>
+            <li>
+                <a href="/Vshop/MyIntegralDetai.aspx?IntegralSourceType=0">
+                    <span><img src="/images/iconfont-jifenb.png?201601"></span>
+                    <strong>积分明细</strong>
+                </a>
+                <span class="glyphicon glyphicon-menu-right"></span>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <a href="/Vshop/EditShippingAddress.aspx">
+                    <span><img src="/images/iconfont-iconfonticon5.png?201601"></span>
+                    <strong>我的收货地址</strong>
+                </a>
+                <span class="glyphicon glyphicon-menu-right"></span>
+            </li>
+            <li>
+                <a href="/Vshop/UserInfo.aspx?edit=true">
+                    <span><img src="/images/iconfont-gerenxinxi.png?201601"></span>
+                    <strong>个人资料</strong>
+                </a>
+                <span class="glyphicon glyphicon-menu-right"></span>
+            </li>
+        </ul>
+    </div>
+    <a class="signOut btn btn-danger" href="/logout.aspx">退出</a>
+</div>
+
+<input type="hidden" id="txtWaitForstr" value="" runat="server" />
+<input type="hidden" id="txtShowDis" value="" runat="server" />
+<input type="hidden" id="UserBindName" value="" runat="server" />
+
+
+<script>
+    //禁用右上角菜单
+    //document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+    //    WeixinJSBridge.call('hideOptionMenu');
+    //});
+    $(function () {
+        if ($('.my-message i').length > 0) {
+            $('.new_message').show();
+            if ($('.new_message li').length > 1) {
+                (function () {
+                    var elementsUl = $('.new_message ul');
+                    function timeFn() {
+                        elementsUl.animate({
+                            'top': '-35px'
+                        }, function () {
+                            elementsUl.css('top', 0).append(elementsUl.find('li').eq(0));
+                        });
+                        setTimeout(timeFn, 3000);
+                    }
+                    setTimeout(timeFn, 3000);
+                })();
+            }
+        }
+        else {
+            $('.new_message').hide();
+        }
+        $('.tabList .tabcontent').eq(0).show();
+        $('#tab li').click(function () {
+            $('#tab li').removeClass('active');
+            $(this).addClass('active');
+            $('.tabList .tabcontent').hide();
+            $('.tabList .tabcontent').eq($(this).index()).show();
+        })
+
+        var $limenu = $("#tabMenu").find("li");
+
+        if ($("#vMemberCenter_txtShowDis").val() == "false") {
+            $limenu.eq(0).css({ "width": "101%", "border-right": "0px" });
+        } else {
+            $limenu.eq(1).css({ "width": "50%", "display": "inline-block" });
+        };
+
+        var isSign = $("#vMemberCenter_IsSign")[0].value;
+
+        if (isSign == "-1") {
+            $("#signDay").html("已签到").hide();
+        } else if (isSign == 1) {
+            $("#signDay").html("已签到");
+        }
+
+        $("#signDay").click(function () {
+
+            isSign = $("#vMemberCenter_IsSign").val();
+            if (isSign == "0") {
+                //开始签到
+                $.post("/API/VshopProcess.ashx", { action: "SignToday", rand: Math.random() * 999 }, function (sign) {
+
+                    if (sign.indexOf("suss") > -1) {
+                        var addp = parseInt(sign.replace("suss", ""));
+                        if (addp == -1) {
+                            alert_h("重复签到");
+                        } else {
+                            if (addp > 0) {
+                                alert_h("签到成功，增加" + addp + "积分");
+                                $("#pointAdd").html($("#pointAdd").text() * 1 + addp);
+                            }// else {
+                            //    alert_h("签到成功!");
+                            //}
+                        }
+                    }
+                    else {
+                        alert_h(sign);
+                    }
+
+                    $("#vMemberCenter_IsSign").val(1);
+                    $("#signDay").html("已签到");
+
+                });
+
+            } else {
+                //alert(111);
+            }
+
+        });
+
+        //只有在微信端才弹出
+        if ($("#vMemberCenter_UserBindName").val().trim() == "" && $.cookie('BindName_tx') == null && /MicroMessenger/i.test(navigator.userAgent)) {
+            myConfirm("帐号绑定提醒", "您当前是微信授权登录会员，为了提升您账号的安全性，请绑定一个系统用户名！", "立即绑定", function () {
+                window.location.href = "/BindUserMessage.aspx?returnUrl=/Vshop/MemberCenter.aspx";
+            });
+            $.cookie('BindName_tx', "true", { expires: 0.25 }); //6小时提醒一次
+        };
+        var txtwaits = $("#vMemberCenter_txtWaitForstr").val().split("|");
+        var $waitspan = $(".waitspan");
+        for (i = 0; i < 5; i++) {
+            if (txtwaits[i] > "0") {
+                $waitspan.eq(i).append('<i class="message"></i>');
+            }
+        }
+    })
+</script>
+<script type="text/javascript" src="/API/FootJs.aspx"></script>
+<hi:common_footer runat="server" />

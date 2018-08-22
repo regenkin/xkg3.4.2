@@ -1,0 +1,107 @@
+﻿<hi:common_header runat="server" />
+<div class="pbox" style="padding:50px 15px 0;">
+    <form id="form" role="form" class="clearfix apply">
+        <div class="login-name">
+            <span class="glyphicon glyphicon-user"></span>
+            <input type="text" class="" id="uesrname" placeholder="请输入用户名" maxlength="50" />
+        </div>
+        <div class="login-name">
+            <span class="glyphicon glyphicon-lock"></span>
+            <input type="password" class="" id="pass" placeholder="请输入密码" max="50" />
+        </div>
+        <div class="login-name">
+            <span class="glyphicon glyphicon-lock"></span>
+            <input type="password" class="" id="passAgain" placeholder="请输入确认密码" max="50" />
+        </div>
+        <div class="form-group">
+            <a type="button" class="btn btn-danger btn-block login-btn"  onclick="RegisterUser();">注册</a>
+            <p class="text-center" style="margin-top: 5px; font-size: 16px;"><a id="btnUserLogin" class="text-muted">去登录</a></p>
+        </div>
+    </form>
+
+</div>
+
+<script>
+    //禁用右上角菜单
+    //document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+    //    WeixinJSBridge.call('hideOptionMenu');
+    //});
+</script>
+<script type="text/javascript">
+    var headimgurl=getParam("headimgurl");
+    if(headimgurl==""){
+        headimgurl = "/images/user.png";
+    }
+    $(document).ready(function () {
+        $("#btnUserLogin").bind("click", function () { UserLogin(); });
+    });
+    function UserLogin() {
+        location.href = "/UserLogin.aspx?openId=" + getParam("openId") + "&headimgurl=" + getParam("headimgurl") + "&returnUrl=" +encodeURIComponent(getParam("returnUrl"));
+    }
+    function RegisterUser() {
+        var username = $.trim($("#uesrname").val())
+        var password = $.trim($("#pass").val());
+        var passagain = $.trim($("#passAgain").val());
+        if (username.length < 2) {
+            alert_h('用户名至少要2个字符');
+            return;
+        }
+        if (password.length < 6) {
+            alert_h('密码至少要6个字符');
+            return;
+        }
+        if (username == "") {
+            alert_h("用户名不能为空！");
+            return;
+        }
+        if (password == "") {
+            alert_h("密码不能为空！");
+            return;
+        }
+        if (passagain == "") {
+            alert_h("确认密码不能为空！");
+            return;
+        }
+        $(".login-btn").attr("disabled", false);
+        $.ajax({
+            url: "/API/VshopProcess.ashx",
+            type: 'post', dataType: 'json', timeout: 10000,
+            data: { action: "RegisterUser", openId: getParam("openId"),  headimgurl:headimgurl, userName: $("#uesrname").val(), password: $("#pass").val(), passagain: $("#passAgain").val() },
+            success: function (resultData) {
+                $(".login-btn").attr("disabled", true);
+                if (resultData.Status == "OK") {
+                    alert_h("注册成功", function () {
+                        var returnUrl = getParam("returnUrl");
+                        //if (resultData.ReferralUserId != 0) {
+                        //    if (returnUrl.indexOf("?") > -1) {
+                        //        returnUrl += "&ReferralId=" + resultData.ReferralUserId;
+                        //    }
+                        //    else {
+                        //        returnUrl += "?ReferralId=" + resultData.ReferralUserId;
+                        //    }
+                        //}
+                        location.href = returnUrl;
+
+                    });
+                }
+                else {
+                    $(".login-btn").removeAttr("disabled");
+                    if (resultData.Status == "-1") {
+                        alert_h("用户名已存在！");
+                    }
+                    else if (resultData.Status == "-3") {
+                        alert_h("您的微信号已经注册过，请登录。", function () {
+                            location.href = "/UserLogin.aspx";
+                        });
+                    }
+                    else {
+                        alert_h("两次密码输入不正确！");
+                    }
+
+                }
+            }
+        });
+    }
+</script>
+<hi:common_footer runat="server" />
+

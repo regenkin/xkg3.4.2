@@ -1,0 +1,98 @@
+﻿<hi:common_header runat="server" />
+<link href="/style/coupondetails.css" rel="stylesheet" />
+<div class="container">
+    <div class="content">
+        <div class="activityTopic">
+            <div class="rollCollar">
+                <a href="javascript:void(0);">
+                    <div class="left">
+                        <span>优惠券</span>
+                        <span>￥<i><Hi:HiLiteral runat="server" id="lbCouponValue" /></i></span>
+                    </div>
+                    <div class="right">
+                        <h5><Hi:HiLiteral runat="server" id="lbCouponTj" /></h5>
+                        <p>生效时间：<Hi:HiLiteral runat="server" id="lbBeginTime" /></p>
+                        <p>到期时间：<Hi:HiLiteral runat="server" id="lbEndTime" /></p>
+                    </div>
+                </a>
+            </div>
+            <div class="activityInner">
+                <div class="activityInfo">
+                    <p>
+                        <span>优惠券名称：</span>
+                        <span id="couponid"><Hi:HiLiteral runat="server" id="lbCouponName" /></span>
+                    </p>
+                    <p>
+                        <span>面值：</span>
+                        <span>￥<Hi:HiLiteral runat="server" id="lbCounponValue1" /></span>
+                    </p>
+                    <p>
+                        <span>适用条件：</span>
+                        <span><Hi:HiLiteral runat="server" id="lbCouponTj1" /></span>
+                    </p>
+                    <p>
+                        <span>剩余数量：</span>
+                        <span><Hi:HiLiteral runat="server" id="lbLeftCount" />张</span>
+                    </p>
+                    <!--<p>
+                        <span>可领取数量：</span>
+                        <span><Hi:HiLiteral runat="server" id="lbCouponStock" />张</span>
+                    </p>-->
+                    <p>
+                        <span>每人限领数量：</span>
+                        <span><Hi:HiLiteral runat="server" id="lbCouponUseCount" />张</span>
+                    </p>
+                    <p>
+                        <span>活动商品：</span>
+                        <span id="desc">
+                            <Hi:HiLiteral runat="server" id="lbCouponUsedShopBook" />
+                        </span>
+                    </p>
+                    <p class="color"><span>活动时间：</span><span><Hi:HiLiteral runat="server" id="lbCouponDateTime" /></span></p>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-danger receive" id="btnReceive">立即领取</button>
+    </div>
+</div>
+<input type="hidden" runat="server" id="hideImgUrl">
+<input type="hidden" runat="server" id="hideDesc">
+<script type="text/javascript">
+    //分享标题设置
+    wxinshare_title = $("#couponid").html();
+    wxinshare_link = location.href;
+    wxinshare_desc = $("#vCouponDetails_hideDesc").val();
+    wxinshare_imgurl = $("#vCouponDetails_hideImgUrl").val();
+    $(function () {
+        $('.rollCollar a').height($('.rollCollar a').width() * 0.328);
+        $(window).resize(function () {
+            $('.rollCollar a').height($('.rollCollar a').width() * 0.328);
+        })
+        $("#btnReceive").click(function () {
+            var couponId = GetFristId();
+            //onsole.log(couponId);
+            $.ajax({
+                url: '/API/Hi_Ajax_Game.ashx',
+                type: 'post',
+                dataType: 'json',
+                data: { "action": "getcoupon", "couponId": couponId },
+                async: false,
+                success: function (data) {
+                    alert_h(data.Desciption);
+                },
+                error: function () {
+                    alert_h("领取失败！");
+                }
+            });
+        });
+    });
+
+    function GetFristId() {
+        var firstId = window.location.search.substr(window.location.search.indexOf("=") + 1);
+        if (firstId.indexOf("&") > 0)
+            firstId = firstId.substr(0, firstId.indexOf("&"));
+        return firstId;
+    }
+</script>
+<hi:common_footer runat="server" />
+

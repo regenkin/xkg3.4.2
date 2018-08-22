@@ -1,0 +1,440 @@
+﻿<hi:common_header runat="server" />
+<link href="../templates/common/css/myproducts.css" rel="stylesheet" type="text/css">
+<style>
+    input[type=checkbox] {
+        vertical-align: middle;
+        margin: 0px;
+    }
+
+    .content-right {
+        margin: 1px;
+        padding: 0px;
+    }
+
+    #mcover {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        display: none;
+        z-index: 20000;
+    }
+
+        #mcover .img {
+            position: fixed;
+            right: 18px;
+            top: 5px;
+            width: 260px !important;
+            height: 180px !important;
+            z-index: 20001;
+        }
+
+    #infoid {
+        color: #999;
+    }
+
+    #shareid {
+        float: right;
+        margin-top: 10px;
+        width: 45%;
+    }
+
+    #sharetitle {
+        margin-top: 10px;
+        border: 1px solid #ccc;
+    }
+
+    #shareSina {
+        float: left;
+        margin-top: 10px;
+        width: 49%;
+    }
+
+    .dropdown input {
+        width: 100% !important;
+        padding-left: 45px !important;
+    }
+    .search_img {
+        float: none;
+        padding: 0px 2px 0px 5px;
+        position: absolute;
+        top: 9px;
+        left: 0px;
+        background: #DA4453;
+        border-bottom-left-radius: 4px;
+        border-top-left-radius: 4px;
+    }
+    .pbox {
+        padding-top: 0px;
+        margin-top: -5px;
+        margin-bottom: -5px;
+    }
+    .glyphicon{color:#fff;padding:6px 4px 6px 4px;}
+    .shoplist ul li .shopinfo p.intro {
+        max-height:30px;
+        overflow:hidden;
+        padding-right:10px;
+    }
+    #mcover #sharectx {
+        max-width: 500px;
+        border-radius: 5px;
+        background: #fff;
+        padding: 10px;
+        line-height: 30px;
+        border: 1px solid #fff;
+        margin-top: 200px;
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+      
+    }
+</style>
+
+<div id="mcover" onclick="document.getElementById('mcover').style.display='';" style="display:none;">
+    <img class="img" src="/images/guide.png" />
+    <div id="sharectx"><img src="/Utility/pics/headLogo.jpg" width="60" height="60" style="float:left;margin-right: 10px; border: 1px solid #ccc" /><span>快来光顾的我微信小店吧</span>
+        <div class="clearfix"></div>
+    </div>
+
+</div>
+
+<ul class="clearfix orders-title title_bg">
+    <li class="activenum"><a>已上架商品<asp:Literal ID="litProtuctSelNum" runat="server"></asp:Literal></a></li>
+    <li><a href="ProductListAll.aspx">未上架商品<asp:Literal ID="litProtuctNoSelNum" runat="server"></asp:Literal></a></li>
+</ul>
+<div class="pbox clearfix">
+    <div class="clearfix class_goods">
+        <div class="dropdown">
+            <div class="dropdown-toggle search_img" id="dropdownMenu1" data-toggle="dropdown" style="z-index:100;">
+                <span class="glyphicon glyphicon-th" style="font-size:20px"></span>
+            </div>
+            <div class="search_input clearfix" style="position:relative;">
+                <input type="text" class="text" runat="server" id="keywords" placeholder="" style="height:33px;outline:none;">
+                <span class="glyphicon glyphicon-search" style="position:absolute;right:0;z-index:100; top:0;" onclick="Searchkeys()">
+                </span>
+            </div>
+            <ul class="dropdown-menu submenu" role="menu" aria-labelledby="dropdownMenu1">
+                <hi:vshoptemplatedrepeater id="rpCategorys" templatefile="/Tags/skin-Common_SubCategory.ascx"
+                                           runat="server" />
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="occupying">
+        <div class="shelvesshop clearfix">
+            <div class="selectall">
+                <a href="javascript:void(0)"><em></em></a>全选
+            </div>
+            <div class="shelvesshopbtn clearfix">
+                <a href="javascript:SaveDistributorProducts()">下架已选商品</a>
+                <a href="javascript:DelAll()">下架全部商品</a>
+            </div>
+        </div>
+    </div>
+    <div class="shoplist">
+        <div id="empty" style="text-align: center;">
+            <img src="/Utility/pics/nonestore.gif" />
+        </div>
+        <ul id="shops" userid='<asp:literal ID="Puserid" runat="server" />' >
+            <hi:vshoptemplatedrepeater id="rpChooseProducts" templatefile="/Tags/skin-Common_DistributorProducts.ascx"
+                                       runat="server" />
+        </ul>
+    </div>
+    <div class="loadingmore">
+        <a href="javascript:readmore()" id="nextPager">
+            加载下一页
+        </a>
+    </div>
+</div>
+    <script>
+
+        var title = "快来光顾我的微信小店吧";
+        var link = "http://" + window.location.host;
+        var imgUrl = "http://" + window.location.host;
+        var Dec = "宝贝分享";
+        var userid = "";
+
+
+        function initWx() {
+
+            wx.onMenuShareTimeline({
+                title: title + "" + Dec, // 分享标题
+                link: link, // 分享链接,将当前登录用户转为puid,以便于发展下线
+
+                imgUrl: imgUrl, // 分享图标
+                success: function () {
+                    // 用户确认分享后执行的回调函数
+                    alert_h('分享成功');
+                },
+                cancel: function () {
+                    // 用户取消分享后执行的回调函数
+                }
+            });
+            wx.onMenuShareAppMessage({
+                title:title ,
+                desc: Dec,
+                link: link,
+                imgUrl: imgUrl,
+                type: "",
+                dataUrl: "",
+                success: function () { },
+                cancel: function () { }
+            });
+
+            wx.onMenuShareQQ({
+                title: title, // 分享标题
+                desc: Dec, // 分享描述
+                link: link, // 分享链接
+                imgUrl: imgUrl, // 分享图标
+                success: function () {
+                    // 用户确认分享后执行的回调函数
+                },
+                cancel: function () {
+                    // 用户取消分享后执行的回调函数
+                }
+            });
+
+
+        }
+
+
+        wx.ready(function () {
+            wx.error(function (res) {
+                // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+                console.log("公众号信息验证失败:" + res.errMsg);
+            });
+
+            initWx();
+
+        });
+
+
+
+        var deleteProdcut = "";
+
+        var categoryId = "";
+
+        var keyWord = ""
+        var pgSize = "20";
+        var pgIndex = 2;
+        var isEnd = false;
+        var nurl = window.location.href;
+        var cids = nurl.match(/categoryId=[0-9]*/);
+        if (cids) {
+            categoryId = cids[0].replace("categoryId=", "");
+        }
+
+        function readmore() {
+
+           
+            if (isEnd) {
+                $("#nextPager").html("全部数据已加载完");
+                $("#nextPager").attr("disabled", "disabled");
+                return;
+            }
+
+            keyWord =$("#VMyProducts_keywords").val().replace(/\s/g, "");
+           
+            $.ajax({
+                url: "MyProducts.aspx",
+                type: 'POST', timeout: 10000,
+                data: { task: "next", categoryId: categoryId, keyWord: keyWord, pgSize: pgSize, pgIndex: pgIndex },
+                async: false,
+                success: function (resultData) {
+                 
+                    pgIndex++;
+
+                    try {
+
+                        var data = eval("(" + resultData + ")");
+
+                        if (data.length < pgSize * 1) {
+                            isEnd = true;
+                            $("#nextPager").html("全部数据已加载完");
+                            $("#nextPager").attr("disabled", "disabled");
+                        }
+
+                        if (data.length == 0) {
+                            $("#shops").html("");
+                            return;
+                        }
+
+
+                        var addHtml = "";
+                        for (var i = 0; i < data.length; i++) {
+
+                            var imgurl = data[i]["ThumbnailUrl310"];
+                            if (imgurl == null) {
+                                imgurl = "/utility/pics/none.gif";
+                            }
+
+                            addHtml += "<li><div class='shopimg'>";
+                            addHtml += "<img src='" + imgurl + "' class='_pimg' style='border-width:1px;border-style:Solid;height:80px;width:80px;' />";
+                            addHtml += "</div><div  class='shopinfo'>";
+                            addHtml += "<p class='intro'><a class='Plink'  href='/ProductDetails.aspx?ProductId=" + data[i]["ProductId"] + "'>" + data[i]["ProductName"] + "</a></p>";
+                            addHtml += "<p class='Price'>￥" + data[i]["SalePrice"] + "</p>";
+                            addHtml += "<p class='saleshare clearfix'><span class='sale'>已售" + data[i]["SaleCounts"] + "件</span>";
+                            addHtml += "<a class='share btn-share' href='javascript:void(0)'>分享</a></p>";
+                            addHtml += "</div><div class='checkbox' id='CheckGroup" + data[i]["ProductId"] + "' key='" + data[i]["ProductId"] + "'><span></span></div></li>";
+                        }
+
+                        var $add = $(addHtml);
+                        $("#shops").html("");
+                        $("#shops").append($add);
+
+                    } catch (e) {
+                        alert_h("读取数据失败!");
+                    }
+
+
+                }
+            });
+
+
+        }
+
+
+
+        $(function () {
+
+
+            userid = $('#shops').attr("userid");
+
+
+            if (!$.trim($('#shops').html())) {
+                $('#empty').css('display', '');
+                isEnd = true;
+            }
+            else {
+                $('#empty').css('display', 'none');
+            }
+
+            //全选
+            $('.selectall').click(function () {
+                if ($(this).hasClass('select')) {
+                    $(this).removeClass('select');
+                    $('.shoplist .checkbox').removeClass('select');
+                } else {
+                    $(this).addClass('select');
+                    $('.shoplist .checkbox').addClass('select');
+                }
+            });
+
+            $('#shops').on("click", ".checkbox", function () {
+                if ($(this).hasClass('select')) {
+                    $(this).removeClass('select');
+                } else {
+                    $(this).addClass('select');
+                }
+            });
+
+
+            $("#shops").on("click", ".btn-share", function () {
+
+                var $parnet = $(this).parents("li");
+                if ($parnet) {
+
+                    imgUrl = "http://" + window.location.host + $parnet.find("._pimg").attr("src");
+                    
+                    if (imgUrl.indexOf("none.gif")>0) {
+                        imgUrl = "http://" + window.location.host + "/Utility/pics/headLogo.jpg";
+                    }
+
+                    title = $parnet.find(".Plink").text().trim();
+                    Dec = "【" + $parnet.find(".Price").text() + "】";
+                    link = "http://" + window.location.host + $parnet.find(".Plink").attr("href") + "&ReferralId=" + userid;
+                   
+                    $("#sharectx img").attr("src", imgUrl);
+                    
+                    $("#sharectx span").html(title + "\r\n" + Dec);
+                    
+                    if (/MicroMessenger/i.test(navigator.userAgent)) {
+                        $("#mcover").show();
+                        initWx();
+                    }
+                    else {
+                        alert_h("当前客户端不是微信，不能分享此商品到微信！");
+                    }
+
+
+                }
+            });
+
+        });
+
+
+
+        function Searchkeys() {
+            //var serachkey = $("#VMyProducts_keywords").val().replace(/\s/g, "");
+            //location.href = "?keyWord=" + escape(serachkey);
+            isEnd = false;
+            pgIndex = 1;
+            $("#nextPager").html("加载下一页");
+            readmore();
+        }
+
+
+        function SaveDistributorProducts() {
+
+          
+            deleteProdcut = "{";
+
+            $(".shoplist .checkbox").each(function () {
+                if ($(this).hasClass('select')) {
+                    deleteProdcut += '"' + $(this).attr("id") + '":"' + $(this).attr("key") + '",'
+                }
+            });
+
+            deleteProdcut += "}";
+           
+            if (deleteProdcut == "{}") {
+                alert_h('请先选择要下架的商品！');
+                return;
+            }
+
+          
+            myConfirm("下架商品", "确认下架所选商品？", "确定下架", function () {
+                $.ajax({
+                    url: "/API/VshopProcess.ashx",
+                    type: 'POST', dataType: 'json', timeout: 10000,
+                    data: { action: "DeleteProducts", Params: deleteProdcut },
+                    async: false,
+                    success: function (resultData) {
+                        $.cookie("DeleteProcutId", null);
+                        alert_h('下架成功', function () { document.location.reload(); });
+                    }
+                });
+            });
+
+
+        }
+
+        function DelAll() {
+
+            if (!$.trim($('#shops').html())) {
+                alert_h("你的店铺没有商品可以下架！");
+                return;
+            }
+
+            myConfirm("下架全部商品", "确认下架全部商品？全部下架后，店铺将没有商品可以销售！", "确定下架", function () {
+
+                $.ajax({
+                    url: "/API/VshopProcess.ashx",
+                    type: 'POST', dataType: 'json', timeout: 10000,
+                    data: { action: "OperateAllDistributorProducts", deleteAll: "true" },
+                    async: false,
+                    success: function (resultData) {
+                        $.cookie("DeleteProcutId", null);
+                        alert_h('全部商品下架成功', function () { document.location.reload(); });
+                    }
+                });
+
+            });
+        }
+    </script>
+    <div style="line-height:50px">　　</div>
+    <hi:common_footer runat="server" />

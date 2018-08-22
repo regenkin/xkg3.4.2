@@ -1,0 +1,55 @@
+﻿<Hi:Common_Header runat="server" />
+<link href="../templates/common/css/public.css" rel="stylesheet" type="text/css">
+
+<style type="text/css">
+	body{background-color: #F8F8F8;max-width:100%;}
+	.container{max-width: 640px; padding:10px; margin: 0 auto;}
+	.contentinner{border: 1px solid #D5D5D5;border-radius: 5px;background-color: #fff;}
+	.contentinner .title{padding: 10px;border-bottom:1px solid #D5D5D5; }
+	.contentinner .title h1{margin-bottom: 10px;font-size:14px;}
+	.contentinner .title p{height: 12px;line-height: 14px;font-size: 14px;color: #C4C4C4;}
+	.contentinner .title p span:last-child{display: inline-block; margin-left: 5px;padding-left: 15px;position: relative;}
+	.contentinner .title p span i.glyphicon{position: absolute;left: 0px;top: 0;}
+	.contentinner .textnews{padding: 10px;}
+	.contentinner .textnews .textnewsinner{overflow: hidden;color: #2C2B30;}
+	/*.contentinner .textnews .textnewsinner img{width: 100%;margin-bottom: 10px;}*/
+	.contentinner .textnews .textnewsinner p.textlist{margin-bottom: 20px;text-align:justify;text-indent: 2em;}
+	.contentinner .textnews .textnewsinner p.textlist:nth-last-child(2){margin-bottom: 10px;}
+	.contentinner .textnews .textnewsinner p.lookall{text-align: right;}
+	.contentinner .textnews .textnewsinner p.lookall a{color: #C45E20;}
+</style>
+<div class="container">
+    <div class="contentinner">
+        <div class="title">
+            <h1><asp:Literal ID="litTitle" runat="server"></asp:Literal></h1>
+            <p>
+                <asp:Literal ID="litPubTime" runat="server"></asp:Literal>
+            </p>
+        </div>
+        <div class="textnews">
+            <div class="textnewsinner">
+                <asp:Literal ID="litMemo" runat="server"></asp:Literal>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+        $(document).ready(function () {
+            setTimeout(function () {
+                if (parent) {
+                    if (parent.CallBack_MobileFramMain) {
+                        var h = $(document.body).outerHeight(true);
+                        if (h < 100) {
+                            h = $(document.body).height();
+                        }
+                        if (h < 100) {
+                            h = 500;
+                        }
+                        parent.CallBack_MobileFramMain(h)
+                    }
+                }
+            }, 500);
+
+        })
+</script>
+<hi:common_footer runat="server" isshownav="1" />

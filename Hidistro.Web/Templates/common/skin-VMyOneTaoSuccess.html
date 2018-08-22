@@ -1,0 +1,341 @@
+﻿<hi:common_header runat="server" />
+<link href="../templates/common/css/public.css" rel="stylesheet" type="text/css">
+<style>
+    html, body { min-height: 100%; max-width: 100%; font-family: "微软雅黑"; background-color: #F8F8F8; }
+    .container { max-width: 640px; min-height: 100%; padding: 0; }
+        .container header { height: 40px; padding-top: 5px; border-bottom: 1px solid #B8B8B8; margin-bottom: 10px; }
+            .container header ul li { float: left; height: 35px; line-height: 35px; width: 33.33333%; text-align: center; font-size: 14px; background-color: #fff; }
+                .container header ul li a { color: #2C2B30; }
+                .container header ul li.active { border-bottom: 2px solid #D61716; }
+                    .container header ul li.active a { color: #D94444; }
+    .luckdrawinlist { margin-bottom: 10px; }
+        .luckdrawinlist ul li { padding: 0 10px; background-color: #fff; border-bottom: 1px solid #E4E4E4; }
+            .luckdrawinlist ul li .luckdrawinfo { position: relative; padding: 10px 0; border-bottom: 1px solid #E4E4E4; min-height: 100px; }
+                .luckdrawinlist ul li .luckdrawinfo .img { position: absolute; width: 80px; height: 80px; left: 0; top: 10px; overflow: hidden; }
+                .luckdrawinlist ul li .luckdrawinfo .drawinfo { margin-left: 90px; width: 66%; text-align: justify; }
+                .luckdrawinlist ul li .luckdrawinfo .img img{width:100%}
+                .luckdrawinfo .drawinfo h3 { font-size: 12px; margin-bottom: 5px; line-height: 16px; }
+    .luckdrawinfo .drawinfo .color { color: #999999; }
+    .luckdrawinfo .drawinfo .no { margin-bottom: 2px; }
+    .loading { text-align: center; height: 20px; line-height: 20px; margin-bottom: 5px; }
+        .loading span { display: inline-block; text-indent: 25px; height: 20px; line-height: 20px; background: url(images/iconfont-jiazaizhong.gif) no-repeat; background-size: 20px; }
+    .luckdrawinlist ul li .lookmyinfo { height: 35px; line-height: 35px; }
+        .luckdrawinlist ul li .lookmyinfo p span { color: #DA4453; }
+        .luckdrawinlist ul li .lookmyinfo a { color: #337AB7; }
+    .winningresults { position: relative; padding: 5px; }
+        .winningresults .colorb { color: #009DDA; }
+        .winningresults .colorr { color: #FF2B00; }
+        .winningresults .colorl { color: #008000; }
+        .winningresults .btn { position: absolute; right: 0; bottom: 5px; }
+    .RedCss { margin-left: 80px; padding-left: 10px; background: #DA4453; color: #fff; line-height: 30px; margin-bottom: 3px; }
+    </style >
+
+<div class="container">
+    <header>
+        <ul class="clearfix">
+            <li><a href="MyOneTao.aspx">进行中</a></li>
+            <li ><a href="MyOneTaoIsEnd.aspx">已揭晓</a></li>
+            <li class ="active"><a href="javascript:void(0)">中奖记录</a></li>
+        </ul>
+    </header>
+    <div class="luckdrawinlist">
+        <ul id="Vlist"></ul>
+    </div>
+    <div class="loading">
+        <span>正在加载中····</span>
+    </div>
+</div>
+<script>
+    var ajaxflag = false;
+    var PostData = { action: "nextPage", pageIndex: 1, ActivityId: getParam("vaid") };
+
+    $(function () {
+
+        ajaxData(); //读取第1页
+
+        $(document).on('scroll', function (evt) {
+            var elementT = $('.loading').offset().top;
+            if ($(document).scrollTop() + $(window).height() >= elementT) {
+                if (!ajaxflag) {
+                    ajaxData();
+                }
+            }
+        });
+
+
+        $('.selectShipToDate li a').click(function () {
+            $('.selectShipToDate button').html($(this).html() + '<span class="caret"></span>');
+            $('#selectShipToDate').val($(this).attr('name'));
+        });
+
+        var $shippingIdParent = $("a[shippingId=" + $("#selectShipTo").val() + "]");
+        if ($shippingIdParent.length > 0) {
+            $("#Shippingcity").attr("addrinfo", $shippingIdParent.attr("briefAddress"));
+        };
+
+     
+
+        $("#ConfirmAddr").click(function () {
+
+
+            var shippingId = $("#selectShipTo").val();
+
+            $('#PayWeixin').modal("toggle");
+
+            $.ajax({
+                url: "/API/VshopProcess.ashx",
+                type: 'post', timeout: 10000,
+                data: {
+                    action: "ConfirmOneyuangPrizeAddr",
+                    pid: confirmPid,
+                    Editid: confirmId,
+                    ShipToDate: $('#selectShipToDate').val(),
+                    shippingId: shippingId
+                },
+                cache: false,
+                success: function (resultData) {
+                    maskayer(1);
+                    if (resultData == "success") {
+
+                        alert_h("收货地址保存成功！", function () {
+                           // location.href = location.href; //重新加载
+                            location.reload();
+                        });
+
+                    } else {
+                        alert_h(resultData);
+                    }
+                }
+            });
+
+        });
+    });
+
+
+    //获取选择地址信息
+    function getFreightTemplate(id) {
+       
+        $("#Shippingcity").val(id);
+        var $a = $("#" + id).find('a');
+        $("#selectShipTo").val($a.attr("shippingId"));
+        $("#Shippingcity").attr("addrinfo", $a.attr("briefAddress")); //存储一下信息
+
+    }
+
+
+
+
+    function ajaxData() {
+        ajaxflag = true;
+        //这里写ajax发送  发送成功记得把flag变量设置成false
+       
+        $.ajax({
+            url: window.location.href,
+            type: "post",
+            data: PostData,
+            datatype: "json",
+            cache: false,
+            success: function (jsonData) {
+                //
+                PostData.pageIndex++; //翻页成功！
+                if (jsonData.state == true) {
+                   // alert(123334);
+                    addMore(jsonData.Data);//读取JSON数据
+
+                    if (jsonData.Data.length == 10) {
+                        ajaxflag = false;
+                    }
+                    else {
+                        $('.loading').remove(); //移除
+                    }
+
+                }
+                else {
+				if(jsonData.msg){
+				     alert_h(jsonData.msg);
+                     ajaxflag = false;
+				}
+				else{
+				    window.location.reload();
+				}
+                   
+                }
+            },
+            error: function () {
+                //
+            }
+        });
+
+    }
+
+
+    function addMore(jsondata) {
+
+
+
+        if (jsondata.length == 0)
+            return;
+        var addhtml = '';
+
+
+        for (var i = 0; i < jsondata.length; i++) {
+            var item = jsondata[i];
+            var kaijianHtml = Kaijiang(item.BuyNum, item.Pid, item.LuckNumList, item.PostSate, item.PostBtn, item.PrizeTime, item.tabid);
+
+            addhtml += '<li>' +
+ '               <div class="luckdrawinfo">' +
+  '                  <div class="img">' +
+   '                     <img src="' + item.ProductImg + '">' +
+    '                </div>' +
+     '               <div class="drawinfo">' +
+      '                  <h3>' + item.ProductTitle + '</h3>' +
+       '                 <p class="no color">夺宝编号：' + item.ActivityId + '</p>' +
+        '                <div class="clearfix color">' +
+         '                   <p>总需' + item.ReachNum + '份，参与' + item.FinishedNum + '份</p>' +
+          '              </div>' +
+           '         </div>' +
+            '    </div>' +
+                  kaijianHtml +
+                '  </li>';
+        }
+
+
+        $("#Vlist").append(addhtml);
+
+    }
+
+
+    function Kaijiang(BuyNum, pid, LuckNumList, PostSate, PostBtn, PrizeTime, tabid) {
+
+        var btnHtml = "";
+
+        if (PostBtn == "0") {
+            btnHtml = '		<button class="btn btn-danger btn-xs" onclick="ShowAddress(\'' + pid + '\',\'' + tabid + '\')">填写收货地址</button>';
+        }
+        else if (PostBtn=="2") {
+            btnHtml = '		<button class="btn btn-success btn-xs" onclick="ShowConfirm(\'' + tabid + '\')">确认收货</button>';
+        }
+        
+
+        var s = '<div class="winningresults">'+
+				'		<p>幸运号码：<span class="colorr">' + LuckNumList + '</span></p>' +
+				'		<p>揭晓时间：' + PrizeTime + '</p>' +
+                '		<p>总购份数：' + BuyNum + '份</p>' +
+				'		<p>奖品状态：<span class="colorb">' + PostSate + '</span></p>' +
+				btnHtml +
+				'	</div>';
+       
+        return s;
+    }
+
+
+    var confirmPid = 0;
+    var confirmId = 0;
+
+  
+    function ShowAddress(pid, tabid) {
+        confirmPid = pid;
+        confirmId = tabid;
+        $('#PayWeixin').modal({ backdrop: 'static', keyboard: false, show: true });
+            //maskayer(0);
+       ;
+    }
+
+
+    function ShowConfirm(tabid){
+        myConfirm("收货确认", "您确定收到该礼品？", "确认", function () {
+
+       
+
+            $.ajax({
+                url: "/API/VshopProcess.ashx",
+                type: 'post', timeout: 10000,
+                data: {
+                    action: "ConfirmPrizeArriver",
+                    Tabid: tabid,
+                },
+                cache: false,
+                success: function (resultData) {
+                    maskayer(1);
+                    if (resultData == "success") {
+
+                        alert_h("收货确认成功！", function () {
+                            location.href = location.href; //重新加载
+                        });
+
+                    } else {
+                        alert_h(resultData);
+                    }
+                }
+            });
+
+        });
+
+    }
+   
+  
+</script>
+
+  <!--地址弹出面板-->
+<div class="modal fade" id="PayWeixin">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="text-align: left" id="batchTitle">收货地址确认</h4>
+            </div>
+
+            <div id="addressinfo" style="display:block;padding:10px">
+                收货地址：
+                <div class="btn-group rptAddress">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        <asp:literal runat="server" id="litShipTo" />
+                        <asp:literal runat="server" id="litCellPhone" />
+                        <asp:literal runat="server" id="litAddress" />
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu " id="addressageul" role="menu">
+                        <hi:vshoptemplatedrepeater id="rptAddress" templatefile="/Tags/skin-Common_Addresses.ascx" runat="server" />
+                        <li class="divider"></li>
+                        <li><a<asp:literal runat="server" id="litAddAddress" />>新增收货地址</a></li>
+                    </ul>
+                    <input type="hidden" runat="server" clientidmode="Static" id="selectShipTo" />
+                    <input type="hidden" runat="server" clientidmode="Static" id="Shippingcity" />
+                </div>
+                收货时间：
+                <div class="btn-group selectShipToDate">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        时间不限<span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#" name="时间不限">时间不限</a></li>
+                        <li><a href="#" name="周一至周五">周一至周五</a></li>
+                        <li><a href="#" name="周六、周日及公众假期">周六、周日及公众假期</a></li>
+                    </ul>
+                    <input type="hidden" runat="server" clientidmode="Static" id="selectShipToDate" value="时间不限" />
+                </div>
+
+            </div>
+
+            <div style="clear: both">
+            </div>
+
+            <div class="modal-footer">
+                <a type="button" class="btn btn-default" data-dismiss="modal">取消</a>
+                <a class="btn btn-danger"  id="ConfirmAddr" >确定地址</a>  
+            </div>
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+<!-- /.modal -->
+
+
+
+
+<input type="hidden" id="regionId" runat="server" clientidmode="Static" />
+<hi:common_footer runat="server" />

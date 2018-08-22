@@ -1,0 +1,91 @@
+﻿/** CSS document **/
+
+/*申请开通站点*/
+.dataarea .Site{ border:1px #ffe8ba solid; margin-bottom:15px; overflow:hidden; color:#333;}
+.dataarea .Site li{ float:left;}
+.dataarea .Site .liem{ width:70px; height:60px; background:#fff9ee; font-style:normal; text-align:center; line-height:60px; display:block; border-right:1px #ffda96 solid; font-size:40px; font-family:"微软雅黑"; font-weight:700; color:#ff5500;}
+.dataarea .Site .lispan{ line-height:60px; padding-left:15px; }
+.dataarea .datalist .input { border:1px #a7a6aa solid;}
+
+/*添加 编辑 商品*/
+.datafrom .formitem { padding-top:0!important;}
+.datafrom .formitem .content{ width:500px;}
+.datafrom .formitem .content table td{border-bottom:1px #e0dcce solid; padding:6px;}
+.datafrom .formitem .content table{border:1px #e0dcce solid; color:#333;border-bottom:none; }
+.dataarea .datalist .content table input{ border:0px;}
+.datafrom .formitem .content .table_title{ background:url(../images/bg.gif) repeat-x 0 -389px; height:16px; line-height:16px; color:#5c4a35;}
+.datafrom .formitem  li p a{ font-size:12px!important;}
+
+.Property{width:600px;line-height:30px;padding:20px;margin:0px auto;}
+.Property table{ width:100%;border:1px #e0dcce solid; color:#333;border-bottom:none;}
+.Property .table_title{background:url(../images/bg.gif) repeat-x 0 -389px; height:16px; line-height:16px; color:#5c4a35;}
+.Property table td,.areacolumn .columnright .content table td,.databody .list table td{border-bottom:1px #e0dcce solid; padding:6px;}
+.Property table th {padding:6px;text-align:left;}
+.Property .Property_border{border-right:1px #e1e1e1 solid; }
+.Property table span,.Property table a,.databody .list table span{ display:block;}
+
+
+#skuContent{margin:0px auto;}
+.skuItem{clear:both;}
+.skuItemList{float:left;}
+.skuItemList li{margin-right:8px;float:left;}
+.skuItemList li input{float:left;}
+.skuItemList li span{display:block;}
+.skuItem .formitemtitle4{line-height:22px;}
+
+
+
+
+/*搜索结果*/
+.search_results { border-top:1px #ccc solid; padding-top:8px;} 
+.search_results td{ padding-left:10px;}
+.results{ padding:5px; border:1px #c2daf2 solid; background:#eff8ff; margin-top:10px; color:#444;}
+.results_main{ border:1px #b1d2ff solid; background:#fff; height:302px; padding:10px; line-height:24px; overflow:auto;border-top:none;border-bottom:none;border:0; padding:0px 1px 0px 1px; background:#eff8ff;}
+.results_delete{ float:right; width:61px; height:25px; border:1px #c2daf2 solid; border-top:none;position:relative; top:-1px;}
+.results_submit{ width:61px; height:25px; background:url(../images/icon.gif) no-repeat -60px -218px; border:0px;}
+/*选中?带箭头带背景*/
+.results_s1{background:url(../images/li.gif) #d6edf4 no-repeat right 8px!important; border:1px #98bbd1 solid; color:#1c4d92;cursor: pointer;}
+/*选中后没有箭头只有背景*/
+.results_s2{background:#d6edf4!important;border:1px #98bbd1 solid; color:#1c4d92;cursor: pointer;}
+/*未选中，有箭头*/
+.results_n1{background:url(../images/li.gif) no-repeat right 8px!important;cursor: pointer;}
+.results_img{ background:url(../images/icon.gif) no-repeat  -150px 0px; width:15px; height:12px; position:relative;bottom:-11px; left:40px;}
+.results_bottom{ background:#fffbf2; border:1px #fddbab solid; margin-top:8px; height:30px; line-height:30px; color:#3468ce; padding-left:10px;}
+
+/*商品分类*/
+.results{ padding:5px; border:1px #c2daf2 solid; background:#eff8ff; margin-top:10px; color:#444;}
+.results_main,.results_z,.results_z0,.results_z1,.results_z2,.results_z3,.results_z4{ border:1px #b1d2ff solid; background:#fff; height:302px; padding:10px; line-height:24px; overflow:auto;border-top:none;border-bottom:none;}
+.results_main{ border:0; padding:0px 1px 0px 1px; background:#eff8ff;}
+.results_z,.results_z0,.results_z1,.results_z2,.results_z3,.results_z4{ padding:5px; overflow:auto;  background:#fff; width:206px; float:left;height:288px;}
+.results_margin{ margin-right:5px;}
+
+.results_z li,.results_z0 li,.results_z1 li,.results_z2 li,.results_z3 li,.results_z4 li{ line-height:21px; padding-left:5px;background:url() no-repeat right 8px;cursor: pointer;padding-right:5px;margin-bottom:2px;}
+.results_left{ width:20px;float:left;height:300px;}
+.results_right{ width:20px;float:right;height:300px;}
+.results_search{padding-left:25px; margin-bottom:2px; border-right:1px #99bad1 solid;}
+.results_delete{ float:right; width:61px; height:25px; border:1px #c2daf2 solid; border-top:none;position:relative; top:-1px;}
+.results_left input,.results_right input{ margin-top:126px;}
+.results_input{ border:none; background:none; line-height:18px; height:18px; padding-top:2px;color:#aaa;}
+.results_a{ background:none; background:url(../images/li.gif) #d6edf4 no-repeat right 8px!important; border:1px #98bbd1 solid; color:#1c4d92;cursor: pointer;}
+.results_img{ background:url(../images/icon.gif) no-repeat  -150px 0px; width:15px; height:12px; position:relative;bottom:-11px; left:40px;}
+.results_bottom{ background:#fffbf2; border:1px #fddbab solid; margin-top:10px; height:30px; line-height:30px; color:#3468ce; padding-left:10px;}
+
+.search_left   { width:20px; height:40px; background:url(../images/hover.gif) no-repeat 0px -82px; border:0px;}
+.search_right  { width:20px; height:40px; background:url(../images/hover.gif) no-repeat -25px -82px; border:0px;}
+.results_img{ background:url(../images/icon.gif) no-repeat  -181px 0px; width:15px; height:12px; position:relative;bottom:-11px; left:40px;}
+.results_bottom{ background:#fffbf2; border:1px #fddbab solid; margin-top:10px; height:30px; line-height:30px; color:#3468ce; padding-left:10px;}
+
+.SpecificationTable{border-left:1px solid #e0dcce;font-size:12px;line-height:16px;}
+.SpecificationTh td {background:url(../images/tb.gif) repeat-x;height:29px;border:1px solid #e0dcce;border-left:0;border-bottom:0;}
+.SpecificationTr td {border:1px solid #e0dcce;border-left:0;}
+.specdefault {border:1px dotted;cursor: pointer;line-height:20px;}
+.specspan {border:1px solid #99ccff;cursor: pointer;line-height:20px; background-color:#FFFFCC;display:block;float:left;margin-right:3px;margin-top:3px;white-space:nowrap; }
+.specsna {border:1px solid #99ccff;cursor: not-allowed;line-height:20px; color:#ccc;background-color:#FFFFFF;display:block;float:left;margin-right:3px;margin-top:3px;white-space: nowrap;}
+.skufield {border:1px solid;cursor: pointer;line-height:20px; display:block;float:left;margin-right:5px;}
+.specdiv {border:1px solid #99ccff;cursor: pointer;line-height:20px; background-color:#FFFFCC;}
+.target_box{width:300px; padding:3px; border:1px solid #aaa; background-color:#fff;}
+.valspan {line-height:20px;display:block;float:left;margin-right:5px;}
+
+.gradePriceTable{border-left:1px solid #e0dcce;font-size:12px;line-height:16px;}
+.gradePriceTh td {background:url(../images/tb.gif) repeat-x;height:29px;border:1px solid #e0dcce;border-left:0;border-bottom:0;}
+.gradePriceTr td {border:1px solid #e0dcce;border-left:0;}

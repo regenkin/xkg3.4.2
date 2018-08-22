@@ -1,0 +1,67 @@
+﻿a.files
+{
+    width: 90px;
+    height: 20px;
+    overflow: hidden;
+    display: block;
+    background-position: -32px -40px;
+    background-repeat: no-repeat;
+}
+a.files:hover
+{
+    background-position: -32px -60px;
+    background-repeat: no-repeat;
+}
+a.files input
+{
+    margin-left: -350px;
+    font-size: 30px;
+    cursor: pointer;
+    filter: alpha(opacity=0);
+    opacity: 0;
+}
+a.files, a.files input
+{
+    outline: none; /*ff*/
+    hide-focus: expression(this.hideFocus=true); /*ie*/
+}
+.preview
+{
+    display:table-cell;
+    _display:block;
+    width:88px;
+    height:88px;
+    border:#cfcfcf 1px solid;
+    vertical-align:middle;
+    text-align:center;
+}
+.preview img
+{
+    vertical-align:middle;
+}
+.actionBox
+{
+    width:90px;
+    height:30px;
+    clear:both;
+    margin-top:5px;
+}
+a.actions
+{
+    width: 90px;
+    height: 20px;
+    overflow: hidden;
+    display: block;
+    background-position: -32px 0px;
+    background-repeat: no-repeat;
+}
+a.actions:hover
+{
+    background-position: -32px -20px;
+    background-repeat: no-repeat;
+}
+.uploadimages
+{
+    width:100px;
+    float:left;
+}

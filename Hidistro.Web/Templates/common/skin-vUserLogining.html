@@ -1,0 +1,49 @@
+﻿<hi:common_header runat="server" />
+
+ <div id="BgDiv1"></div>
+    <div class="DialogDiv"  >
+        <div class="U-guodu-box">
+            <div>
+                <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <tr><td align="center" class="bakimage"><span></span></td></tr>
+                    <tr><td valign="middle" align="center">正在登录，请稍等...</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+ <input id="hidurl" type="hidden" runat="server" />
+<script>
+    //禁用右上角菜单
+    //document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+    //    WeixinJSBridge.call('hideOptionMenu');
+    //});
+</script>
+<script type="text/javascript">
+    $(function () {
+        $("#BgDiv1").css({ display: "block", height: $(document).height() });
+        var yscroll = document.documentElement.scrollTop;
+        var screenx = $(window).width();
+        var screeny = $(window).height();
+        $(".DialogDiv").css("display", "block");
+        $(".DialogDiv").css("top", yscroll + "px");
+        var DialogDiv_width = $(".DialogDiv").width();
+        var DialogDiv_height = $(".DialogDiv").height();
+        $(".DialogDiv").css("left", (screenx / 2 - DialogDiv_width / 2) + "px")
+        $(".DialogDiv").css("top", (screeny / 2 - DialogDiv_height / 2) + "px")
+
+      //  alert($("#vUserLogining_hidurl").val());
+
+        setInterval(function () {
+            if ($.trim($("#vUserLogining_hidurl").val()) != "")
+            {
+              
+              //  alert($("#vUserLogining_hidurl").val());
+                location.href = $("#vUserLogining_hidurl").val();
+            }
+        }, 2000);
+    });
+   
+ 
+</script>
+<hi:common_footer runat="server" />
+

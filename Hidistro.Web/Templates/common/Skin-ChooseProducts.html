@@ -1,0 +1,67 @@
+﻿<hi:common_header runat="server" />
+<script src="/Utility/scroll_tools.js" type="text/javascript"></script>
+<script type="text/javascript">
+    //插件调用
+    $(function () {
+        $(".scrolltools").scrolltools({ alwaysShowToTop: false, alwaysShowToBottom: false });
+    });
+</script>
+
+<div class="scrolltools">
+    <span>
+        <a title="返回顶部" class="toTop"></a>
+    </span>
+    <span>
+        <a title="快速回复" class="toReply"></a>
+    </span>
+    <span>
+        <a title="返回列表" class="toList"></a>
+    </span>
+    <span>
+        <a title="返回底部" class="toBottom"></a>
+    </span>
+</div>
+
+
+<div class="pbox clearfix choose-goods">
+    <div class="clearfix class_goods">
+        <div class="dropdown">
+            <div class="dropdown-toggle search_img" id="dropdownMenu1" data-toggle="dropdown">
+                <span class="glyphicon glyphicon-th"></span>
+            </div>
+            <div class="search_input">
+                <input type="text" class="text" runat="server" id="keywords" placeholder="">
+                <span class="glyphicon glyphicon-search" onclick="Searchkeys()">
+                </span>
+            </div>
+            <label>
+                全选<input type="checkbox" name="CheckAll" id="CheckAll" />
+            </label>
+            <ul class="dropdown-menu submenu" role="menu" aria-labelledby="dropdownMenu1">
+                <hi:vshoptemplatedrepeater id="rpCategorys" templatefile="/Tags/skin-Common_SubCategory.ascx"
+                                           runat="server" />
+            </ul>
+        </div>
+    </div>
+    <div id="shops" class="clearfix myproduct">
+        <hi:vshoptemplatedrepeater id="rpChooseProducts" templatefile="/Tags/skin-Common_ChooseProducts.ascx"
+                                   runat="server" />
+    </div>
+    <div class="nextstep pbox">
+        <a type="button" class="btn btn-danger btn-block" href="RequestDistributorFinish.aspx">
+            下一步
+        </a>
+    </div>
+    <script>
+        function Searchkeys() {
+            var serachkey = $("#vChooseProducts_keywords").val().replace(/\s/g, "");
+            location.href = "?keyWord=" + escape(serachkey);
+        }
+        $(function () {
+            window.scroll(0, $(document).height() - $(window).height());
+            $('#CheckAll').iCheck('check');
+          
+        })
+
+    </script>
+    <hi:common_footer runat="server" />

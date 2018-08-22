@@ -1,0 +1,62 @@
+﻿<hi:common_header runat="server" />
+<input type="hidden" runat="server" clientidmode="Static" id="litPaymentType" />
+<div class="shoppingStepBar clearfix" id="shoppingbar">
+    <div class="step active text-left"><em style="margin-left: -8px;">购物车</em><div class="glyphicon glyphicon-ok"></div><i style="border-bottom:2px solid #8cc152;"></i></div>
+    <div class="step active text-center"><em>确认订单</em><div class="glyphicon glyphicon-ok"></div></div>
+    <div class="step active text-right"><em style="margin-right: -14px;">提交成功</em><div class="glyphicon glyphicon-ok"></div><i style="border-bottom:2px solid #8cc152;"></i></div>
+</div>
+<hr />
+        
+        
+    <div id="orderSuccess" class="well text-center orderMsg">
+        <div class="font-xl" id="ordersuccessmes">
+            <span class="glyphicon glyphicon-ok"></span>恭喜，订单提交成功！
+        </div>
+        <div class="font-xl"  >
+            <asp:literal runat="server" id="literalOrderTotal" />
+        </div>
+            <div class="">
+                <asp:literal runat="server" id="litPaymentText" /> <span class="text-danger">
+                    <asp:literal runat="server" id="litOrderTotal" />
+                </span>
+            </div>
+            <div class="btns">
+                <a id="linkToDetail" class="btn btn-success" role="button">查看订单</a>
+                <a href="/Default.aspx" class="btn btn-default" role="button">继续逛逛</a>
+                <a href="#" class="btn btn-danger" role="button" id="btnToPay" runat="server" Visible="false">立即支付</a>
+            </div>
+        </div>
+    <div class="panel panel-default order-list" id="helper">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                线下支付帮助</h3>
+        </div>
+        <div class="panel-body offline-help">
+            <asp:literal runat="server" id="litHelperText" />
+        </div>
+    </div>
+
+
+<script>
+    //禁用右上角菜单
+    //document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+    //    WeixinJSBridge.call('hideOptionMenu');
+    //});
+</script>
+
+<script type="text/javascript">
+
+    $(function () {
+        if ($('#litPaymentType').val() != '0') {
+            $('#ordersuccessmes').hide();
+            $('#shoppingbar').hide();
+        }
+
+        $('#linkToDetail').attr('href', '/Vshop/MemberOrders.aspx?status=0');
+        if (getParam('onlyHelp'))
+            $('#orderSuccess').hide();
+
+    });
+
+</script>
+<hi:common_footer runat="server" />

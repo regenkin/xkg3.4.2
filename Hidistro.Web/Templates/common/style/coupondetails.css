@@ -1,0 +1,38 @@
+html,body{height: 100%;font-size: 12px;font-family: "微软雅黑"}
+.container{max-width: 640px;min-height: 100%; padding: 0;background-color: #F5F5F5;}
+.content{padding: 0 10px;}
+.activityTopic{padding-top: 10px;background-color: #fff;}
+.activityInner{background-color: #fff;box-shadow: 1px 1px 4px #E8E8E8;margin-bottom: 20px;}
+.activityInner .activityimg img{max-width: 100%;}
+.activityInner .activityInfo{padding: 5px 10px;}
+.activityInner .activityInfo p{margin: 10px 0;}
+.activityInner .activityInfo p span{display: block;float: left;}
+.activityInner .activityInfo p span:first-child{width:88px;text-align: right;}
+/*.activityInner .activityInfo p span:last-child{width: 70%;}*/
+.activityInner .activityInfo p span a{margin-left: 10px;color:#0000FF; }
+.activityInner .activityInfo p:after{content:"";clear:both;display:block;height:0;}
+.activityInner .activityInfo p.color{height: 20px;line-height: 20px; color: #EA8010;background: url(../images/iconfont-iconfont75.png) no-repeat left top;}
+.activityInner .activityInfo p.color span:last-child{text-indent: 0;}
+.rollCollar{padding-left: 10px;}
+.rollCollar a{position: relative; display: block;width: 100%;background-color: #DA4453;color: #fff;font-size: 12px;margin-bottom: 1px;}
+.rollCollar a:before{position: absolute;left: -10px;top: 0;display:block;
+	content:"";
+	width: 10px;
+	height:100%;
+	background-color:transparent;
+	background-size:10px 20px;
+	background-image:-webkit-linear-gradient(70deg, #DA4453 10%, transparent 10%, transparent),
+		-webkit-linear-gradient(-70deg, #DA4453 25%, transparent 25%, transparent),
+		-webkit-linear-gradient(70deg, transparent 75%, #DA4453 75%),
+		-webkit-linear-gradient(-70deg, transparent 75%, #DA4453 75%);
+		z-index: 100;
+}
+.rollCollar a .left{position: absolute; width: 33%;height: 100%;border-right: 1px dashed #FFCC00;}
+.rollCollar a .left span{display: block;}
+.rollCollar a .left span:first-child{text-indent: 10%;padding-top: 10%;margin-bottom: 5%;font-size: 16px;}
+.rollCollar a .left span:last-child{text-align: center;}
+.rollCollar a .left span:last-child i{font-size: 30px;font-style: normal;}
+.rollCollar a .right{padding-left: 35%;padding-top: 8%;}
+.rollCollar a .right h5{font-size: 16px;margin-bottom: 5%;}
+.rollCollar a .right p{font-family: "宋体";margin: 0;font-size: 12px;}
+.receive{display: block;width: 100%;font-size: 14px;letter-spacing: 2px;}

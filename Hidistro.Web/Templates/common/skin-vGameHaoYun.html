@@ -1,0 +1,352 @@
+﻿<hi:common_header runat="server" />
+<asp:Literal ID="litJs" runat="server"></asp:Literal>
+<link href="/style/haoyunfanfankan.css?20151028" rel="stylesheet" />
+<link href="/style/gamecommon.css?20151028" rel="stylesheet" type="text/css">
+<style>
+    .prizeCss tr{border-bottom:1px solid #cdcdcd}
+    .prizeCss td {padding:5px;color:#666 }
+    .prize_Info{color:#f84b09!important}
+    .opportunity-num{font-size:14px;text-align:center;margin-bottom:5px;display:none;}
+    .opportunity-num span{color:red;margin:0 3px;font-size:16px}
+
+    .mask .phone-box{position:absolute;padding:0 20px;left:0;top:80px;width:100%;}
+	.mask .phone-box .form-phone{position:relative; background-color:#fff;padding:25px;border-radius:8px;}
+	.mask .phone-box .form-phone h5{font-size:18px;color:#1CC3D4;text-align:center;margin-bottom:15px;}
+	.phone-box .form-phone .form-input{position:relative;border-bottom:1px solid #80DEE7;}
+	.phone-box .form-phone .form-input input{width:100%;border:none;height:30px;padding-left:30%;font-size:16px;outline:none;}
+	.phone-box .form-phone .form-input label{position:absolute;left:0;width:30%;line-height:30px;font-size:16px;}
+	.phone-box .form-phone .btn-phone{width:100%;height:40px;background-color:#01BBD0;color:#fff;border:none;border-radius:8px;font-size:16px;outline:none;}
+	.form-phone .btn-close{position:absolute;right:0;top:0;font-size:24px;width:30px;height:30px;text-align:center;line-height:30px;}
+    .phone-box .form-phone .showmessage{height:25px;line-height:25px;text-align:center;}
+</style>
+<div id="mcover" style="display:none" onclick="document.getElementById('mcover').style.display='';">
+    <img src="/images/guide.png" />
+</div>
+<div class="container">
+    <p class="opportunity-num">您还有<span class="oppnumber">0</span>次机会</p>
+    <div class="innerbox">
+        <div class="titileImage startGame"></div>
+        <ul class="clearfix prizeList">
+            <li>
+                <div class="pic1"><img src="/images/pai-1.png"></div>
+                <div class="pic2"><p></p></div>
+            </li>
+            <li>
+                <div class="pic1"><img src="/images/pai-2.png"></div>
+                <div class="pic2"><p></p></div>
+            </li>
+            <li>
+                <div class="pic1"><img src="/images/pai-3.png"></div>
+                <div class="pic2"><p></p></div>
+            </li>
+            <li>
+                <div class="pic1"><img src="/images/pai-4.png"></div>
+                <div class="pic2"><p></p></div>
+            </li>
+            <li>
+                <div class="pic1"><img src="/images/pai-5.png"></div>
+                <div class="pic2"><p></p></div>
+            </li>
+            <li>
+                <div class="pic1"><img src="/images/pai-6.png"></div>
+                <div class="pic2"><p></p></div>
+            </li>
+        </ul>
+    </div>
+    <div class="innerbox">
+        <div class="titileImage"></div>
+        <div class="innerList">
+            <h3>游戏奖品：</h3>
+            <table width="100%" class="clear">
+                <tbody class="prizeCss">
+                </tbody>
+            </table>
+        </div>
+        <div class="innerList">
+            <h3>游戏说明：</h3>
+            <p class="clear" id="gameDescription">
+               
+            </p>
+        </div>
+        <div class="innerList" >
+            <h3>活动时间：</h3>
+            <p class="clear" id="gameDateTime"></p>
+        </div>
+    </div>
+    <div class="innerbox nobg">
+        <div class="titileImage prize"></div>
+        <div class="nameListTop">
+            <ul>
+                <li>昵称</li>
+                <li>奖品</li>
+                <li>等级</li>
+                <li>中奖时间</li>
+            </ul>
+        </div>
+        <div class="nameList" id="userPrizeLists">
+        </div>
+    </div>
+    <div class="myWinning">
+        <a href="Vshop/MyPrizeList.aspx?ShowTab=0" style="height: 68.86px;">点击查看我的奖品</a>
+    </div>
+</div>
+ 
+
+
+ 
+<div style="display:none">
+    <img src="../images/chakan.gif" />
+    <input type="hidden" id="hiddPrizeName" />
+    </div>
+<script src="/script/vgame.js?201603"></script>
+<script type="text/javascript">
+    var flag = true;
+    $(function () {
+        function setHeight() {
+            $('.titileImage').height($('.titileImage').width() * 0.3193);
+            $('.prizeList li').height($('.prizeList li').width() * 1.295);
+            $('.myWinning a').height($('.myWinning a').width() * 0.22);
+        }
+        setHeight();
+        $(window).resize(function () {
+            setHeight();
+        })
+
+
+
+        BindData();
+        $('.prizeList li').click(function () {
+            var showMsg = "";
+            if (flag) {
+                var message = GetPrize();
+                if (message.status == "0") {
+                    alert_h(message.Desciption, function () {
+                        $(this).removeClass('click');
+                    });
+                }
+                else {
+                    var fl = false;
+                    if (message.prizeState == "ok") {
+                        fl = true;
+                        showMsg = message.prize;
+                        $("#hiddPrizeName").val(message.prize);
+                    }
+                    else {
+                        fl = false;
+                        showMsg = message.prizeName;
+                    }
+                    $(this).children("span").hide();
+                    $(this).addClass('click');
+                    if (fl) {
+                        $(this).find('.pic2 p').text(message.prizeName);
+                        $(this).find('.pic2').css({
+                            'background': 'url(../images/zhongjiangjiangxiang.png) no-repeat center 20% #fff'
+                        });
+                        setTimeout(function () {
+                            //$('body').append('<div class="mask"><div class="look-prize"><a href="Vshop/MyPrizeList.aspx?ShowTab=0">查看奖品</a></div><div class="fireworks"></div><div class="luck-result"><div class="text-title"><p>哇~ ' + message.prizeName + '！</p><p>' + showMsg + '</p></div><div class="result-btn"><a href="javascript:void(0)" class="showprize">得瑟一下</a><a class="iknow" href="javascript:void(0)">知道了</a></div></div></div> ');
+                            $('body').append('<div class="mask"><div class="look-prize"><a href="Vshop/MyPrizeList.aspx?ShowTab=0">查看奖品</a></div><div class="fireworks"><div class="text-title"><h2>哇！' + message.prizeName + '！</h2><p>' + message.prize + '</p></div><div class="result-btn"><a href="javascript:void(0)" class="showprize">得瑟一下</a><a href="javascript:void(0)" class="iknow">知道了</a></div></div></div>')
+                            $('.fireworks').height($('body').width() / 640 * 738);
+                            $('.mask').fadeIn(300);
+                        })
+                    } else {
+                        $(this).find('.pic2 p').text(showMsg);
+                        $(this).find('.pic2').css({
+                            'background': 'url(../images/weizhongjiangjiangxiang.png) no-repeat center 20% #fff'
+                        });
+                        setTimeout(function () {
+                            // $('body').append('<div class="mask"><div class="luck-result no-luck"><div class="text-title"><p>&nbsp;</p><p>' + showMsg + '</p></div><div class="result-btn"><a href="javascript:void(0)" class="showaction">分享活动</a><a class="iknow" href="javascript:void(0)">知道了</a></div></div>');
+                            $('body').append('<div class="mask"><div class="no-luck-prompt"><div class="no-luck-inner"><div class="no-luck-bg"></div><p class="thanks">' + showMsg + '</p><div class="result-btn"><a href="javascript:void(0)" class="showaction">分享活动</a><a href="javascript:void(0)" class="iknow">知道了</a></div></div></div></div>')
+                            $('.mask').fadeIn(300);
+                        });
+                    }
+                    //机会减1
+                    var oppNumber = parseInt($(".oppnumber").html());
+                    $(".oppnumber").html(oppNumber - 1);
+                    flag = false;
+                }
+            }
+        });
+
+        var oppNumber = GetOpportunity();
+        if (oppNumber == -1) { //没有限制次数
+            $(".opportunity-num").html("&nbsp;").show();
+        }
+        else {
+            $(".oppnumber").html(oppNumber);
+            $(".opportunity-num").show();
+        }
+
+        ///获取游戏奖品信息
+        GetPrizeTdHtml();
+
+        //我知道了
+        $(document).on('click', '.iknow', function () {
+            $(".prizeList li").removeClass('click');
+            $('.mask').fadeOut(500, function () {
+                $('.mask').remove();
+            });
+            if (IsCanPlay()) {
+                flag = true;
+            }
+        });
+
+        //保存手机号码
+        SavePhone();
+
+        //电话号码的验证
+        CheckMemberPhone();
+
+        var oppNumber = GetOpportunity();
+        if (oppNumber == -1) {//没有限制次数
+            $(".opportunity-num").hide();
+        }
+        else {
+            $(".oppnumber").html(oppNumber);
+        }
+
+        $(".prizeList li").removeClass('click');
+
+        //得瑟一下
+        $(document).on('click', '.showprize', function () {
+            $('.mask').fadeOut(500, function () {
+                $('.mask').remove();
+            });
+            $(".prizeList li").removeClass('click');
+            //分享赋值
+            shareTimeline();
+        });
+
+
+
+        var title = "";
+        var link = "";
+        var imgUrl = "";
+        var Dec = "";
+        //分享
+        $(document).on('click', '.showaction', function () {
+            $('.mask').fadeOut(500, function () {
+                $('.mask').remove();
+            });
+            $(".prizeList li").removeClass('click');
+            if (/MicroMessenger/i.test(navigator.userAgent)) {
+                $("#mcover").show();
+            }
+            else {
+                alert_h("当前客户端不是微信，不能分享到微信！");
+            }
+        });
+    });
+
+ 
+    function returnFn() {
+        $('.mask').animate({
+            opacity: 0
+        }, function () {
+            $('.mask').remove();
+        });
+    };
+
+    function BindData() {
+        InitInfo();
+        //绑定游戏奖品信息
+        var len = gameData.prizeLists.length;
+        for (var i = 0; i < len; i++) {
+            if (gameData.prizeLists[i].prizeCount > 0) {
+                $("#prizeItem" + i).html(gameData.prizeLists[i].PrizeFullName);
+            }
+        }
+        $("#gameDescription").html(gameData.Description);
+        $("#gameDateTime").html(gameData.BeginDate + " 至 " + gameData.EndDate);
+        UserPrizeLists();
+    };
+
+    ///获取游戏奖品信息
+    function GetPrizeTdHtml() {
+        var prizeTdHtml = "";
+        var prizeLists = gameData.prizeLists;
+        for (var i = 0; i < prizeLists.length; i++) {
+            var item = prizeLists[i];
+            prizeTdHtml += "<tr><td width='25%'>" + item.prizeType + "：</td><td class=\"prize_Info\" id=\"prizeItem" + i + "\">" + item.prize + "</td></tr> ";
+        }
+        $(".prizeCss").append(prizeTdHtml);
+    }
+
+    function shareTimeline() {
+        title = wxinshare_title;
+        link = wxinshare_link;
+        prizeName = $("#hiddPrizeName").val();
+        Dec = '哇！我在' + fxShopName + '，中了' + prizeName + ',一起来参与吧';
+        imgUrl = wxinshare_imgurl;
+        if (/MicroMessenger/i.test(navigator.userAgent)) {
+            $("#mcover").show();
+            initWx();
+        }
+        else {
+            alert_h("当前客户端不是微信，不能分享到微信！");
+        }
+    }
+    function initWx() {
+
+        wx.onMenuShareTimeline({
+            title: title + "\r\n" + Dec, // 分享标题
+            link: link, // 分享链接,将当前登录用户转为puid,以便于发展下线
+            desc: Dec,
+            imgUrl: imgUrl, // 分享图标
+            success: function () {
+                // 用户确认分享后执行的回调函数
+                $("#mcover").hide();
+                alert_h('分享成功', function ()
+                {
+                    if (IsCanPlay()) {
+                        flag = true;
+                    }
+                });
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+
+
+        wx.onMenuShareAppMessage({
+            title: title,
+            desc: Dec,
+            link: link,
+            imgUrl: imgUrl,
+            type: "",
+            dataUrl: "",
+            success: function () {
+                $("#mcover").hide();
+                alert_h('分享成功', function () {
+                    if (IsCanPlay()) {
+                        flag = true;
+                    }
+                });
+            },
+            cancel: function () { }
+        });
+
+        wx.onMenuShareQQ({
+            title: title, // 分享标题
+            desc: Dec, // 分享描述
+            link: link, // 分享链接
+            imgUrl: imgUrl, // 分享图标
+            success: function () {
+                $("#mcover").hide();
+                alert_h('分享成功', function () {
+                    if (IsCanPlay()) {
+                        flag = true;
+                    }
+                });
+                // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+
+
+    }
+
+</script>
+<hi:common_footer runat="server" />

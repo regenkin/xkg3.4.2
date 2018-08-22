@@ -1,0 +1,43 @@
+﻿<hi:common_header runat="server" />
+  <ul class="clearfix orders-title title_bg">
+      <li class="activenum"><a href="/ProgressCheck.aspx">售后列表</a></li>
+        <li><a href="/ProgressCheck.aspx?type=1">历史记录</a></li>
+      </ul>
+      <div  id="divorderlist" >
+  <hi:vshoptemplatedrepeater id="rptOrderReturns" templatefile="/Tags/skin-Common_ProgressCheck.ascx"
+        runat="server" /></div>
+    
+<script>
+    //禁用右上角菜单
+    //document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+    //    WeixinJSBridge.call('hideOptionMenu');
+    //});
+</script>
+<p id="divEmpty" class="te
+xt-center list-empty hide">
+    <span class="glyphicon glyphicon-list-alt" style="margin-left: -3px;"></span><em>售后订单为空</em>
+</p>
+<script type="text/javascript">
+    $(function () {
+        if (!$.trim($("#divorderlist").html())) {
+            $("#divorderlist").hide();
+            $("#divEmpty").removeClass('hide');
+        }
+
+        var list_h = (document.documentElement.clientHeight - 49 - $('.list-empty').height()) * .5 + 'px';
+        $('.list-empty').css('margin-top', list_h);
+
+        var status = getParam('type');
+        switch (status) {
+            case "1":
+                $(".title_bg li").removeClass("activenum").eq(status).addClass("activenum");
+                break;
+            default:
+                $(".title_bg li").removeClass("activenum").eq(0).addClass("activenum");
+                break;
+        }
+    })
+ 
+</script>
+<Hi:Common_Footer runat="server" />
+

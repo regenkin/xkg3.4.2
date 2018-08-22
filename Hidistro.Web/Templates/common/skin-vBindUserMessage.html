@@ -1,0 +1,201 @@
+﻿<hi:common_header runat="server" />
+<ul class="clearfix orders-title title_bg">
+    <li class="activenum" id="bindnew"><a >绑定新帐号</a></li>
+    <li id="bindold"><a >绑定已有帐号</a></li>
+</ul>
+<div class="pbox" id="divnew" style="padding:20px 15px 0;">
+
+    <form id="form" role="form" class="clearfix apply">
+        <div class="login-name">
+            <span class="glyphicon glyphicon-user"></span>
+            <input type="text" class="" id="uesrname" placeholder="请输入新用户名" />
+        </div>
+        <div class="login-name">
+            <span class="glyphicon glyphicon-lock"></span>
+            <input type="password" class="" id="pass" placeholder="请输入密码" />
+        </div>
+        <div class="login-name">
+            <span class="glyphicon glyphicon-lock"></span>
+            <input type="password" class="" id="passAgain" placeholder="请输入确认密码" />
+        </div>
+
+    </form>
+
+</div>
+<div class="pbox" id="divold" style="padding:20px 15px 0; display:none">
+
+    <form id="form" role="form" class="clearfix apply">
+        <div class="login-name">
+            <span class="glyphicon glyphicon-user"></span>
+            <input type="text" class="" id="uesroldname" placeholder="请输入已有用户名" />
+        </div>
+        <div class="login-name">
+            <span class="glyphicon glyphicon-lock"></span>
+            <input type="password" class="" id="passold" placeholder="请输入密码" />
+        </div>
+
+    </form>
+
+</div>
+<div class="form-group">
+    <a type="button" class="btn btn-danger btn-block login-btn" style="  background-color:#f86464;"  id="registeuser">注册并绑定</a>
+    <a type="button" class="btn btn-danger btn-block login-btn" style="display:none"  id="btnNoBind">以后再绑（后续可在会员中心绑定）</a>
+    <!--<p class="text-center" style="margin-top: 5px; font-size: 16px;"><a id="" class="text-muted"></a></p>-->
+</div>
+<style>
+    .txMsg {
+        border-top: 1px solid #aaa;
+        margin-top: 50px;
+        padding:10px;
+    }
+        .txMsg div {
+            width: 100px;
+            background: #808080;
+            text-align: center;
+            color: #fff;
+            margin-top: -20px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height:20px
+        }
+    .txMsg p{margin-top:10px;color:#999}
+        .txMsg i{margin-right:6px}
+</style>
+<div class="txMsg">
+    <div >用户名绑定</div>
+    <p><i>●</i>账户更安全,微信授权和系统用户名双重保障您的帐号安全；</p>
+    <p><i>●</i>管理更便捷,微信不能用怎么办?手机端浏览器可以登录店铺；</p>
+    <p><i>●</i>操作更省心,资料遗失怎么办?用户名和密码就能快速找回了。</p>
+</div>
+<script>
+    //禁用右上角菜单
+    //document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+    //    WeixinJSBridge.call('hideOptionMenu');
+    //});
+</script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var status = getParam("status");
+        if (status != 0)
+        {
+            $("#btnNoBind").show();
+        }
+        $("#registeuser").bind("click", function () { RegisterUser(); });
+        $("#btnNoBind").bind("click", function () { NoBind(); });
+        $("#bindnew").bind("click", function () { TabFun(1); });
+        $("#bindold").bind("click", function () { TabFun(2); });
+    });
+    var type = 1;
+    function TabFun(obj, id) {
+        type = obj;
+        if (obj == 1) {
+            $("#bindnew").addClass("activenum");
+            $("#bindold").removeClass("activenum");
+            $("#divnew").css("display", "");
+            $("#divold").css("display", "none");
+            $("#registeuser").html("注册并绑定");
+        }
+        else {
+            $("#bindold").addClass("activenum");
+            $("#bindnew").removeClass("activenum");
+            $("#divnew").css("display", "none");
+            $("#divold").css("display", "");
+            $("#registeuser").html("立即绑定");
+        }
+    }
+    function NoBind() {
+        location.href = getParam("returnUrl");
+    }
+    function RegisterUser() {
+        if (type == 1) {
+            var username = $.trim($("#uesrname").val())
+            var password = $.trim($("#pass").val());
+            var passagain = $.trim($("#passAgain").val());
+            if (username.length < 2) {
+                alert_h('用户名至少要2个字符');
+                return;
+            }
+            if (password.length < 6) {
+                alert_h('密码至少要6个字符');
+                return;
+            }
+            if (username == "") {
+                alert_h("用户名不能为空！");
+                return;
+            }
+            if (password == "") {
+                alert_h("密码不能为空！");
+                return;
+            }
+            if (passagain == "") {
+                alert_h("确认密码不能为空！");
+                return;
+            }
+            $.ajax({
+                url: "/API/VshopProcess.ashx",
+                type: 'post', dataType: 'json', timeout: 10000,
+                data: { action: "BindUserName", userName: $("#uesrname").val(), password: $("#pass").val(), passagain: $("#passAgain").val() },
+                success: function (resultData) {
+                    if (resultData.Status == "OK") {
+                        alert_h("绑定成功", function () {
+                            location.href = getParam("returnUrl");
+                        });
+                    }
+                    else {
+                        if (resultData.Status == "-1") {
+                            alert_h("绑定用户名已存在！");
+                        }
+                        else if (resultData.Status == "-3") {
+                            alert_h("绑定失败！");
+                        }
+                        else {
+                            alert_h("两次密码输入不正确！");
+                        }
+
+                    }
+                }
+            });
+        }
+        else {
+            var username = $.trim($("#uesroldname").val())
+            var password = $.trim($("#passold").val());
+
+            if (username.length < 2) {
+                alert_h('用户名至少要2个字符');
+                return;
+            }
+            if (password.length < 6) {
+                alert_h('密码至少要6个字符');
+                return;
+            }
+            if (username == "") {
+                alert_h("用户名不能为空！");
+                return;
+            }
+            if (password == "") {
+                alert_h("密码不能为空！");
+                return;
+            }
+
+            $.ajax({
+                url: "/API/VshopProcess.ashx",
+                type: 'post', dataType: 'json', timeout: 10000,
+                data: { action: "BindOldUserName", userName: username, password: password },
+                success: function (resultData) {
+                    if (resultData.Status == "0") {
+                        alert_h("绑定成功", function () {
+                            location.href = getParam("returnUrl");
+                        });
+                    }
+                    else {
+                        alert_h(resultData.Msg);
+
+                    }
+                }
+            });
+        }
+    }
+</script>
+<hi:common_footer runat="server" />
+

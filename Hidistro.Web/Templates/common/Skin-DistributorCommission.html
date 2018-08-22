@@ -1,0 +1,74 @@
+﻿<hi:common_header runat="server"/>
+<div class="money-top">
+    <a href="javascript:;">未提现金额<span class="show-money">￥ <Hi:FormatedMoneyLabel ID="lblsurpluscommission" runat="server" NullToDisplay="0.00"></Hi:FormatedMoneyLabel></span><!-- <em>></em> --></a>
+</div>
+<div class="money-top money-middle">
+    <a href="javascript:;">已提现金额<span class="show-money">￥ <Hi:FormatedMoneyLabel ID="lblAlreadycommission" runat="server" NullToDisplay="0.00"></Hi:FormatedMoneyLabel></span></a>
+</div>
+
+
+<div class="memberBottom">
+    <div class="bottom-content" style="">
+        <asp:HyperLink ID="hyrequest" onclick="javascript:return RequestMoneys()" runat="server" Text="<span class='glyphicon glyphicon-credit-card'></span>申请提现" CssClass="other border0" ></asp:HyperLink>
+    </div>
+</div>
+<div class="memberBottom">
+    <div class="bottom-content" style=""><a class="other border0" href="CommissionDetails.aspx"><span class="glyphicon glyphicon-list-alt"></span>查看流水</a></div>
+</div>
+
+
+<!-- <div class="pbox">
+    <div class="well commission">
+        <p><a href="CommissionDetails.aspx">明细</a>佣金总金额(元)</p>                    
+        <strong><Hi:FormatedMoneyLabel ID="lbltotalcommission" runat="server" NullToDisplay="0.00"></Hi:FormatedMoneyLabel></strong>          
+    <div><p>佣金剩余金额(元)</p> 
+     <strong></strong>          
+     </div>
+    </div>
+    <ul class="list-group commission-list">
+        <li href="" class="list-group-item">
+            <h6><span class="left">佣金<b>(元)</b></span>本店销售额<b>(元)</b></h6>
+            <p><Hi:FormatedMoneyLabel ID="lblcommission" class="left" runat="server" NullToDisplay="0.00"></Hi:FormatedMoneyLabel>
+            <Hi:FormatedMoneyLabel ID="lblsaleprice" runat="server" NullToDisplay="0.00"></Hi:FormatedMoneyLabel></p>
+        </li>
+        <asp:Panel ID="paneltwo" runat="server">
+        <li href="" class="list-group-item">
+            <h6><span class="left">佣金<b>(元)</b></span>二级子店销售额<b>(元)</b></h6>
+            <p><Hi:FormatedMoneyLabel ID="lbltwocommission" class="left" runat="server" NullToDisplay="0.00"></Hi:FormatedMoneyLabel>
+             <Hi:FormatedMoneyLabel ID="lbltwosaleprice" runat="server" NullToDisplay="0.00"></Hi:FormatedMoneyLabel></p>
+        </li>
+        </asp:Panel>
+        <asp:Panel ID="panelthree" runat="server">
+        <li href="" class="list-group-item">
+            <h6><span class="left">佣金<b>(元)</b></span>三级子店销售额<b>(元)</b></h6>
+            <p><Hi:FormatedMoneyLabel ID="lblthreecommission" class="left" runat="server" NullToDisplay="0.00"></Hi:FormatedMoneyLabel>
+             <Hi:FormatedMoneyLabel ID="lblthreesaleprice" runat="server" NullToDisplay="0.00"></Hi:FormatedMoneyLabel></p>
+        </li>
+        </asp:Panel>
+    </ul>
+    <p class="text-danger"><asp:Literal ID="litMsg" runat="server"></asp:Literal></p>
+    <div class="pbox">
+    </div>
+</div>  -->
+
+<script>
+    function RequestMoneys() {
+       
+        if (parseFloat($("#vDistributorCommission_lblsurpluscommission").text()) <= 0) {
+            alert_h('佣金金额小于0，无法进行提现');
+            return false;
+        }
+        else
+        {
+            if ($.trim($("#vDistributorCommission_hyrequest").text()) != "您的申请正在审核当中……")
+            location.href = "RequestCommissions.aspx";
+        }
+        if ($("#vDistributorCommission_hyrequest").attr("href").indexOf('UserInfo.aspx') >= 0) {
+            alert_h('个人资料未完善，请先完善个人资料', function () {
+                location.href = $("#vDistributorCommission_hyrequest").attr("href");
+            });
+        }
+    }
+</script>
+<Hi:Common_Footer runat="server" />
+

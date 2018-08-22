@@ -1,0 +1,87 @@
+/* CSS Document */
+body, h1, h2, h3, h4, h5, h6, hr, p , a , blockquote, /* structural elements 结构元素 */
+ul, ol, li, /* list elements 列表元素 */
+pre, /* text formatting elements 文本格式元素 */
+fieldset, lengend, button, input, textarea, /* form elements 表单元素 */
+th, td { /* table elements 表格元素 */
+    margin: 0;
+    padding: 0;
+}
+h1,h2,h3,h4,h5,h6{font-weight: normal;font-family: "microsoft yahei";}
+h1 { font-size: 18px; /* 18px / 12px = 1.5 */ }
+h2 { font-size: 16px; }
+h3 { font-size: 14px; }
+h4, h5, h6 { font-size: 100%; }
+
+/* 重置列表元素 */
+ul, ol { list-style: none; }
+
+/* 重置文本格式元素 */
+a,button{ text-decoration: none; cursor:pointer; outline:none;color: #666;}
+a:link {outline:none;}		/* 未访问的链接 */
+a:visited {outline:none;}	/* 已访问的链接 */
+a:hover {text-decoration: none;}	/* 鼠标移动到链接上 */
+a:active {outline:none;}	/* 选定的链接 */
+
+img { border: none; } /* img 搭车：让链接里的 img 无边框 */
+/* 注：optgroup 无法扶正 */
+button, input, select, textarea {
+    font-size: 100%; /* 使得表单元素在 ie 下能继承字体大小 */
+}
+address, cite, dfn, em, var { font-style: normal; } /* 将斜体扶正 */
+
+/* 重置表格元素 */
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/* 让非ie浏览器默认也显示垂直滚动条，防止因滚动条引起的闪烁 */
+html { overflow-y: scroll; }
+input{outline:none;}
+
+body{font-size:12px; word-wrap:break-word;font-family:12px/150% Arial,Verdana,"\5b8b\4f53";overflow-x:hidden; }
+textarea,input,select{font-family:"Hiragino Sans GB","Microsoft YaHei","微软雅黑",tahoma,arial,simsun,"宋体";font-size:12px;}
+.clearfix:after{content:"";clear:both;display:block;height:0;}
+.clearfix{zoom:1;}
+.l{float: left;}
+.r{float: right;}
+
+
+
+html,body{min-height: 100%;margin:0 auto;}
+.container{max-width: 640px;min-height: 100%; padding: 0;background-color: #F5F5F5;overflow: hidden;padding-bottom:60px;}
+.container header{margin-bottom: 10px;}
+.container header ul li{float: left;width: 25%;height: 38px;line-height: 36px;background-color: #fff;text-align: center;}
+.container header ul li a{display: block; color: #000;}
+.container header ul li.active a{border-bottom: 2px solid #da4453;color:#da4453; }
+.orderbox .orderlist .orderinfo,.orderbox .orderlist .orderimg{position: relative;font-size: 14px;background-color: #fff;padding: 10px;border-bottom: 1px solid #EEEEEE;}
+.orderbox .orderlist .orderinfo .price{position: absolute;top: 10px;right: 10px;font-size: 16px;color:#ff223e;font-family: "Arial", "Microsoft YaHei", "Tahoma"; }
+.orderbox .orderlist .orderinfo .price em{float:none;}
+.orderbox .orderlist .orderimg{font-size: 12px;}
+.orderbox .orderlist .orderimg img{position: absolute;width: 60px;height: 60px;}
+.orderbox .orderlist .orderimg .orderimginfo{margin-left: 70px;min-height: 55px;margin-top: 5px;}
+.orderbox .orderlist .orderimg .orderimginfo a{color: #434a54;}
+.orderbox .orderlist .orderimg .orderimginfo p{color: #999;}
+.orderbox .orderlist .linkbtn{padding: 10px;background-color: #fff;text-align: right;}
+.orderbox .orderlist{margin-bottom: 10px;box-shadow: 0 0 5px #ccc;}
+.orderbox .orderlist:last-child{margin: 0;}
+.batchoperator {
+display:none;
+}
+.orderreturn i {
+font-style:normal;
+}
+.orderreturn button {
+float:right;
+}
+.fl {
+float:left;
+}
+.fwnormal {
+font-weight:normal;
+}
+input[type="checkbox"], input[type="radio"].alignSub {
+    vertical-align: middle;
+    margin-top: -2px;
+}

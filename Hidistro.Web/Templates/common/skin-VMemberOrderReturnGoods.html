@@ -1,0 +1,23 @@
+﻿<hi:common_header runat="server" />
+ <div class="well choose_goods">
+    	<div class="title">  订单编号：<em id="orderid"> <asp:literal runat="server" id="litOrderId" /></em> <span>下单时间：<em><asp:literal runat="server" id="litOrderDate" /></em></span></div>
+         <hi:vshoptemplatedrepeater id="rptOrderProducts" templatefile="/Tags/skin-Common_MemberOrderReturnGoods.ascx"
+                runat="server" />
+    </div>
+ 
+ 
+<script>
+    //禁用右上角菜单
+    //document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+    //    WeixinJSBridge.call('hideOptionMenu');
+    //});
+</script>
+<script type="text/javascript">
+  
+  
+    $(function () {
+        
+
+    });
+</script>
+<hi:common_footer runat="server" />

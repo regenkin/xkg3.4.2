@@ -1,0 +1,398 @@
+﻿<hi:common_header runat="server" />
+<style>
+    html, body {
+        height: 100%;
+        font-size: 12px;
+        font-family: "微软雅黑";
+    }
+
+    .container {
+        max-width: 640px;
+        min-height: 100%;
+        padding: 0;
+        background-color: #F5F5F5;
+    }
+
+    .premiseInfo {
+        background-color: #fff;
+    }
+
+    .premise {
+        position: relative;
+        margin-bottom: 10px;
+    }
+
+        .premise h2 {
+            height: 40px;
+            line-height: 40px;
+            background-color: #EDF1F2;
+            text-indent: 10%;
+            font-size:16px
+        }
+
+    .premiseInfo {
+        padding: 12px 0;
+    }
+
+        .premiseInfo ul li:after {
+            content: "";
+            clear: both;
+            display: block;
+            height: 0;
+        }
+
+        .premiseInfo ul li:first-child {
+            margin-bottom: 18px;
+        }
+
+        .premiseInfo ul li {
+            width: 100%;
+            font-size: 12px;
+            padding: 7px 0 5px 10%;
+        }
+
+            .premiseInfo ul li p:last-child {
+                float: right;
+                margin-right: 3%;
+                color: #999999;
+            }
+
+            .premiseInfo ul li p:first-child {
+                float: left;
+            }
+
+            .premiseInfo ul li p.success:last-child {
+                color: #55B700;
+            }
+
+            .premiseInfo ul li p:first-child span {
+                display: block;
+                width: 100%;
+            }
+
+            .premiseInfo ul li p span {
+                display: block;
+                text-align: right;
+                height: 15px;
+            }
+
+            .premiseInfo ul li p small {
+                font-size: 0.5em;
+            }
+
+    .progress {
+        position: absolute;
+        left: 10px;
+        top: 13px;
+        width: auto;
+        height: auto;
+        background-color: transparent;
+        box-shadow: none;
+        overflow: visible;
+    }
+
+        .progress .radius {
+            position: relative;
+            width: 15px;
+            height: 15px;
+            background-color: #999999;
+            border-radius: 50%;
+            color: #fff;
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        .progress .line {
+            width: 1px;
+            height: 32px;
+            background-color: #D5D5D5;
+            margin: 0 auto;
+        }
+
+            .progress .line.success {
+                width: 2px;
+            }
+
+        .progress .success {
+            background-color: #55B700;
+        }
+
+        .progress .radius .bgradius {
+            position: absolute;
+            display: none;
+            width: 25px;
+            height: 25px;
+            font-size: 20px;
+            background-color: #55B700;
+            border-radius: 50%;
+            left: -5px;
+            top: -5px;
+        }
+
+        .progress .radius.success.show .bgradius {
+            display: block;
+        }
+
+    .container .btnList {
+        padding: 0 10px;
+        margin-bottom: 20px;
+    }
+
+        .container .btnList a {
+            display: block;
+            width: 100%;
+            font-size: 18px;
+            letter-spacing: 1px;
+        }
+
+            .container .btnList a:first-child {
+                margin-bottom: 10px;
+            }
+
+    .privilegeList {
+        padding: 0 10px;
+    }
+
+        .privilegeList ul li {
+            padding-left: 35px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+            .privilegeList ul li p {
+                position: relative;
+                background-color: #F8F8F8;
+                padding: 5px 10px;
+                border-radius: 4px;
+                border: 1px solid #E6E6E6;
+                color: #666666;
+            }
+
+                .privilegeList ul li p:before, .privilegeList ul li p:after {
+                    position: absolute;
+                    left: -7px;
+                    top: 50%;
+                    margin-top: -10px;
+                    content: "◆";
+                    color: #F8F8F8;
+                    font-size: 16px;
+                    z-index: 20;
+                }
+
+                .privilegeList ul li p:after {
+                    color: #E6E6E6;
+                    left: -8px;
+                    z-index: 10;
+                }
+
+            .privilegeList ul li i {
+                position: absolute;
+                left: 0;
+                top: 50%;
+                margin-top: -14px;
+                display: block;
+                width: 25px;
+                height: 28px;
+                background-image: url(../images/icon.png);
+                background-repeat: no-repeat;
+                background-size: 25px;
+            }
+
+            .privilegeList ul li:nth-of-type(2) i {
+                background-position: 0 -28px;
+            }
+
+            .privilegeList ul li:nth-of-type(3) i {
+                background-position: 0 -56px;
+            }
+
+            .privilegeList ul li:nth-of-type(4) i {
+                background-position: 0 -85px;
+            }
+    /*.titlebar {
+        line-height: 36px;
+        font-size: 16px;
+        font-weight: bold;
+        border-bottom: 1px solid #ccc;
+        margin-bottom: 10px;
+    }*/
+    body{background:#fff}
+</style>
+
+<input type="hidden" id="litIsMember"  runat="server">
+<input type="hidden" id="litExpenditure" runat="server">
+<input type="hidden" id="litIsEnable" runat="server">
+<input type="hidden" id="litminMoney" runat="server">
+<input type="hidden" id="litProds" runat="server">
+<input type="hidden" id="litProdOK" runat="server">
+<input type="hidden" id="UserBindName" value="" runat="server" />
+<div class="container">
+    <div class="premise">
+        <h2>申请成为分销商的前提</h2>
+        <div class="premiseInfo">
+            <ul>
+                <li id="first">
+                    <p>申请成为商城会员(且登入)</p>
+                    <p>未达成</p>
+                </li>
+                <li id="second">
+                    <p class="seth">
+                        <span id="minMoney"></span>
+                    </p>
+                    <p>
+                        <span>未达成</span>
+                        <small id="_Expenditure"></small>
+                    </p>
+                </li>
+            </ul>
+        </div>
+        <div class="progress">
+            <div class="radius success show">
+                <div class="bgradius">√</div>
+            </div>
+            <div class="line" id="lineOne"></div>
+            <div class="radius" id="radiusOne">
+                <div class="bgradius">√</div>
+            </div>
+            <div class="line two" id="lineTwo"></div>
+            <div class="radius" id="radiusTwo">
+                <div class="bgradius">√</div>
+            </div>
+            <div class="line"></div>
+        </div>
+    </div>
+    <div class="btnList">
+        <a type="button" id="ReadBack" class="btn btn-danger">继续逛逛</a>
+        <div style="padding: 5px; text-align: center; font-size: 16px; line-height: 20px; background: #fff; display: block;border-radius: 4px;">分销商特权</div>
+    </div>
+    <div class="privilegeList">
+        
+        <ul>
+            <li>
+                <i></i>
+                <p>零库存开设微信店铺，平台统一发货</p>
+            </li>
+            <li>
+                <i></i>
+                <p>拥有专属推广链接，快速发展下级分销商和会员</p>
+            </li>
+            <li>
+                <i></i>
+                <p>除了可以分享店铺主页和商品，平台也提供精美素材供分销商分享</p>
+            </li>
+            <li>
+                <i></i>
+                <p>通过下级会员消费获得佣金收益，佣金可以提现</p>
+            </li>
+        </ul>
+    </div>
+</div>
+<script>
+
+    var IsEnable = '0';
+    var IsMember = '0';
+    var Expenditure = "0";
+    var TxtUserBindName = "";
+    var Prods = "";
+   
+    $(function () {
+
+        IsEnable = $("#DistributorRequest_litIsEnable").val();
+        IsMember = $("#DistributorRequest_litIsMember").val();
+        Expenditure = $("#DistributorRequest_litExpenditure").val();
+        TxtUserBindName = $("#DistributorRequest_UserBindName").val().trim();
+        Prods = $("#DistributorRequest_litProds").val();
+
+        $("#_Expenditure").html("(已消费" + Expenditure + "元)");
+        var litProdOK = $("#DistributorRequest_litProdOK").val();
+        if (litProdOK != "")
+        {
+            $("#_Expenditure").html(litProdOK);
+        }
+
+        var txtTips = "";
+        if ($("#DistributorRequest_litminMoney").val() != "" && $("#DistributorRequest_litminMoney").val() > 0) {
+            txtTips = "账号在商城累计消费额满" + $("#DistributorRequest_litminMoney").val() + "元";
+        }
+        if (Prods != "") {
+            if (txtTips != "") {
+                txtTips += " <font style='color:Red;'>或</font>";
+            }
+            txtTips += " <a href='/ProductList.aspx?pIds=" + Prods + "'>购买指定商品&gt;&gt;</a>";
+        }
+        if (IsEnable == "6") {
+            txtTips = "等待商家设置指定商品";
+        }
+        if (txtTips == "")
+            txtTips = "账号在商城累计消费额满0元";
+        $("#minMoney").html(txtTips);
+
+
+
+        if (IsMember == "0" || IsEnable == "0") { //非会员或者未登入
+            $("#ReadBack").prop("href", "/Vshop/MemberCenter.aspx"); //未达到条件的
+            $("#ReadBack").html("继续逛逛");
+        } else if (IsEnable == "1") { //已经为分销商
+            $("#ReadBack").prop("href", "/Vshop/DistributorCenter.aspx"); //已注册的
+            $("#ReadBack").html("返回分销商中心");
+        } else if (IsEnable == "2") {
+            if (TxtUserBindName == "") {
+                $("#ReadBack").html("绑定用户并申请分销");
+                $("#ReadBack").prop("href", "/BindUserMessage.aspx?returnUrl=/Vshop/DistributorValid.aspx"); //已达到条件，未绑定用户的
+            } else {
+                $("#ReadBack").prop("href", "/Vshop/DistributorValid.aspx"); //已达到条件
+                $("#ReadBack").html("申请分销");
+            }
+        
+        }
+        else if (IsEnable == "3") {
+            $("#ReadBack").prop("href", ""); 
+            alert_h("你的分销商资格被管理员冻结，请咨询客服原因！", function () {
+                window.location.href = "/Vshop/MemberCenter.aspx"; 
+            });
+        }
+        else if (IsEnable == "4") {
+            $("#ReadBack").prop("href", "");
+            alert_h("平台分销商上已达上限，请咨询客服原因！", function () {
+                window.location.href = "/Vshop/MemberCenter.aspx";
+            });
+        }
+        else if (IsEnable == "9") {
+            $("#ReadBack").prop("href", "");
+            alert_h("商家已经取消了您的分销资质，不能再申请哦！", function () {
+                window.location.href = "/Vshop/MemberCenter.aspx";
+            });
+        }
+
+       setCheck();
+
+    });
+
+    function setCheck() {
+
+        if (IsMember == "1") { //非会员或者未登入
+            $("#first p:eq(1)").html("已达成").addClass("success");
+            $("#lineOne").addClass("success");
+            $("#radiusOne").addClass("success");
+            if (IsEnable == "0"||IsEnable=="6") {
+                $("#second p:eq(1) span").html("未达成")
+            }
+            else {
+                $("#second p:eq(1) span").html("已达成");
+                $("#second p:eq(1)").addClass("success");
+                $("#lineTwo").addClass("success");
+                $("#radiusTwo").addClass("success");
+                if (IsEnable == "1")
+                {
+                    $("#first .success").html("您已是分销商");
+                }
+            }
+        }
+        else {
+            $("#first p:eq(1)").html("未登入");
+        }
+    }
+
+</script>
+
+<hi:common_footer runat="server" />

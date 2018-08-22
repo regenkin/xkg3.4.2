@@ -1,0 +1,121 @@
+﻿<Hi:Common_Header runat="server" />
+<link href="../templates/common/css/public.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+    html,body{min-height: 100%;font-family:"微软雅黑";max-width:100%;}
+.container{max-width: 640px;min-height: 100%; padding: 0;background-color: #F8F8F8;}
+.container header{height: 40px;padding-top: 5px;border-bottom: 1px solid #B8B8B8;}
+.container header ul li{float: left;height: 35px;line-height: 35px;width: 50%;text-align: center;font-size: 14px;}
+.container header ul li a{color: #2C2B30;}
+.container header ul li.active{border-bottom: 2px solid #D61716;}
+.container header ul li.active a{color: #D94444;}
+.selectcheckbox1{position: relative; display: inline-block;width: 15px;height: 15px;border:1px solid #BCBCBC;vertical-align: middle;border-radius: 2px;}
+.selectunread{height: 40px;line-height: 40px;padding-left: 10px;border-bottom: 1px solid #E2E2E2;}
+.selectcheckbox1 .glyphicon{position: absolute;font-size: 12px;color: #D61716;font-weight: 700;left: 1px;top: 0;display: none;}
+.selectbox .text{display: inline-block;vertical-align: middle;} 
+.noticelist ul li{padding: 0 10px;height: 40px;line-height: 40px;border-bottom: 1px solid #E2E2E2;background-color: #fff;}
+.noticelist ul li p{float: right;}
+.noticelist ul li p:first-child{float: left;width: 60%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.noticelist ul li.noticeok{color: #D5D5D5;}
+
+</style>
+<input type="hidden" runat="server" clientidmode="Static" value="0" id="hidPage">
+<input type="hidden" runat="server" clientidmode="Static" value="0" id="hidType">
+<input type="hidden" runat="server" clientidmode="Static" value="0" id="hidReadtype">
+<div class="container">
+    <header>
+        <ul class="clearfix">
+            <li><a href="notice.aspx?type=0">公告</a></li>
+            <li><a href="notice.aspx?type=1">消息</a></li>
+        </ul>
+    </header>
+    <div class="selectunread">
+        <div class="selectbox">
+            <div class="selectcheckbox1">
+                <span class="glyphicon">√</span>
+            </div>
+            <span class="text"></span>
+        </div>
+    </div>
+    <div class="noticelist">
+        <ul id="ulNotice">
+        </ul>
+        </div>
+    </div>
+    <div class="loading">
+        <span>正在加载中····</span>
+    </div>
+<script type="text/javascript">
+    var type = $("#hidType").val();
+    var readtype = $("#hidReadtype").val();
+    $(function () {
+        $($("header ul li")[type]).addClass("active");
+        if (type == 1) {
+            $(".selectbox span.text").html("只显示未读消息");
+        } else {
+            $(".selectbox span.text").html("只显示未读公告");
+        }
+        getdate();
+        $(document).on('scroll', function (evt) {
+            var elementT = $('.loading').offset().top;
+            if ($(document).scrollTop() + $(window).height() >= elementT) {
+                getdate();
+            }
+        })
+        /*选中复选框*/
+        var checbox = $(this).find('.glyphicon'),
+            noticeok = $('.noticelist .noticeok');
+        if (readtype == 1) {
+            checbox.show();
+        }
+        $('.selectbox').click(function () {
+            if (checbox.css('display') == 'none') {
+                /*显示被选中*/
+                //checbox.show();
+                //noticeok.fadeOut();
+                location.href = "notice.aspx?type="+type+"&readtype=1";
+            } else {
+                location.href = "notice.aspx?type=" + type + "";
+                //checbox.hide();
+                //noticeok.fadeIn();
+            }
+        })
+    })
+    var flag = false;
+    function getdate() {
+        var index = $('#hidPage').val();
+        var pagesize = 20;
+        var data = "action=GetNotice&pagesize=" + pagesize + "&type=" + type + "&readtype=" + readtype + "&page=" + index + "&t=" + (new Date()).getTime();
+        if (!flag) {
+            $('.loading').removeClass("hide");
+            flag = true;
+            $.ajax({
+                url: "/api/VshopProcess.ashx",
+                type: "post",
+                data: data,
+                datatype: "json",
+                success: function (json) {
+                    if (json.success) {
+                        var rowtotal = parseInt(json.rowtotal);
+                        if (rowtotal == pagesize) {
+                            flag = false;
+                        } else {
+                            $('.loading').addClass("hide");
+                        }
+                        /*是50页的倍数，则先清空*/
+                        //if (index / 50 == 0) {
+                        //    $("#ulNotice").html("");
+                        //}
+                        var jsonData = json.lihtml;
+                        for (var i = 0; i < jsonData.length; i++) {
+                            var html = "<li" + (jsonData[i].isread == 0 ? "" : " class='noticeok'") + " onclick=\"location.href='NoticeDetail.aspx?Id=" + jsonData[i].id + "'\"><p class='noticetitle'>" + jsonData[i].title + "</p><p class='data'>" + jsonData[i].pubtime + "&nbsp;&gt;</p></li>";
+                            $("#ulNotice").append(html);
+                        }
+                        $("#hidPage").val(parseInt(index) + 1);
+                    }
+                }
+            })
+            //这里写ajax发送  发送成功记得把flag变量设置成false
+        }
+    }
+</script>
+    <hi:common_footer runat="server" />
