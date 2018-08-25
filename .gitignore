@@ -259,3 +259,7 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/Hidistro.Web/App_Data
+/Hidistro.Web/Storage/temp/201808
+/Hidistro.Web/Storage/master/product
+/Hidistro.Web/Storage/master

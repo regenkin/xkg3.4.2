@@ -1665,6 +1665,7 @@
     <Content Include="Installer\Images\process\weilog.png" />
     <Content Include="Installer\Images\process\word.jpg" />
     <Content Include="Installer\Install.aspx" />
+    <Content Include="Installer\Install_1.aspx" />
     <Content Include="Installer\SqlScripts\Schema.sql" />
     <Content Include="Installer\SqlScripts\SiteDemo.zh-CN.sql" />
     <Content Include="Installer\SqlScripts\SiteInitData.zh-CN.Sql" />
@@ -3136,12 +3137,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Log4Net.config" />
-    <Content Include="Web - 复制.config" />
-    <Content Include="Web - 复制.Debug.config">
-      <DependentUpon>Web - 复制.config</DependentUpon>
+    <Content Include="Web - D130.config" />
+    <Content Include="Web - D130.Debug.config">
+      <DependentUpon>Web - D130.config</DependentUpon>
     </Content>
-    <Content Include="Web - 复制.Release.config">
-      <DependentUpon>Web - 复制.config</DependentUpon>
+    <Content Include="Web - D130.Release.config">
+      <DependentUpon>Web - D130.config</DependentUpon>
     </Content>
     <Content Include="Admin\AdminNew.Master" />
     <Content Include="Admin\Fonts\wbficon.eot" />
@@ -3367,6 +3368,22 @@
     <Content Include="Utility\icomoon\icomoon.font" />
     <Content Include="Utility\icomoon\selection.json" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <Content Include="Web-虚拟机.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web-虚拟机.Debug.config">
+      <DependentUpon>Web-虚拟机.config</DependentUpon>
+    </Content>
+    <Content Include="Web-虚拟机.Release.config">
+      <DependentUpon>Web-虚拟机.config</DependentUpon>
+    </Content>
+    <Content Include="Web_default.config" />
+    <Content Include="Web_default.Debug.config">
+      <DependentUpon>Web_default.config</DependentUpon>
+    </Content>
+    <Content Include="Web_default.Release.config">
+      <DependentUpon>Web_default.config</DependentUpon>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -3439,6 +3456,13 @@
       <Project>{f41564dd-46e7-4f58-a37a-e352c6f45d75}</Project>
       <Name>Hidistro.UI.Web</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
